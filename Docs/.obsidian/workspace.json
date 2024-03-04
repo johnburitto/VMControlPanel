@@ -1,0 +1,173 @@
+{
+  "main": {
+    "id": "3ad0b726c14c6158",
+    "type": "split",
+    "children": [
+      {
+        "id": "e17578c79d9bd087",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "02e10a1786cb3ab6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Загальна блок-схема/Початок.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b537c68f8f21fa7a",
+    "type": "split",
+    "children": [
+      {
+        "id": "24ca5eccafb9728d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b6218d8629908fd7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9e265c8e478ee531",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "69a4640b4e0d00dd",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f624971fdef3948d",
+    "type": "split",
+    "children": [
+      {
+        "id": "12aa3cd2c8fb4391",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "443bef1e4a433714",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Загальна блок-схема/Початок.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "5e91c7801fd247e1",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Загальна блок-схема/Початок.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "ba4a548c35696c28",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "6fe5dff97511e660",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Загальна блок-схема/Початок.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Відкрити провідник файлів": false,
+      "graph:Граф": false,
+      "canvas:Створити нове полотно": false,
+      "daily-notes:Сьогоднішня нотатка": false,
+      "templates:Вставити шаблон": false,
+      "command-palette:Відкрити меню команд": false,
+      "nifty-links:Nifty Links": false
+    }
+  },
+  "active": "02e10a1786cb3ab6",
+  "lastOpenFiles": [
+    "Загальна блок-схема/Загальна блок-схема застосунку.canvas",
+    "Загальна блок-схема/Використання адмін панелі.md",
+    "Загальна блок-схема/Кінець.md",
+    "Загальна блок-схема/Початок.md",
+    "Загальна блок-схема/Автентифікація та авторизація у системі.md",
+    "Нотатки",
+    "Діаграми",
+    "Загальна блок-схема",
+    "2024-03-04.md",
+    "Загальна блок-схема/Маніпуляція файлами на віртуальній машині.md",
+    "Загальна блок-схема/Отримання та аналіз метрик системи.md",
+    "Загальна блок-схема/Створення акаунта.md",
+    "Автентифікація та авторизація.md",
+    "Загальна блок-схема/Виконання команд на віртуальній машині за допомогою ssh.md",
+    "Загальна блок-схема/Додавання віртуальних машин.md",
+    "Загальна блок-схема/Пропозиція створити акаунт.md",
+    "Загальна блок-схема/Пропозиція увійти в акаунт.md",
+    "Загальна блок-схема/Перевірка чи у користувача є наявний акаунт.md",
+    "Без назви 1.md"
+  ]
+}
