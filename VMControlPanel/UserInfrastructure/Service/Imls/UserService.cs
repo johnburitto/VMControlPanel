@@ -21,6 +21,11 @@ namespace UserInfrastructure.Service.Imls
             return await _context.Users.Where(_ => _.TelegramId == telegramId).AnyAsync();
         }
 
+        public async Task<bool> CheckIfAccountWithUserNameExistAsync(string userName)
+        {
+            return await _context.Users.Where(_ => _.UserName == userName).AnyAsync();
+        }
+
         public async Task<AuthResponse> LoginAsync(LoginDto dto)
         {
             var user = await _context.Users.Where(_ => _.UserName == dto.UserName && _.PasswordHash == ComputeSha256Hash(dto.Password)).FirstOrDefaultAsync();
