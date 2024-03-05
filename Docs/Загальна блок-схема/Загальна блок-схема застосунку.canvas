@@ -1,22 +1,20 @@
 {
 	"nodes":[
-		{"id":"9c65ad7edc34d615","type":"file","file":"Загальна блок-схема/Пропозиція увійти в акаунт.md","x":-522,"y":-28,"width":400,"height":308},
-		{"id":"d24b117eb4a8e4cd","type":"file","file":"Загальна блок-схема/Пропозиція створити акаунт.md","x":400,"y":-74,"width":400,"height":400},
 		{"id":"7c9526f5e1b77c6c","type":"file","file":"Загальна блок-схема/Перевірка чи у користувача є наявний акаунт.md","x":-80,"y":-560,"width":400,"height":400},
 		{"id":"18a08c98167eb9bd","type":"file","file":"Загальна блок-схема/Початок.md","x":-60,"y":-920,"width":360,"height":240},
-		{"id":"e096754c72d5c467","type":"file","file":"Загальна блок-схема/Виконання команд на віртуальній машині за допомогою ssh.md","x":-842,"y":1600,"width":400,"height":400},
-		{"id":"37d230831450706e","type":"file","file":"Загальна блок-схема/Маніпуляція файлами на віртуальній машині.md","x":-280,"y":1600,"width":400,"height":400},
-		{"id":"b1b4c670921ca07d","type":"file","file":"Загальна блок-схема/Отримання та аналіз метрик системи.md","x":280,"y":1600,"width":400,"height":400},
-		{"id":"697adc0538766e78","type":"file","file":"Загальна блок-схема/Кінець.md","x":-560,"y":2400,"width":400,"height":400},
-		{"id":"d509747dd42848db","type":"file","file":"Загальна блок-схема/Автентифікація та авторизація у системі.md","x":-560,"y":680,"width":400,"height":240},
-		{"id":"94b433fad5ca8f24","type":"file","file":"Загальна блок-схема/Використання адмін панелі.md","x":-560,"y":1080,"width":400,"height":280},
-		{"id":"7f48dcab6ae8ae1c","type":"file","file":"Загальна блок-схема/Додавання віртуальних машин.md","x":-1400,"y":1600,"width":400,"height":400},
-		{"id":"4c6ca0f06ca4b51d","type":"file","file":"Загальна блок-схема/Створення акаунта.md","x":400,"y":520,"width":400,"height":400}
+		{"id":"4c6ca0f06ca4b51d","type":"file","file":"Загальна блок-схема/Створення акаунта.md","x":400,"y":-28,"width":400,"height":400},
+		{"id":"9c65ad7edc34d615","type":"file","file":"Загальна блок-схема/Вхід в систему.md","x":-560,"y":-28,"width":400,"height":400},
+		{"id":"d509747dd42848db","type":"file","file":"Загальна блок-схема/Автентифікація та авторизація у системі.md","x":-80,"y":640,"width":400,"height":240},
+		{"id":"e096754c72d5c467","type":"file","file":"Загальна блок-схема/Виконання команд на віртуальній машині за допомогою ssh.md","x":-362,"y":1560,"width":400,"height":400},
+		{"id":"37d230831450706e","type":"file","file":"Загальна блок-схема/Маніпуляція файлами на віртуальній машині.md","x":200,"y":1560,"width":400,"height":400},
+		{"id":"b1b4c670921ca07d","type":"file","file":"Загальна блок-схема/Отримання та аналіз метрик системи.md","x":760,"y":1560,"width":400,"height":400},
+		{"id":"697adc0538766e78","type":"file","file":"Загальна блок-схема/Кінець.md","x":-80,"y":2360,"width":400,"height":400},
+		{"id":"7f48dcab6ae8ae1c","type":"file","file":"Загальна блок-схема/Додавання віртуальних машин.md","x":-920,"y":1560,"width":400,"height":400},
+		{"id":"94b433fad5ca8f24","type":"file","file":"Загальна блок-схема/Використання адмін панелі.md","x":-80,"y":1040,"width":400,"height":280}
 	],
 	"edges":[
 		{"id":"69adea436a7db6a5","fromNode":"18a08c98167eb9bd","fromSide":"bottom","toNode":"7c9526f5e1b77c6c","toSide":"top"},
 		{"id":"08e14008c6432c37","fromNode":"7c9526f5e1b77c6c","fromSide":"left","toNode":"9c65ad7edc34d615","toSide":"top","label":"Акаунт існує"},
-		{"id":"7674c8d43a0afc26","fromNode":"7c9526f5e1b77c6c","fromSide":"right","toNode":"d24b117eb4a8e4cd","toSide":"top","label":"Акаунт відсутній"},
 		{"id":"2cf6be2386bb5ac5","fromNode":"d509747dd42848db","fromSide":"bottom","toNode":"94b433fad5ca8f24","toSide":"top"},
 		{"id":"8374a3678f055ef6","fromNode":"94b433fad5ca8f24","fromSide":"bottom","toNode":"7f48dcab6ae8ae1c","toSide":"top","fromEnd":"arrow"},
 		{"id":"03063c55f80d2819","fromNode":"94b433fad5ca8f24","fromSide":"bottom","toNode":"e096754c72d5c467","toSide":"top","fromEnd":"arrow"},
@@ -26,8 +24,8 @@
 		{"id":"5e28c79d475d6c4a","fromNode":"e096754c72d5c467","fromSide":"bottom","toNode":"697adc0538766e78","toSide":"top"},
 		{"id":"55f08e54597895bc","fromNode":"37d230831450706e","fromSide":"bottom","toNode":"697adc0538766e78","toSide":"top"},
 		{"id":"505cda1cb61ea480","fromNode":"b1b4c670921ca07d","fromSide":"bottom","toNode":"697adc0538766e78","toSide":"top"},
-		{"id":"c6dd3d225f88001c","fromNode":"d24b117eb4a8e4cd","fromSide":"bottom","toNode":"4c6ca0f06ca4b51d","toSide":"top","label":"Реєстрація користувача"},
 		{"id":"5988dbd23bb18a64","fromNode":"9c65ad7edc34d615","fromSide":"bottom","toNode":"d509747dd42848db","toSide":"top","label":"Вхід в систему"},
-		{"id":"b67140c46f1a80db","fromNode":"4c6ca0f06ca4b51d","fromSide":"left","toNode":"d509747dd42848db","toSide":"top","label":"Вхід в систему"}
+		{"id":"b67140c46f1a80db","fromNode":"4c6ca0f06ca4b51d","fromSide":"bottom","toNode":"d509747dd42848db","toSide":"top","label":"Вхід в систему"},
+		{"id":"41be305a443ead07","fromNode":"7c9526f5e1b77c6c","fromSide":"right","toNode":"4c6ca0f06ca4b51d","toSide":"top","label":"Акаунт відсутній"}
 	]
 }
