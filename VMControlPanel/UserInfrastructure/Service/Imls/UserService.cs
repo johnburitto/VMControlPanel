@@ -64,8 +64,8 @@ namespace UserInfrastructure.Service.Imls
         {
             var user = new User
             {
-                UserName = dto.UserName,
                 TelegramId = dto.TelegramId,
+                UserName = dto.UserName,
                 PasswordHash = ComputeSha256Hash(dto.Password),
                 Email = dto.Email
             };
