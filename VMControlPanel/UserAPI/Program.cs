@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UserInfrastructure.Data;
+using UserInfrastructure.Service.Imls;
+using UserInfrastructure.Service.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL"));
 });
+
+// Add Dependencies
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
