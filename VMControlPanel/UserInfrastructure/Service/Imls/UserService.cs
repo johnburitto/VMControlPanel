@@ -1,4 +1,5 @@
 ﻿using Core.Dtos;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,7 +22,7 @@ namespace UserInfrastructure.Service.Imls
             return await _context.Users.Where(_ => _.TelegramId == telegramId).AnyAsync();
         }
 
-        public async Task<bool> CheckIfAccountWithUserNameExistAsync(string userName)
+        public async Task<bool> CheckIfAccountWithUserNameExistAsync(string? userName)
         {
             return await _context.Users.Where(_ => _.UserName == userName).AnyAsync();
         }
@@ -31,6 +32,31 @@ namespace UserInfrastructure.Service.Imls
             var user = await _context.Users.Where(_ => _.UserName == dto.UserName && _.PasswordHash == ComputeSha256Hash(dto.Password)).FirstOrDefaultAsync();
 
             return user == null ? AuthResponse.BadCredentials : AuthResponse.SuccessesLogin;
+        }
+
+        public async Task<AuthResponse> RegisterAsync(RegisterDto dto)
+        {
+            if (await CheckIfAccountWithUserNameExistAsync(dto.UserName))
+            {
+                return AuthResponse.AlreadyRegistered;
+            }
+
+            await CreateAsync(dto);
+
+            return AuthResponse.SuccessesRegister;
+        }
+
+        private async Task CreateAsync(RegisterDto dto)
+        {
+            var user = new User
+            {
+                UserName = dto.UserName,
+                PasswordHash = ComputeSha256Hash(dto.Password),
+                Email = dto.Email
+            };
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
         private string ComputeSha256Hash(string? data)
