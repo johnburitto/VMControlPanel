@@ -8,6 +8,7 @@ namespace UserInfrastructure.Service.Interfaces
         Task<bool> CheckIfAccountWithUserNameExistAsync(string? userName);
         Task<AuthResponse> LoginAsync(LoginDto dto);
         Task<AuthResponse> RegisterAsync(RegisterDto dto);
+        Task<AuthResponse> RegisterAndLoginAsync(RegisterDto dto);
     }
 
     public enum AuthResponse

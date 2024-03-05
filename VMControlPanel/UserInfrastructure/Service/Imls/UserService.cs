@@ -46,6 +46,20 @@ namespace UserInfrastructure.Service.Imls
             return AuthResponse.SuccessesRegister;
         }
 
+        public async Task<AuthResponse> RegisterAndLoginAsync(RegisterDto dto)
+        {
+            if (await RegisterAsync(dto) == AuthResponse.SuccessesRegister)
+            {
+                return await LoginAsync(new LoginDto
+                {
+                    UserName = dto.UserName,
+                    Password = dto.Password
+                });
+            }
+
+            return AuthResponse.AlreadyRegistered;
+        }
+
         private async Task CreateAsync(RegisterDto dto)
         {
             var user = new User
