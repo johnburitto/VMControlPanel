@@ -28,7 +28,7 @@ namespace UserInfrastructure.Configurations
             builder.Property(_ => _.NormalizedUserName)
                    .IsRequired();
 
-            builder.Property(_ => _.Email)
+            builder.Property(_ => _.NormalizedEmail)
                    .IsRequired();
         }
     }

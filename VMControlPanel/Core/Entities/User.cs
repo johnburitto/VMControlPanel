@@ -7,7 +7,7 @@
         public string? UserName { get; set; }
         public string? PasswordHash { get; set; }
         public string? Email { get; set; }
-        public string? NormalizedUserName => UserName?.ToUpper();
-        public string? NormalizedEmail => Email?.ToUpper();
+        public string? NormalizedUserName { get => UserName?.ToUpper(); set { } }
+        public string? NormalizedEmail { get => Email?.ToUpper(); set { } }
     }
 }

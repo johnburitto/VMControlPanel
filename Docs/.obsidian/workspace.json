@@ -69,7 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 306.5
   },
   "right": {
     "id": "f624971fdef3948d",
@@ -147,8 +147,9 @@
       "nifty-links:Nifty Links": false
     }
   },
-  "active": "b6218d8629908fd7",
+  "active": "2e08c6877c94e435",
   "lastOpenFiles": [
+    "Фото/Pasted image 20240305145419.png",
     "Фото/Pasted image 20240305133914.png",
     "Фото/Pasted image 20240305133836.png",
     "Фото",
