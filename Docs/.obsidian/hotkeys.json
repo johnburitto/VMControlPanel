@@ -1,0 +1,18 @@
+{
+  "obsidian-rich-links:create-rich-links": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "L"
+    }
+  ],
+  "nifty-links:create-nifty-links": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "L"
+    }
+  ]
+}
