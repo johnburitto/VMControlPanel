@@ -74,25 +74,22 @@ namespace UserInfrastructure.Service.Imls
             await _context.SaveChangesAsync();
         }
 
-        private string ComputeSha256Hash(string? data)
+        private static string ComputeSha256Hash(string? data)
         {
             if (data == null)
             {
                 return "";
             }
+            
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(data));
+            var strBuilder = new StringBuilder();
 
-            using (var sha256Hash = SHA256.Create())
+            foreach (var _ in bytes)
             {
-                var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(data));
-                var strBuilder = new StringBuilder();
-
-                foreach (var _ in bytes)
-                {
-                    strBuilder.Append(_.ToString("x2"));
-                }
-
-                return strBuilder.ToString();
+                strBuilder.Append(_.ToString("x2"));
             }
+
+            return strBuilder.ToString();
         }
     }
 }
