@@ -19,7 +19,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 });
 
 // Add Dependencies
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

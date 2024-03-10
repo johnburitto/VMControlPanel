@@ -8,11 +8,11 @@ using UserInfrastructure.Service.Interfaces;
 
 namespace UserInfrastructure.Service.Imls
 {
-    public class UserService : IUserService
+    public class AuthService : IAuthService
     {
         private readonly UserDbContext _context;
 
-        public UserService(UserDbContext context)
+        public AuthService(UserDbContext context)
         {
             _context = context;
         }
@@ -90,6 +90,11 @@ namespace UserInfrastructure.Service.Imls
             }
 
             return strBuilder.ToString();
+        }
+
+        public async Task<List<User>> GetUsersByTelegramIdAsync(long telegramId)
+        {
+            return await CheckIfUserHasAccountAsync(telegramId) ? await _context.Users.Where(_ => _.TelegramId == telegramId).ToListAsync() : [];
         }
     }
 }

@@ -11,11 +11,11 @@ namespace VMControlPanelTest.Tests
     public class UserServiceTest
     {
         private readonly Mock<UserDbContext> _context = new();
-        private readonly UserService _underTest;
+        private readonly AuthService _underTest;
 
         public UserServiceTest()
         {
-            _underTest = new UserService(_context.Object);
+            _underTest = new AuthService(_context.Object);
         }
 
         [Fact]
