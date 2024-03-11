@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Bot.StateMachineBase;
+using Core.Entities;
 using Newtonsoft.Json;
 
 namespace Bot.HttpInfrastructure
@@ -29,6 +30,21 @@ namespace Bot.HttpInfrastructure
             var response = await Client!.GetAsync($"/api/Auth/accounts/{telegramId}");
             
             return JsonConvert.DeserializeObject<List<User>>(await response.Content.ReadAsStringAsync());
+        }
+
+        public static async Task<string> GetStateAsync(long telegramId)
+        {
+            var response = await Client!.GetAsync($"/api/Cache/{telegramId}_state");
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public static async Task SaveStateAsync(long telegramId, State state, long expTimeInHours)
+        {
+            var stateSting = JsonConvert.SerializeObject(state);
+            var content = new StringContent(stateSting);
+
+            await Client!.PostAsync($"/api/Cache/{telegramId}_state?expTimeInHours={expTimeInHours}", content);
         }
     }
 }
