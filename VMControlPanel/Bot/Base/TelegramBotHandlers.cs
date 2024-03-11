@@ -1,5 +1,6 @@
 ﻿using Bot.Commands;
 using Bot.Commands.Base;
+using Bot.HttpInfrastructure;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -14,6 +15,10 @@ namespace Bot.Base
                 new StartCommand()
             ];
         private readonly List<CallbackQueryCommand> _callbackQueryCommands = [];
+        private readonly List<Command> _stateCommands =
+            [
+                new AuthCommand()
+            ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
         {
@@ -46,6 +51,18 @@ namespace Bot.Base
 
         private async Task MessageHandlerAsync(ITelegramBotClient client, Message? message)
         {
+            var state = await RequestClient.GetStateNameAsync(message!.Chat.Id);
+
+            foreach (var command in _stateCommands)
+            {
+                if (command.IsCanBeExecuted(state) || command.IsCanBeExecuted(message.Text!))
+                {
+                    await command.ExecuteAsync(client, message);
+
+                    return;
+                }
+            }
+
             foreach (var command in _messageCommands)
             {
                 await command.TryExecuteAsync(client, message);
@@ -54,6 +71,18 @@ namespace Bot.Base
 
         private async Task CallbackQueryHandlerAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
         {
+            var state = await RequestClient.GetStateNameAsync(callbackQuery!.Message!.Chat.Id);
+
+            foreach (var command in _stateCommands)
+            {
+                if (command.IsCanBeExecuted(state) || command.IsCanBeExecuted(callbackQuery.Data!))
+                {
+                    await command.ExecuteAsync(client, callbackQuery);
+
+                    return;
+                }
+            }
+
             foreach (var command in _callbackQueryCommands)
             {
                 await command.TryExecuteAsync(client, callbackQuery);

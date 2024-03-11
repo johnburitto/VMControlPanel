@@ -5,7 +5,7 @@ namespace Bot.StateMachineBase
 {
     public static class StateMachine
     {
-        public static long ExpTimeInHours { get; set; } = 1;
+        public static float ExpTimeInHours { get; set; } = 1f;
 
         public static async Task<State?> GetSateAsync(long telegramId)
         {
@@ -16,7 +16,7 @@ namespace Bot.StateMachineBase
 
         public static async Task SaveStateAsync(long telegramId, State state)
         {
-            await RequestClient.SaveStateAsync(telegramId, state, telegramId);
+            await RequestClient.SaveStateAsync(telegramId, state, ExpTimeInHours);
         }
     }
 }
