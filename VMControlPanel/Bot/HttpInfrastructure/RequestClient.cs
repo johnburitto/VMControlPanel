@@ -70,6 +70,15 @@ namespace Bot.HttpInfrastructure
             return JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
         }
 
+        public static async Task<AuthResponse> RegisterAsync(RegisterDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8080/api/Auth/register", content);
+
+            return JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
+        }
+
         public static async Task CacheAsync(string key, string value, float expTimeInHours)
         {
             await Client!.PostAsync($"https://localhost:8081/api/Cache/{key}?value={value}&expTimeInHours={expTimeInHours}", null);

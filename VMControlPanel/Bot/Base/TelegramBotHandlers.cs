@@ -13,7 +13,8 @@ namespace Bot.Base
         private readonly List<MessageCommand> _commands =
             [
                 new StartCommand(),
-                new AuthCommand()
+                new AuthCommand(),
+                new RegisterCommand()
             ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
