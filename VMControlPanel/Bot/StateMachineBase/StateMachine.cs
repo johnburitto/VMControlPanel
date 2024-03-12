@@ -18,5 +18,10 @@ namespace Bot.StateMachineBase
         {
             await RequestClient.SaveStateAsync(telegramId, state, ExpTimeInHours);
         }
+
+        public static async Task RemoveStateAsync(long telegramId)
+        {
+            await RequestClient.RemoveStateAsync(telegramId);
+        }
     }
 }

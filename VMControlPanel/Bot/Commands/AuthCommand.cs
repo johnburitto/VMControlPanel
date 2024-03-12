@@ -6,29 +6,43 @@ using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
+using UserInfrastructure.Service.Interfaces;
 
 namespace Bot.Commands
 {
     public class AuthCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "/auth", "input_username", "input_password" ];
+        private readonly ReplyKeyboardMarkup _keyboard = new([
+            new KeyboardButton[] { "❌ Відмінити" }
+        ])
+        {
+            ResizeKeyboard = true
+        };
+
+        public override List<string>? Names { get; set; } = [ "/auth", "Увійти в акаунт", "input_username", "input_password" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
-        
+            
+            if (message!.Text!.Contains('❌'))
+            {
+                await StateMachine.RemoveStateAsync(message!.Chat.Id);
+
+                return;
+            }
+
             if (userState == null)
             {
-                var dto = new LoginDto();
-                
                 userState = new State
                 {
                     StateName = "input_username",
-                    StateObject = dto
+                    StateObject = new LoginDto()
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
             }
             else if (userState?.StateName == "input_username")
             {
@@ -36,7 +50,7 @@ namespace Bot.Commands
                 userState.StateName = "input_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль:", parseMode: ParseMode.Html);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
             }
             else
             {
@@ -44,7 +58,18 @@ namespace Bot.Commands
 
                 var response = await RequestClient.LoginAsync((userState.StateObject as JObject)!.ToObject<LoginDto>()!);
 
-                await client.SendTextMessageAsync(message!.Chat.Id, response, parseMode: ParseMode.Html);
+                if (response == AuthResponse.SuccessesLogin)
+                {
+                    await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно увійшли до системи", parseMode: ParseMode.Html);
+                    await StateMachine.RemoveStateAsync(message!.Chat.Id);
+                }
+                else if (response == AuthResponse.BadCredentials)
+                {
+                    userState.StateName = "input_username";
+
+                    await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
+                    await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                }
             }
         }
     }

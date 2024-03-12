@@ -31,7 +31,7 @@ namespace Bot.Commands.Base
         {
             foreach (var name in Names ?? [])
             {
-                if (message.Contains(name))
+                if (message.ToLower().Contains(name.ToLower()))
                 {
                     return true;
                 }

@@ -3,13 +3,14 @@ using Core.Dtos;
 using Core.Entities;
 using Newtonsoft.Json;
 using System.Text;
+using UserInfrastructure.Service.Interfaces;
 
 namespace Bot.HttpInfrastructure
 {
     public static class RequestClient
     {
         private static HttpClient? _client;
-        private static object _lock = new object();
+        private static readonly object _lock = new();
 
         public static HttpClient? Client => GetInstance();
 
@@ -55,13 +56,18 @@ namespace Bot.HttpInfrastructure
             await Client!.PostAsync($"https://localhost:8081/api/Cache/{telegramId}_state?value={stateSting}&expTimeInHours={expTimeInHours}", null);
         }
 
-        public static async Task<string> LoginAsync(LoginDto dto)
+        public static async Task RemoveStateAsync(long telegramId)
+        {
+            await Client!.DeleteAsync($"https://localhost:8081/api/Cache/{telegramId}_state");
+        }
+
+        public static async Task<AuthResponse> LoginAsync(LoginDto dto)
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
             var response = await Client!.PostAsync($"https://localhost:8080/api/Auth/login", content);
 
-            return await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
         }
     }
 }

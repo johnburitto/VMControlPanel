@@ -10,13 +10,9 @@ namespace Bot.Base
 {
     public class TelegramBotHandlers : ITelegramBotHandlers
     {
-        private readonly List<MessageCommand> _messageCommands =
+        private readonly List<MessageCommand> _commands =
             [
-                new StartCommand()
-            ];
-        private readonly List<CallbackQueryCommand> _callbackQueryCommands = [];
-        private readonly List<Command> _stateCommands =
-            [
+                new StartCommand(),
                 new AuthCommand()
             ];
 
@@ -51,19 +47,12 @@ namespace Bot.Base
 
         private async Task MessageHandlerAsync(ITelegramBotClient client, Message? message)
         {
-            var state = await RequestClient.GetStateNameAsync(message!.Chat.Id);
-
-            foreach (var command in _stateCommands)
+            if (await StateHandlerAsync(client, message!.Chat.Id, message))
             {
-                if (command.IsCanBeExecuted(state) || command.IsCanBeExecuted(message.Text!))
-                {
-                    await command.ExecuteAsync(client, message);
-
-                    return;
-                }
+                return;
             }
 
-            foreach (var command in _messageCommands)
+            foreach (var command in _commands)
             {
                 await command.TryExecuteAsync(client, message);
             }
@@ -71,22 +60,32 @@ namespace Bot.Base
 
         private async Task CallbackQueryHandlerAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
         {
-            var state = await RequestClient.GetStateNameAsync(callbackQuery!.Message!.Chat.Id);
-
-            foreach (var command in _stateCommands)
+            if (await StateHandlerAsync(client, callbackQuery!.Message!.Chat.Id, callbackQuery))
             {
-                if (command.IsCanBeExecuted(state) || command.IsCanBeExecuted(callbackQuery.Data!))
-                {
-                    await command.ExecuteAsync(client, callbackQuery);
-
-                    return;
-                }
+                return;
             }
 
-            foreach (var command in _callbackQueryCommands)
+            foreach (var command in _commands)
             {
                 await command.TryExecuteAsync(client, callbackQuery);
             }
         }
+
+        private async Task<bool> StateHandlerAsync(ITelegramBotClient client, long telegramId, dynamic data)
+        {
+            var state = await RequestClient.GetStateNameAsync(telegramId);
+
+            foreach (var command in _commands)
+            {
+                if (command.IsCanBeExecuted(state))
+                {
+                    await command.ExecuteAsync(client, data);
+
+                    return true;
+                }
+            }
+
+            return false;
+        } 
     }
 }
