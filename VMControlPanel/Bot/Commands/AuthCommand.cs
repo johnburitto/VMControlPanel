@@ -62,6 +62,7 @@ namespace Bot.Commands
                 {
                     await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно увійшли до системи", parseMode: ParseMode.Html);
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
+                    await RequestClient.CacheAsync($"{message!.Chat.Id}_auth", "auth", 1);
                 }
                 else if (response == AuthResponse.BadCredentials)
                 {

@@ -69,5 +69,18 @@ namespace Bot.HttpInfrastructure
 
             return JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
         }
+
+        public static async Task CacheAsync(string key, string value, float expTimeInHours)
+        {
+            await Client!.PostAsync($"https://localhost:8081/api/Cache/{key}?value={value}&expTimeInHours={expTimeInHours}", null);
+        }
+
+        public static async Task<bool> CheckIfHasCacheAsync(string key)
+        {
+            var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{key}");
+            var data = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+
+            return data != null;
+        }
     }
 }
