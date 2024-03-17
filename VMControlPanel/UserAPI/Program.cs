@@ -1,3 +1,5 @@
+using Infrastructure.Services.Impls;
+using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using UserInfrastructure.Data;
 using UserInfrastructure.Service.Imls;
@@ -18,8 +20,16 @@ builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL"));
 });
 
+// Add Redis caching
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
 // Add Dependencies
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenGenerateService, TokenGenerateService>();
+builder.Services.AddScoped<ICacheService, CacheService>();
 
 var app = builder.Build();
 

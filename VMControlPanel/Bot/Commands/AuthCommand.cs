@@ -55,6 +55,7 @@ namespace Bot.Commands
             else
             {
                 userState!.StateObject!.Password = message?.Text;
+                userState!.StateObject!.TelegramId = message?.Chat.Id;
 
                 var response = await RequestClient.LoginAsync((userState.StateObject as JObject)!.ToObject<LoginDto>()!);
 
@@ -62,7 +63,6 @@ namespace Bot.Commands
                 {
                     await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно увійшли до системи", parseMode: ParseMode.Html);
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                    await RequestClient.CacheAsync($"{message!.Chat.Id}_auth", "auth", 1);
                 }
                 else if (response == AuthResponse.BadCredentials)
                 {

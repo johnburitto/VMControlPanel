@@ -1,5 +1,6 @@
 ﻿using Core.Dtos;
 using Core.Entities;
+using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using UserInfrastructure.Service.Interfaces;
 
@@ -10,26 +11,39 @@ namespace UserAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _service;
+        private readonly ITokenGenerateService _tokenGenerateService;
+        private readonly ICacheService _cacheService;
 
-        public AuthController(IAuthService service)
+        public AuthController(IAuthService service, ITokenGenerateService tokenGenerateService, ICacheService cacheService)
         {
             _service = service;
+            _tokenGenerateService = tokenGenerateService;
+            _cacheService = cacheService;
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> LoginAsync(LoginDto dto)
+        public async Task<ActionResult<AuthResponse>> LoginAsync(LoginDto dto)
         {
-            return Ok((await _service.LoginAsync(dto)));
+            var result = await _service.LoginAsync(dto);
+
+            if (result == AuthResponse.SuccessesLogin)
+            {
+                var token = _tokenGenerateService.GenerateToken(dto);
+
+                await _cacheService.SetValueAsync($"{dto.TelegramId}_auth", token, 1f);
+            }
+
+            return Ok(result);
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> RegisterAsync(RegisterDto dto)
+        public async Task<ActionResult<AuthResponse>> RegisterAsync(RegisterDto dto)
         {
-            return Ok((await _service.RegisterAsync(dto)));
+            return Ok(await _service.RegisterAsync(dto));
         }
 
         [HttpGet("accounts/{telegramId}")]
