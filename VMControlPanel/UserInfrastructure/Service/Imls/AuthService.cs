@@ -1,5 +1,6 @@
 ﻿using Core.Dtos;
 using Core.Entities;
+using Infrastructure.Services.Impls;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -29,7 +30,7 @@ namespace UserInfrastructure.Service.Imls
 
         public async Task<AuthResponse> LoginAsync(LoginDto dto)
         {
-            var user = await _context.Users.Where(_ => _.UserName == dto.UserName && _.PasswordHash == ComputeSha256Hash(dto.Password)).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(_ => _.UserName == dto.UserName && _.PasswordHash == CryptoService.ComputeSha256Hash(dto.Password)).FirstOrDefaultAsync();
 
             return user == null ? AuthResponse.BadCredentials : AuthResponse.SuccessesLogin;
         }
@@ -66,30 +67,12 @@ namespace UserInfrastructure.Service.Imls
             {
                 TelegramId = dto.TelegramId,
                 UserName = dto.UserName,
-                PasswordHash = ComputeSha256Hash(dto.Password),
+                PasswordHash = CryptoService.ComputeSha256Hash(dto.Password),
                 Email = dto.Email
             };
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-        }
-
-        private static string ComputeSha256Hash(string? data)
-        {
-            if (data == null)
-            {
-                return "";
-            }
-            
-            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(data));
-            var strBuilder = new StringBuilder();
-
-            foreach (var _ in bytes)
-            {
-                strBuilder.Append(_.ToString("x2"));
-            }
-
-            return strBuilder.ToString();
         }
 
         public async Task<List<User>> GetUsersByTelegramIdAsync(long telegramId)
