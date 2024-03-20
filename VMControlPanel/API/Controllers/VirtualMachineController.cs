@@ -39,19 +39,35 @@ namespace API.Controllers
         [ProducesResponseType(typeof(VirtualMachine), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<VirtualMachine?>> GetVirtualMachineByUserIdAndVMNameAsync(long userId, string name)
+        public async Task<ActionResult<VirtualMachine?>> GetVirtualMachineByUserIdAndVMNameAsync(int userId, string name)
         {
             return Ok(await _service.GetVirtualMachineByUserIdAndVMNameAsync(userId, name));
         }
 
+        [HttpGet("{userId}/all")]
+        [ProducesResponseType(typeof(List<VirtualMachine>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<VirtualMachine>> GetVirtualMachineByUserIdAndVMNameAsync(int userId)
+        {
+            return Ok(await _service.GetUserVirtualMachines(userId));
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(VirtualMachine), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<VirtualMachine>> CreateAsync(VirtualMachineDto dto)
         {
-            var entity = await _service.CreateAsync(dto);
+            try
+            {
+                var entity = await _service.CreateAsync(dto);
 
-            return CreatedAtRoute("GetDiscountByIdAsync", new { Id = entity.Id }, entity);
+                return CreatedAtRoute("GetDiscountByIdAsync", new { Id = entity.Id }, entity);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut]

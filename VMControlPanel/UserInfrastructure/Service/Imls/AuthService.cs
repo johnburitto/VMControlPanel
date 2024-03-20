@@ -77,5 +77,10 @@ namespace UserInfrastructure.Service.Imls
         {
             return await CheckIfUserHasAccountAsync(telegramId) ? await _context.Users.Where(_ => _.TelegramId == telegramId).ToListAsync() : [];
         }
+
+        public  Task<User?> GetUserByTelegramIdAndUserNameAsync(long telegramId, string userName)
+        {
+            return _context.Users.Where(_ => _.TelegramId == telegramId && _.UserName == userName).FirstOrDefaultAsync();
+        }
     }
 }

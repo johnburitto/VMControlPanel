@@ -53,5 +53,14 @@ namespace UserAPI.Controllers
         {
             return Ok(await _service.GetUsersByTelegramIdAsync(telegramId));
         }
+
+        [HttpGet("{telegramId}/{userName}")]
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<User?>> GetUserByTelegramIdAndUserNameAsync(long telegramId, string userName)
+        {
+            return Ok(await _service.GetUserByTelegramIdAndUserNameAsync(telegramId, userName));
+        }
     }
 }
