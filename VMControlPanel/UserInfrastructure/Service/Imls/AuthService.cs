@@ -1,11 +1,9 @@
 ﻿using Core.Dtos;
 using Core.Entities;
-using Infrastructure.Services.Impls;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
 using UserInfrastructure.Data;
 using UserInfrastructure.Service.Interfaces;
+using Utilities;
 
 namespace UserInfrastructure.Service.Imls
 {

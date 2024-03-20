@@ -1,4 +1,4 @@
-﻿using Infrastructure.Services.Impls;
+﻿using Utilities;
 
 namespace Core.Entities
 {

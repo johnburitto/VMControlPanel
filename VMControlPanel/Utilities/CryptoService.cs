@@ -5,7 +5,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Infrastructure.Services.Impls
+namespace Utilities
 {
     public static class CryptoService
     {

@@ -18,9 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VMControlPanelTest", "VMCon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot", "Bot\Bot.csproj", "{476071F3-987F-439A-83EC-AEBF02C56F14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{E59BF72A-A261-4873-AFF6-1254C01B63A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{E59BF72A-A261-4873-AFF6-1254C01B63A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{8DC13C2C-DB30-4D77-BE4B-EEADAD70C05F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{8DC13C2C-DB30-4D77-BE4B-EEADAD70C05F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{DCE59D37-1736-43B9-95D6-6012EBDF347D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{8DC13C2C-DB30-4D77-BE4B-EEADAD70C05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC13C2C-DB30-4D77-BE4B-EEADAD70C05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC13C2C-DB30-4D77-BE4B-EEADAD70C05F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE59D37-1736-43B9-95D6-6012EBDF347D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE59D37-1736-43B9-95D6-6012EBDF347D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE59D37-1736-43B9-95D6-6012EBDF347D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE59D37-1736-43B9-95D6-6012EBDF347D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
