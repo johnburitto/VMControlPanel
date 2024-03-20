@@ -50,7 +50,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<long>("UserTelegramId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

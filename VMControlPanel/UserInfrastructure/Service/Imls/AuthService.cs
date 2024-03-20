@@ -21,9 +21,9 @@ namespace UserInfrastructure.Service.Imls
             return await _context.Users.Where(_ => _.TelegramId == telegramId).AnyAsync();
         }
 
-        public async Task<bool> CheckIfAccountWithUserNameExistAsync(string? userName)
+        public async Task<bool> CheckIfAccountWithUserNameExistAsync(string? UserName)
         {
-            return await _context.Users.Where(_ => _.UserName == userName).AnyAsync();
+            return await _context.Users.Where(_ => _.UserName == UserName).AnyAsync();
         }
 
         public async Task<AuthResponse> LoginAsync(LoginDto dto)

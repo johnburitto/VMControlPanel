@@ -6,7 +6,7 @@ namespace UserInfrastructure.Service.Interfaces
     public interface IAuthService
     {
         Task<bool> CheckIfUserHasAccountAsync(long telegramId);
-        Task<bool> CheckIfAccountWithUserNameExistAsync(string? userName);
+        Task<bool> CheckIfAccountWithUserNameExistAsync(string? UserName);
         Task<AuthResponse> LoginAsync(LoginDto dto);
         Task<AuthResponse> RegisterAsync(RegisterDto dto);
         Task<AuthResponse> RegisterAndLoginAsync(RegisterDto dto);
