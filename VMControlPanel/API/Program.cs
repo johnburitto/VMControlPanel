@@ -24,8 +24,12 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
+// Add AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Dependencies
 builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<IVirtualMachineService, VirtualMachineService>();
 
 var app = builder.Build();
 

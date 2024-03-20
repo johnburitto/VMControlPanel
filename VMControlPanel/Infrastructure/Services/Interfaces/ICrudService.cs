@@ -5,7 +5,7 @@
         Task<List<T>> GetAllAsync();
         Task<T?> GetByIdAsync(int id);
         Task<T> CreateAsync(TCreate dto);
-        Task<T> Update(TUpdate dto);
-        Task DeleteAsync(int id);
+        Task<T> UpdateAsync(TUpdate dto);
+        Task DeleteAsync(T entity);
     }
 }

@@ -29,7 +29,7 @@ namespace Utilities
             return strBuilder.ToString();
         }
 
-        public static string Blowfish(string? data, bool encrypt = true)
+        public static string Blowfish(string? data, bool encrypt)
         {
             if (data == null)
             {

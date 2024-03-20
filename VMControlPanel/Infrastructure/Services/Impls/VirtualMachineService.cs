@@ -20,7 +20,7 @@ namespace Infrastructure.Services.Impls
 
         public async Task<VirtualMachine> CreateAsync(VirtualMachineDto dto)
         {
-            var expectedEntity = await GetVirtualMachineByNameAndUserTelegramId(dto.Name, dto.UserTelegramId);
+            var expectedEntity = await GetVirtualMachineByUserTelegramIdAndNameAsync(dto.UserTelegramId, dto.Name);
         
             if (expectedEntity != null)
             {
@@ -35,15 +35,10 @@ namespace Infrastructure.Services.Impls
             return entity;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(VirtualMachine entity)
         {
-            var entity = await GetByIdAsync(id);
-
-            if (entity != null)
-            {
-                _context.VirtualMachines.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+            _context.VirtualMachines.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task<List<VirtualMachine>> GetAllAsync()
@@ -56,14 +51,14 @@ namespace Infrastructure.Services.Impls
             return _context.VirtualMachines.Where(_ => _.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<VirtualMachine?> GetVirtualMachineByNameAndUserTelegramId(string? name, long userTelegramId)
+        public Task<VirtualMachine?> GetVirtualMachineByUserTelegramIdAndNameAsync(long userTelegramId, string? name)
         {
-            return _context.VirtualMachines.Where(_ => _.Name == name && _.UserTelegramId == userTelegramId).FirstOrDefaultAsync();
+            return _context.VirtualMachines.Where(_ => _.UserTelegramId == userTelegramId && _.Name == name).FirstOrDefaultAsync();
         }
 
-        public async Task<VirtualMachine> Update(VirtualMachineDto dto)
+        public async Task<VirtualMachine> UpdateAsync(VirtualMachineDto dto)
         {
-            var expectedEntity = await GetVirtualMachineByNameAndUserTelegramId(dto.Name, dto.UserTelegramId) ?? throw new Exception($"Virtual machine with name {dto.Name} doesn't exist");
+            var expectedEntity = await GetVirtualMachineByUserTelegramIdAndNameAsync(dto.UserTelegramId, dto.Name) ?? throw new Exception($"Virtual machine with name {dto.Name} doesn't exist");
             _mapper.Map(dto, expectedEntity);
 
             _context.VirtualMachines.Update(expectedEntity);
