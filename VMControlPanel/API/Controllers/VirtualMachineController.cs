@@ -35,13 +35,13 @@ namespace API.Controllers
             return entity != null ? Ok(entity) : NotFound();
         }
 
-        [HttpGet("{userTelegramId}/{name}")]
+        [HttpGet("{userId}/{name}")]
         [ProducesResponseType(typeof(VirtualMachine), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<VirtualMachine?>> GetVirtualMachineByUserTelegramIdAndNameAsync(long userTelegramId, string name)
+        public async Task<ActionResult<VirtualMachine?>> GetVirtualMachineByUserIdAndVMNameAsync(long userId, string name)
         {
-            return Ok(await _service.GetVirtualMachineByUserTelegramIdAndNameAsync(userTelegramId, name));
+            return Ok(await _service.GetVirtualMachineByUserIdAndVMNameAsync(userId, name));
         }
 
         [HttpPost]

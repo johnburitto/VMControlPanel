@@ -20,7 +20,7 @@ namespace Infrastructure.Services.Impls
 
         public async Task<VirtualMachine> CreateAsync(VirtualMachineDto dto)
         {
-            var expectedEntity = await GetVirtualMachineByUserTelegramIdAndNameAsync(dto.UserTelegramId, dto.Name);
+            var expectedEntity = await GetVirtualMachineByUserIdAndVMNameAsync(dto.UserId, dto.Name);
         
             if (expectedEntity != null)
             {
@@ -51,14 +51,14 @@ namespace Infrastructure.Services.Impls
             return _context.VirtualMachines.Where(_ => _.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<VirtualMachine?> GetVirtualMachineByUserTelegramIdAndNameAsync(long userTelegramId, string? name)
+        public Task<VirtualMachine?> GetVirtualMachineByUserIdAndVMNameAsync(long userId, string? name)
         {
-            return _context.VirtualMachines.Where(_ => _.UserTelegramId == userTelegramId && _.Name == name).FirstOrDefaultAsync();
+            return _context.VirtualMachines.Where(_ => _.UserId == userId && _.Name == name).FirstOrDefaultAsync();
         }
 
         public async Task<VirtualMachine> UpdateAsync(VirtualMachineDto dto)
         {
-            var expectedEntity = await GetVirtualMachineByUserTelegramIdAndNameAsync(dto.UserTelegramId, dto.Name) ?? throw new Exception($"Virtual machine with name {dto.Name} doesn't exist");
+            var expectedEntity = await GetVirtualMachineByUserIdAndVMNameAsync(dto.UserId, dto.Name) ?? throw new Exception($"Virtual machine with name {dto.Name} doesn't exist");
             _mapper.Map(dto, expectedEntity);
 
             _context.VirtualMachines.Update(expectedEntity);

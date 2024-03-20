@@ -5,6 +5,6 @@ namespace Infrastructure.Services.Interfaces
 {
     public interface IVirtualMachineService : ICrudService<VirtualMachine, VirtualMachineDto, VirtualMachineDto>
     {
-        Task<VirtualMachine?> GetVirtualMachineByUserTelegramIdAndNameAsync(long userTelegramId, string? name);
+        Task<VirtualMachine?> GetVirtualMachineByUserIdAndVMNameAsync(long userTelegramId, string? name);
     }
 }

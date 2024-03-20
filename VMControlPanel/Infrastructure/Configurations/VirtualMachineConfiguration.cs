@@ -15,7 +15,7 @@ namespace Infrastructure.Configurations
             builder.Property(_ => _.Name)
                    .IsRequired();
 
-            builder.Property(_ => _.UserTelegramId)
+            builder.Property(_ => _.UserId)
                    .IsRequired();
 
             builder.Property(_ => _.UserName)
