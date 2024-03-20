@@ -63,13 +63,7 @@ namespace Infrastructure.Services.Impls
 
         public async Task<VirtualMachine> Update(VirtualMachineDto dto)
         {
-            var expectedEntity = await GetVirtualMachineByNameAndUserTelegramId(dto.Name, dto.UserTelegramId);
-
-            if (expectedEntity == null)
-            {
-                throw new Exception($"Virtual machine with name {dto.Name} doesn't exist");
-            }
-
+            var expectedEntity = await GetVirtualMachineByNameAndUserTelegramId(dto.Name, dto.UserTelegramId) ?? throw new Exception($"Virtual machine with name {dto.Name} doesn't exist");
             _mapper.Map(dto, expectedEntity);
 
             _context.VirtualMachines.Update(expectedEntity);
