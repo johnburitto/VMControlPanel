@@ -51,12 +51,12 @@ namespace Infrastructure.Services.Impls
             return _context.VirtualMachines.Where(_ => _.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<List<VirtualMachine>> GetUserVirtualMachines(int userId)
+        public Task<List<VirtualMachine>> GetUserVirtualMachines(string? userId)
         {
             return _context.VirtualMachines.Where(_ => _.UserId ==  userId).ToListAsync();
         }
 
-        public Task<VirtualMachine?> GetVirtualMachineByUserIdAndVMNameAsync(int userId, string? name)
+        public Task<VirtualMachine?> GetVirtualMachineByUserIdAndVMNameAsync(string? userId, string? name)
         {
             return _context.VirtualMachines.Where(_ => _.UserId == userId && _.Name == name).FirstOrDefaultAsync();
         }

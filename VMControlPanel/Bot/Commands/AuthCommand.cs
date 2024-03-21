@@ -1,4 +1,5 @@
 ﻿using Bot.Commands.Base;
+using Bot.Extensions;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
 using Core.Dtos;
@@ -61,7 +62,9 @@ namespace Bot.Commands
 
                 if (response == AuthResponse.SuccessesLogin)
                 {
-                    await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно увійшли до системи", parseMode: ParseMode.Html);
+                    var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+
+                    await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно увійшли до системи", parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard());
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
                 else if (response == AuthResponse.BadCredentials)

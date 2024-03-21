@@ -91,5 +91,14 @@ namespace Bot.HttpInfrastructure
 
             return data != null;
         }
+
+        public static async Task<List<VirtualMachine>> GetUserVirtualMachinesAsync(long telegramId)
+        {
+            var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
+            var userId = await response.Content.ReadAsStringAsync();
+            var virtualMachinesResponse = await Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/all");
+
+            return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync()) ?? [];
+        }
     }
 }

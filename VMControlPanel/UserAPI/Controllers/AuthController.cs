@@ -31,8 +31,10 @@ namespace UserAPI.Controllers
             if (result == AuthResponse.SuccessesLogin)
             {
                 var token = _tokenGenerateService.GenerateToken(dto);
+                var user = await _service.GetUserByTelegramIdAndUserNameAsync(dto.TelegramId, dto.UserName);
 
                 await _cacheService.SetValueAsync($"{dto.TelegramId}_auth", token, 1f);
+                await _cacheService.SetValueAsync($"{dto.TelegramId}_current_user_id", $"{user?.Id}", 1f);
             }
 
             return Ok(result);
