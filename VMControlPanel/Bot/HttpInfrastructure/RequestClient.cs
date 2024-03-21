@@ -100,5 +100,14 @@ namespace Bot.HttpInfrastructure
 
             return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync()) ?? [];
         }
+
+        public static async Task<VirtualMachine?> AddVirtualMachineAsync(VirtualMachineDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8081/api/VirtualMachine", content);
+
+            return JsonConvert.DeserializeObject<VirtualMachine>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

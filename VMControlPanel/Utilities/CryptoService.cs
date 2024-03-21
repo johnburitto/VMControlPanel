@@ -51,7 +51,7 @@ namespace Utilities
 
             cipher.DoFinal(outputDataBytes, length);
 
-            return encrypt ? Convert.ToBase64String(outputDataBytes) : Encoding.UTF8.GetString(outputDataBytes);
+            return encrypt ? Convert.ToBase64String(outputDataBytes) : Encoding.UTF8.GetString(outputDataBytes.Where(_ => _ != 0).ToArray());
         }
     }
 }
