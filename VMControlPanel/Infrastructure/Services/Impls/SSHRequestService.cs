@@ -51,6 +51,7 @@ namespace Infrastructure.Services.Impls
             {
                 { TerminalModes.ECHO, 53 }
             };
+
             ShellStream shellStream = Client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, modes);
             var outputString = string.Empty;
 
@@ -58,6 +59,8 @@ namespace Infrastructure.Services.Impls
             shellStream.WriteLine(command);
             outputString += $"\n{shellStream.Expect(new Regex(@"([$#>:])"))}";
             shellStream.WriteLine(password);
+            outputString += shellStream.Expect(new Regex(@"([$#>:])"));
+            shellStream.WriteLine("Y");
             outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
 
             return outputString;

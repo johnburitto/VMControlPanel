@@ -3,7 +3,7 @@
 - [x] <mark style="background: #BBFABBA6;">Створити сервіс для SSH підключення до віртуальної машини ✅ 2024-03-22</mark>
 - [x] <mark style="background: #BBFABBA6;">Додати в сервіс метод для виконання "не sudo" команд ✅ 2024-03-22</mark>
 - [x] <mark style="background: #BBFABBA6;">Додати в сервіс метод для виконання "sudo" команд ✅ 2024-03-22</mark>
-- [ ] Створити контролер для SSHRequestService
+- [x] <mark style="background: #BBFABBA6;">Створити контролер для SSHRequestService ✅ 2024-03-22</mark>
 - [ ] Створити команду для виконання команд через SSH
 
 ## Створити команду для вибору віртуальної машини, із якою будемо взаємодіяти
@@ -130,6 +130,7 @@ private async Task<string> ExecuteSudoCommandAsync(string command, string passwo
     {
         { TerminalModes.ECHO, 53 }
     };
+
     ShellStream shellStream = Client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, modes);
     var outputString = string.Empty;
 
@@ -137,8 +138,33 @@ private async Task<string> ExecuteSudoCommandAsync(string command, string passwo
     shellStream.WriteLine(command);
     outputString += $"\n{shellStream.Expect(new Regex(@"([$#>:])"))}";
     shellStream.WriteLine(password);
+    outputString += shellStream.Expect(new Regex(@"([$#>:])"));
+    shellStream.WriteLine("Y");
     outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
 
     return outputString;
+}
+```
+## Створити контролер для SSHRequestService
+Контролер для SSHRequestService має наступний вигляд:
+```CSharp
+[Route("api/[controller]")]
+[ApiController]
+public class SSHRequestController : ControllerBase
+{
+    private readonly ISSHRequestService _service;
+
+    public SSHRequestController(ISSHRequestService service)
+    {
+        _service = service;
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<string>> ExecuteCommandAsync(SSHRequestDto dto, CommandType type)
+    {
+        return Ok(await _service.ExecuteCommandAsync(dto.VirtualMachine!, dto.Command!, type));
+    }
 }
 ```

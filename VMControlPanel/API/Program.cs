@@ -30,6 +30,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Dependencies
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<IVirtualMachineService, VirtualMachineService>();
+builder.Services.AddScoped<ISSHRequestService, SSHRequestService>();
 
 var app = builder.Build();
 
