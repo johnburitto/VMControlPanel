@@ -16,7 +16,8 @@ namespace Bot.Base
                 new AuthCommand(),
                 new RegisterCommand(),
                 new AddVirtualMachineCommand(),
-                new ChooseVirtualMachineCommand()
+                new ChooseVirtualMachineCommand(),
+                new ExecuteSSHCommandsCommand()
             ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)

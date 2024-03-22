@@ -4,7 +4,7 @@
 - [x] <mark style="background: #BBFABBA6;">Додати в сервіс метод для виконання "не sudo" команд ✅ 2024-03-22</mark>
 - [x] <mark style="background: #BBFABBA6;">Додати в сервіс метод для виконання "sudo" команд ✅ 2024-03-22</mark>
 - [x] <mark style="background: #BBFABBA6;">Створити контролер для SSHRequestService ✅ 2024-03-22</mark>
-- [ ] Створити команду для виконання команд через SSH
+- [x] <mark style="background: #BBFABBA6;">Створити команду для виконання команд через SSH ✅ 2024-03-22</mark>
 
 ## Створити команду для вибору віртуальної машини, із якою будемо взаємодіяти
 Логіка команди вибору віртуальної машини для взаємодії із нею:
@@ -116,7 +116,9 @@ private async Task<string> ExecuteNotSudoCommandAsync(string command)
 {
     await Client!.ConnectAsync(CancellationTokenSource.Token);
 
-    return Client.RunCommand(command).Result;
+    var result = Client.RunCommand(command).Result;
+
+    return result.IsNullOrEmpty() ? "Команда нічого не повернула" : result;
 }
 ```
 ## Додати в сервіс метод для виконання "sudo" команд
@@ -166,5 +168,73 @@ public class SSHRequestController : ControllerBase
     {
         return Ok(await _service.ExecuteCommandAsync(dto.VirtualMachine!, dto.Command!, type));
     }
+}
+```
+## Створити команду для виконання команд через SSH
+Команда для виконання команд через SSH може бути викликана як і за допомогою ключового слова "/execute", так і за допомогою клавіатури, яка буде маніпулювати станом користувача. Це просто два різни способи, щоб отримати від користувача текст команди, який потрібно виконати. Потім команда та дані про віртуальну машину, на якій буде виконуватися команда, пакуються в об'єкт класу SSHRequestDto та за допомогою методу ExecuteSSHCommandAsync класу RequestClient надсилаються на ендпоїнт
+```CSharp
+public class ExecuteSSHCommandsCommand : MessageCommand
+{
+    public override List<string>? Names { get; set; } = [ "/execute", "Виконати команду", "input_command" ];
+
+    public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
+    {
+        if (message!.Text!.Contains("/execute"))
+        {
+            var dto = new SSHRequestDto
+            {
+                VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                Command = message.Text.Replace("/execute ", "")
+            };
+            var response = await RequestClient.ExecuteSSHCommandAsync(dto);
+
+            await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2);
+        }
+        else
+        {
+            var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
+
+            if (userState == null)
+            {
+                userState = new State
+                {
+                    StateName = "input_command",
+                    StateObject = null
+                };
+
+                await StateMachine.SaveStateAsync(message.Chat.Id, userState);
+                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть команду:", parseMode: ParseMode.Html);
+            }
+            else if (userState.StateName == "input_command")
+            {
+                var dto = new SSHRequestDto
+                {
+                    VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    Command = message.Text
+                };
+                var response = await RequestClient.ExecuteSSHCommandAsync(dto);
+
+                await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2);
+            }
+        }
+    }
+}
+```
+```CSharp
+public class SSHRequestDto
+{
+    public VirtualMachine? VirtualMachine { get; set; }
+    public string? Command { get; set; }
+}
+```
+```CSharp
+public static async Task<string> ExecuteSSHCommandAsync(SSHRequestDto dto)
+{
+    var dtoString = JsonConvert.SerializeObject(dto);
+    var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+    var commandType = dto.Command!.Contains("sudo") ? CommandType.Sudo : CommandType.NotSudo;
+    var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest?type={commandType}", content);
+
+    return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
 }
 ```

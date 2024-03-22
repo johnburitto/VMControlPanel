@@ -1,8 +1,10 @@
 ﻿using Bot.StateMachineBase;
 using Core.Dtos;
 using Core.Entities;
+using Infrastructure.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using UserInfrastructure.Service.Interfaces;
 
 namespace Bot.HttpInfrastructure
@@ -84,6 +86,13 @@ namespace Bot.HttpInfrastructure
             await Client!.PostAsync($"https://localhost:8081/api/Cache/{key}?value={value}&expTimeInHours={expTimeInHours}", null);
         }
 
+        public static async Task<T?> GetCachedAsync<T>(string key)
+        {
+            var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{key}");
+
+            return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+        }
+
         public static async Task<bool> CheckIfHasCacheAsync(string key)
         {
             var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{key}");
@@ -126,6 +135,16 @@ namespace Bot.HttpInfrastructure
             var response = await Client!.PostAsync($"https://localhost:8081/api/VirtualMachine", content);
 
             return JsonConvert.DeserializeObject<VirtualMachine>(await response.Content.ReadAsStringAsync());
+        }
+
+        public static async Task<string> ExecuteSSHCommandAsync(SSHRequestDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var commandType = dto.Command!.Contains("sudo") ? CommandType.Sudo : CommandType.NotSudo;
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest?type={commandType}", content);
+
+            return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }
     }
 }

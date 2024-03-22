@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Infrastructure.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 using System.Text.RegularExpressions;
@@ -40,7 +41,9 @@ namespace Infrastructure.Services.Impls
         {
             await Client!.ConnectAsync(CancellationTokenSource.Token);
 
-            return Client.RunCommand(command).Result;
+            var result = Client.RunCommand(command).Result;
+
+            return result.IsNullOrEmpty() ? "Команда нічого не повернула" : result;
         }
 
         private async Task<string> ExecuteSudoCommandAsync(string command, string password)
