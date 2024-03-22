@@ -47,7 +47,7 @@ namespace API.Controllers
         [HttpGet("{userId}/all")]
         [ProducesResponseType(typeof(List<VirtualMachine>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<VirtualMachine>> GetVirtualMachineByUserIdAndVMNameAsync(string userId)
+        public async Task<ActionResult<List<VirtualMachine>>> GetUserVirtualMachines(string userId)
         {
             return Ok(await _service.GetUserVirtualMachines(userId));
         }

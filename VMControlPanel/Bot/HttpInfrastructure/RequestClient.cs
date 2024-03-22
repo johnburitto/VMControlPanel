@@ -100,6 +100,24 @@ namespace Bot.HttpInfrastructure
 
             return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync()) ?? [];
         }
+        
+        public static async Task<List<string>> GetUserVirtualMachinesNamesAsync(long telegramId)
+        {
+            var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
+            var userId = await response.Content.ReadAsStringAsync();
+            var virtualMachinesResponse = await Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/all");
+
+            return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync())?.Select(_ => _.Name ?? "").ToList() ?? [];
+        }
+
+        public static async Task<VirtualMachine?> GetVirtualMachineByUserIdAndVMNameAsync(long telegramId, string? name)
+        {
+            var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
+            var userId = await response.Content.ReadAsStringAsync();
+            var virtualMachinesResponse = await Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/{name}");
+
+            return JsonConvert.DeserializeObject<VirtualMachine>(await virtualMachinesResponse.Content.ReadAsStringAsync());
+        }
 
         public static async Task<VirtualMachine?> AddVirtualMachineAsync(VirtualMachineDto dto)
         {
