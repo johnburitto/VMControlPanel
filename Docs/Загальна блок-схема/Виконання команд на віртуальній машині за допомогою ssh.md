@@ -1,7 +1,7 @@
 <mark style="background: #FFF3A3A6;">ToDo:</mark>
 - [x] <mark style="background: #BBFABBA6;">Створити команду для вибору віртуальної машини, із якою будемо взаємодіяти ✅ 2024-03-22</mark>
 - [x] <mark style="background: #BBFABBA6;">Створити сервіс для SSH підключення до віртуальної машини ✅ 2024-03-22</mark>
-- [ ] Додати в сервіс метод для виконання "не sudo" команд
+- [x] <mark style="background: #BBFABBA6;">Додати в сервіс метод для виконання "не sudo" команд ✅ 2024-03-22</mark>
 - [ ] Додати в сервіс метод для виконання "sudo" команд
 - [ ] Створити контролер для SSHRequestService
 - [ ] Створити команду для виконання команд через SSH
@@ -109,3 +109,13 @@ public class SSHRequestService : ISSHRequestService
 ```
 
 Як видно із коду вище метод ExecuteCommandAsync приймає параметрами об'єкт віртуальної машини, команду та тип команди, який може бути "sudo" або "не sudo". Із об'єкт віртуальної машини цей метод отримує всю необхідну інформацію для під'єднання, а потім  базуючись на типі команди виконує її
+## Додати в сервіс метод для виконання "не sudo" команд
+Метод, який відповідає за виконання "не sudo" команд, під'єднується до віртуальної машини, а потім виконує команду та повертає її результат:
+```CSharp
+private async Task<string> ExecuteNotSudoCommandAsync(string command)
+{
+    await Client!.ConnectAsync(CancellationTokenSource.Token);
+
+    return Client.RunCommand(command).Result;
+}
+```

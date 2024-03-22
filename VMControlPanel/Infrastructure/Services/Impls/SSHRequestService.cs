@@ -7,8 +7,9 @@ namespace Infrastructure.Services.Impls
     public class SSHRequestService : ISSHRequestService
     {
         public SshClient? Client { get; private set; }
+        public CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
 
-        public Task<string> ExecuteCommandAsync(VirtualMachine virtualMachine, string command, CommandType type)
+        public async Task<string> ExecuteCommandAsync(VirtualMachine virtualMachine, string command, CommandType type)
         {
             var method = new PasswordAuthenticationMethod(virtualMachine.UserName, virtualMachine.Password);
             var connection = new ConnectionInfo(virtualMachine.Host, virtualMachine.Port, virtualMachine.UserName, method);
@@ -19,18 +20,25 @@ namespace Infrastructure.Services.Impls
                 {
                     case CommandType.NotSudo:
                         {
-                            return Task.FromResult(string.Empty);
+                            return await ExecuteNotSudoCommandAsync(command);
                         }
                     case CommandType.Sudo:
                         {
-                            return Task.FromResult(string.Empty);
+                            return string.Empty;
                         }
                     default:
                         {
-                            return Task.FromResult(string.Empty);
+                            return string.Empty;
                         }
                 }
             }
+        }
+
+        private async Task<string> ExecuteNotSudoCommandAsync(string command)
+        {
+            await Client!.ConnectAsync(CancellationTokenSource.Token);
+
+            return Client.RunCommand(command).Result;
         }
     }
 }
