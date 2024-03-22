@@ -1,6 +1,8 @@
 ﻿using Core.Entities;
 using Infrastructure.Services.Interfaces;
 using Renci.SshNet;
+using Renci.SshNet.Common;
+using System.Text.RegularExpressions;
 
 namespace Infrastructure.Services.Impls
 {
@@ -24,11 +26,11 @@ namespace Infrastructure.Services.Impls
                         }
                     case CommandType.Sudo:
                         {
-                            return string.Empty;
+                            return await ExecuteSudoCommandAsync(command, virtualMachine.Password!);
                         }
                     default:
                         {
-                            return string.Empty;
+                            return "Невірний тип команди";
                         }
                 }
             }
@@ -39,6 +41,26 @@ namespace Infrastructure.Services.Impls
             await Client!.ConnectAsync(CancellationTokenSource.Token);
 
             return Client.RunCommand(command).Result;
+        }
+
+        private async Task<string> ExecuteSudoCommandAsync(string command, string password)
+        {
+            await Client!.ConnectAsync(CancellationTokenSource.Token);
+
+            IDictionary<TerminalModes, uint> modes = new Dictionary<TerminalModes, uint>
+            {
+                { TerminalModes.ECHO, 53 }
+            };
+            ShellStream shellStream = Client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, modes);
+            var outputString = string.Empty;
+
+            outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
+            shellStream.WriteLine(command);
+            outputString += $"\n{shellStream.Expect(new Regex(@"([$#>:])"))}";
+            shellStream.WriteLine(password);
+            outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
+
+            return outputString;
         }
     }
 }

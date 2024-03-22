@@ -119,3 +119,26 @@ private async Task<string> ExecuteNotSudoCommandAsync(string command)
     return Client.RunCommand(command).Result;
 }
 ```
+## Додати в сервіс метод для виконання "sudo" команд
+Метод, який відповідає за виконання "sudo" команд, під'єднується до віртуальної машини, створює ShellStream, це необхідно, щоб очікувати запиту на введення паролю, що є стандартною процедурою для "sudo" команд. В середині цього потому ми створюємо сценарій виконання команди, записуючи всі виводи віртуальної машини. Вкінці метод повертає ці виводи:
+```CSharp
+private async Task<string> ExecuteSudoCommandAsync(string command, string password)
+{
+    await Client!.ConnectAsync(CancellationTokenSource.Token);
+
+    IDictionary<TerminalModes, uint> modes = new Dictionary<TerminalModes, uint>
+    {
+        { TerminalModes.ECHO, 53 }
+    };
+    ShellStream shellStream = Client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, modes);
+    var outputString = string.Empty;
+
+    outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
+    shellStream.WriteLine(command);
+    outputString += $"\n{shellStream.Expect(new Regex(@"([$#>:])"))}";
+    shellStream.WriteLine(password);
+    outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
+
+    return outputString;
+}
+```
