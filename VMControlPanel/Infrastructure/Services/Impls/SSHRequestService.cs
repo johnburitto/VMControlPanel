@@ -1,6 +1,5 @@
 ﻿using Core.Entities;
 using Infrastructure.Services.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 using System.Text.RegularExpressions;
@@ -9,64 +8,117 @@ namespace Infrastructure.Services.Impls
 {
     public class SSHRequestService : ISSHRequestService
     {
-        public SshClient? Client { get; private set; }
+        private Dictionary<string, SshClient> _clients = new Dictionary<string, SshClient>();
+        private Dictionary<string, ShellStream> _streams = new Dictionary<string, ShellStream>();
+        private Dictionary<TerminalModes, uint> _modes = new Dictionary<TerminalModes, uint> { { TerminalModes.ECHO, 53 } };
+
+        private string _passwordRegex = @"password for [\w\d]+[$#>:]";
+        private string _yesOrNoRegex = @"\[Y/n\]";
+        private string _endOfCommandRegex = @":~\$";
+        private string _someInputRegex = @"[$>]";
+
         public CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
 
-        public async Task<string> ExecuteCommandAsync(VirtualMachine virtualMachine, string command, CommandType type)
+        public Task<string> ExecuteCommandAsync(VirtualMachine virtualMachine, string command, string userId)
         {
-            var method = new PasswordAuthenticationMethod(virtualMachine.UserName, virtualMachine.Password);
-            var connection = new ConnectionInfo(virtualMachine.Host, virtualMachine.Port, virtualMachine.UserName, method);
+            var client = GetClient(virtualMachine, userId);
+            var stream = GetStream(client, userId, out string? log);
 
-            using (Client = new SshClient(connection))
+            return Task.FromResult($"{log}{ExecuteCommand(stream!, command)}");
+        }
+
+        private SshClient? GetClient(VirtualMachine virtualMachine, string userId)
+        {
+            if (_clients.TryGetValue(userId, out SshClient? client))
             {
-                switch (type)
+                return client;
+            }
+            else
+            {
+                var method = new PasswordAuthenticationMethod(virtualMachine.UserName, virtualMachine.Password);
+                var connection = new ConnectionInfo(virtualMachine.Host, virtualMachine.Port, virtualMachine.UserName, method);
+
+                client = new SshClient(connection);
+                _clients.Add(userId, client);
+
+                return client;
+            }
+        }
+
+        private ShellStream? GetStream(SshClient? client, string userId, out string? log)
+        {
+            if (_streams.TryGetValue(userId, out ShellStream? stream))
+            {
+                log = "";
+
+                return stream;
+            }
+            else
+            {
+                client!.Connect();
+
+                stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, _modes);
+                _streams.Add(userId, stream);
+
+                EndOfCommand(stream, out log);
+
+                return stream;
+            }
+        }
+
+        private string ExecuteCommand(ShellStream stream, string command)
+        {
+            string? log = null;
+
+            stream.WriteLine(command);
+
+            while (true)
+            {
+                if (EndOfCommand(stream, out log))
                 {
-                    case CommandType.NotSudo:
-                        {
-                            return await ExecuteNotSudoCommandAsync(command);
-                        }
-                    case CommandType.Sudo:
-                        {
-                            return await ExecuteSudoCommandAsync(command, virtualMachine.Password!);
-                        }
-                    default:
-                        {
-                            return "Невірний тип команди";
-                        }
+                    return log?.Replace(command, "") ?? "";
+                }
+                else if (PasswordInput(stream, out log))
+                {
+                    return log?.Replace(command, "") ?? "";
+                }
+                else if (YesOrNo(stream, out log))
+                {
+                    return log?.Replace(command, "") ?? "";
+                }
+                else if (SomeInput(stream, out log))
+                {
+                    return log?.Replace(command, "") ?? "";
                 }
             }
         }
 
-        private async Task<string> ExecuteNotSudoCommandAsync(string command)
+        private bool EndOfCommand(ShellStream stream, out string? log)
         {
-            await Client!.ConnectAsync(CancellationTokenSource.Token);
+            log = stream.Expect(new Regex(_endOfCommandRegex), TimeSpan.FromSeconds(1));
 
-            var result = Client.RunCommand(command).Result;
-
-            return result.IsNullOrEmpty() ? "Команда нічого не повернула" : result;
+            return log != null;
         }
 
-        private async Task<string> ExecuteSudoCommandAsync(string command, string password)
+        private bool PasswordInput(ShellStream stream, out string? log)
         {
-            await Client!.ConnectAsync(CancellationTokenSource.Token);
+            log = stream.Expect(new Regex(_passwordRegex), TimeSpan.FromSeconds(1));
 
-            IDictionary<TerminalModes, uint> modes = new Dictionary<TerminalModes, uint>
-            {
-                { TerminalModes.ECHO, 53 }
-            };
+            return log != null;
+        }
 
-            ShellStream shellStream = Client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, modes);
-            var outputString = string.Empty;
+        private bool YesOrNo(ShellStream stream, out string? log)
+        {
+            log = stream.Expect(new Regex(_yesOrNoRegex), TimeSpan.FromSeconds(1));
 
-            outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
-            shellStream.WriteLine(command);
-            outputString += $"\n{shellStream.Expect(new Regex(@"([$#>:])"))}";
-            shellStream.WriteLine(password);
-            outputString += shellStream.Expect(new Regex(@"([$#>:])"));
-            shellStream.WriteLine("Y");
-            outputString += $"\n{shellStream.Expect(new Regex(@"[$>]"))}";
+            return log != null;
+        }
 
-            return outputString;
+        private bool SomeInput(ShellStream stream, out string? log)
+        {
+            log = stream.Expect(new Regex(_someInputRegex), TimeSpan.FromSeconds(1));
+
+            return log != null;
         }
     }
 }

@@ -141,8 +141,7 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
-            var commandType = dto.Command!.Contains("sudo") ? CommandType.Sudo : CommandType.NotSudo;
-            var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest?type={commandType}", content);
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }

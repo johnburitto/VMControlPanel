@@ -5,6 +5,7 @@
 - [x] <mark style="background: #BBFABBA6;">Додати в сервіс метод для виконання "sudo" команд ✅ 2024-03-22</mark>
 - [x] <mark style="background: #BBFABBA6;">Створити контролер для SSHRequestService ✅ 2024-03-22</mark>
 - [x] <mark style="background: #BBFABBA6;">Створити команду для виконання команд через SSH ✅ 2024-03-22</mark>
+- [ ] ⚠ Зміна логіки виконання команд
 
 ## Створити команду для вибору віртуальної машини, із якою будемо взаємодіяти
 Логіка команди вибору віртуальної машини для взаємодії із нею:
@@ -236,5 +237,177 @@ public static async Task<string> ExecuteSSHCommandAsync(SSHRequestDto dto)
     var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest?type={commandType}", content);
 
     return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
+}
+```
+## Зміна логіки виконання команд
+Як показала практика, то поділ команд на "sudo", та не "sudo" виявилась взагалі не гнучкою та не покривала увесь спектр команд, що могли б бути виконані. Тому було вирішено скористатися ShellStream, це функціонал, який надає бібліотека Renci.SshNet. Особливість ShellStream в тому, що вона створює прямий неперервний потік обміну інформацією між клієнтом та сервером. Ми можемо зчитувати відповіді сервера, надсилати команди, очікувати певну відповідь сервера, яка визначається регулярним виразом та може бути обмежена у часі. Важливою зміною стало те, що тепер у сервіс передається не тип команди, а ідентифікатор користувача, який буде використаний як ключ для словників ssh-клієнтів та потоків. Їх нас потрібно зберігати для збереження неперервності спілкування
+
+Після перетворень SSHRequestService має наступний вигляд:
+```CSharp
+public class SSHRequestService : ISSHRequestService
+{
+    private Dictionary<string, SshClient> _clients = new Dictionary<string, SshClient>();
+    private Dictionary<string, ShellStream> _streams = new Dictionary<string, ShellStream>();
+    private Dictionary<TerminalModes, uint> _modes = new Dictionary<TerminalModes, uint> { { TerminalModes.ECHO, 53 } };
+
+    private string _passwordRegex = @"password for [\w\d]+[$#>:]";
+    private string _yesOrNoRegex = @"\[Y/n\]";
+    private string _endOfCommandRegex = @":~\$";
+    private string _someInputRegex = @"[$>]";
+
+    public CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+
+    public Task<string> ExecuteCommandAsync(VirtualMachine virtualMachine, string command, string userId)
+    {
+        var client = GetClient(virtualMachine, userId);
+        var stream = GetStream(client, userId, out string? log);
+
+        return Task.FromResult($"{log}{ExecuteCommand(stream!, command)}");
+    }
+
+    private SshClient? GetClient(VirtualMachine virtualMachine, string userId)
+    {
+        if (_clients.TryGetValue(userId, out SshClient? client))
+        {
+            return client;
+        }
+        else
+        {
+            var method = new PasswordAuthenticationMethod(virtualMachine.UserName, virtualMachine.Password);
+            var connection = new ConnectionInfo(virtualMachine.Host, virtualMachine.Port, virtualMachine.UserName, method);
+
+            client = new SshClient(connection);
+            _clients.Add(userId, client);
+
+            return client;
+        }
+    }
+
+    private ShellStream? GetStream(SshClient? client, string userId, out string? log)
+    {
+        if (_streams.TryGetValue(userId, out ShellStream? stream))
+        {
+            log = "";
+
+            return stream;
+        }
+        else
+        {
+            client!.Connect();
+
+            stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, _modes);
+            _streams.Add(userId, stream);
+
+            EndOfCommand(stream, out log);
+
+            return stream;
+        }
+    }
+
+    private string ExecuteCommand(ShellStream stream, string command)
+    {
+        string? log = null;
+
+        stream.WriteLine(command);
+
+        while (true)
+        {
+            if (EndOfCommand(stream, out log))
+            {
+                return log?.Replace(command, "") ?? "";
+            }
+            else if (PasswordInput(stream, out log))
+            {
+                return log?.Replace(command, "") ?? "";
+            }
+            else if (YesOrNo(stream, out log))
+            {
+                return log?.Replace(command, "") ?? "";
+            }
+            else if (SomeInput(stream, out log))
+            {
+                return log?.Replace(command, "") ?? "";
+            }
+        }
+    }
+
+    private bool EndOfCommand(ShellStream stream, out string? log)
+    {
+        log = stream.Expect(new Regex(_endOfCommandRegex), TimeSpan.FromSeconds(1));
+
+        return log != null;
+    }
+
+    private bool PasswordInput(ShellStream stream, out string? log)
+    {
+        log = stream.Expect(new Regex(_passwordRegex), TimeSpan.FromSeconds(1));
+
+        return log != null;
+    }
+
+    private bool YesOrNo(ShellStream stream, out string? log)
+    {
+        log = stream.Expect(new Regex(_yesOrNoRegex), TimeSpan.FromSeconds(1));
+
+        return log != null;
+    }
+
+    private bool SomeInput(ShellStream stream, out string? log)
+    {
+        log = stream.Expect(new Regex(_someInputRegex), TimeSpan.FromSeconds(1));
+
+        return log != null;
+    }
+}
+```
+
+Також змін зазнала команда виконання команд за допомогою Ssh:
+```CSharp
+public class ExecuteSSHCommandsCommand : MessageCommand
+{
+    private readonly ReplyKeyboardMarkup _keyboard = new([
+        new KeyboardButton[] { "❌ Відмінити" }
+    ])
+    {
+        ResizeKeyboard = true
+    };
+
+    public override List<string>? Names { get; set; } = [ "Виконувати команди", "input_command", ];
+
+    public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
+    {
+        if (message!.Text!.Contains('❌'))
+        {
+            await StateMachine.RemoveStateAsync(message!.Chat.Id);
+
+            return;
+        }
+
+        var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
+
+        if (userState == null)
+        {
+            userState = new State
+            {
+                StateName = "input_command",
+                StateObject = null
+            };
+
+            await StateMachine.SaveStateAsync(message.Chat.Id, userState);
+            await client.SendTextMessageAsync(message.Chat.Id, $"Введіть команду:", parseMode: ParseMode.Html);
+        }
+        else if (userState.StateName == "input_command")
+        {
+            var dto = new SSHRequestDto
+            {
+                VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                Command = message.Text,
+                UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync()
+            };
+            var response = await RequestClient.ExecuteSSHCommandAsync(dto);
+
+            await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: _keyboard);
+        }
+    }
 }
 ```

@@ -6,5 +6,6 @@ namespace Core.Dtos
     {
         public VirtualMachine? VirtualMachine { get; set; }
         public string? Command { get; set; }
+        public string? UserId { get; set; }
     }
 }

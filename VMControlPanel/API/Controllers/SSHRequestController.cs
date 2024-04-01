@@ -18,9 +18,9 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> ExecuteCommandAsync(SSHRequestDto dto, CommandType type)
+        public async Task<ActionResult<string>> ExecuteCommandAsync(SSHRequestDto dto)
         {
-            return Ok(await _service.ExecuteCommandAsync(dto.VirtualMachine!, dto.Command!, type));
+            return Ok(await _service.ExecuteCommandAsync(dto.VirtualMachine!, dto.Command!, dto.UserId!));
         }
     }
 }
