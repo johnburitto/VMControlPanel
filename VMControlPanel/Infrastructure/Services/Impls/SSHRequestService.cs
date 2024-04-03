@@ -24,10 +24,10 @@ namespace Infrastructure.Services.Impls
             var client = GetClient(virtualMachine, userId);
             var stream = GetStream(client, userId, out string? log);
 
-            return Task.FromResult($"{log}{ExecuteCommand(stream!, command)}");
+            return Task.FromResult($"{log}{ExecuteCommand(stream, command)}");
         }
 
-        private SshClient? GetClient(VirtualMachine virtualMachine, string userId)
+        private SshClient GetClient(VirtualMachine virtualMachine, string userId)
         {
             if (_clients.TryGetValue(userId, out SshClient? client))
             {
@@ -45,7 +45,7 @@ namespace Infrastructure.Services.Impls
             }
         }
 
-        private ShellStream? GetStream(SshClient? client, string userId, out string? log)
+        private ShellStream GetStream(SshClient? client, string userId, out string? log)
         {
             if (_streams.TryGetValue(userId, out ShellStream? stream))
             {
