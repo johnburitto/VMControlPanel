@@ -32,6 +32,27 @@ namespace Infrastructure.Services.Impls
             }
         }
 
+        public async Task<string> DeleteDirectoryAsync(SFTPRequestDto dto)
+        {
+            var client = GetClient(dto.VirtualMachine!, dto.UserId!);
+
+            try
+            {
+                await client.ConnectAsync(CancellationTokenSource.Token);
+                client.DeleteDirectory(dto.Data);
+
+                return $"Directory successfully deleted\nTo go in it write command \"cd ${dto.Data}\"";
+            }
+            catch (Exception e)
+            {
+                return $"Some error has occurred during creating:\n{e.Message}";
+            }
+            finally
+            {
+                client.Disconnect();
+            }
+        }
+
         private SftpClient GetClient (VirtualMachine virtualMachine, string userId)
         {
             if (_clients.TryGetValue(userId, out SftpClient? client))
