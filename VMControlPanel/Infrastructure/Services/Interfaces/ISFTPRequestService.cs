@@ -6,5 +6,6 @@ namespace Infrastructure.Services.Interfaces
     {
         Task<string> CreateDirectoryAsync(SFTPRequestDto dto);
         Task<string> DeleteDirectoryAsync(SFTPRequestDto dto);
+        Task<FileDto> GetFileAsync(SFTPRequestDto dto);
     }
 }
