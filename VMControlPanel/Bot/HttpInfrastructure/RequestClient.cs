@@ -145,5 +145,23 @@ namespace Bot.HttpInfrastructure
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }
+
+        public static async Task<string> CreateDirectoryAsync(SFTPRequestDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/directory/create", content);
+
+            return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
+        }
+
+        public static async Task<string> DeleteDirectoryAsync(SFTPRequestDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/directory/delete", content);
+
+            return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
+        }
     }
 }

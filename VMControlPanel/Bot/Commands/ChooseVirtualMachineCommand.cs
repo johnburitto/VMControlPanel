@@ -11,7 +11,8 @@ namespace Bot.Commands
     public class ChooseVirtualMachineCommand : MessageCommand
     {
         private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "Виконувати команди" }
+            new KeyboardButton[] { "Виконувати команди" },
+            new KeyboardButton[] { "Створити директорію", "Видалити директорію" }
         ])
         {
             ResizeKeyboard = true
