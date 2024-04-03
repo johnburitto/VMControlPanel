@@ -68,7 +68,7 @@ namespace Infrastructure.Services.Impls
                 {
                     FileStream = stream,
                     FileName = dto.Data,
-                    Message = $"File {dto.Data} successfully uploaded"
+                    Message = $"File {dto.Data} successfully downloaded"
                 };
             }
             catch (Exception e)
@@ -76,8 +76,31 @@ namespace Infrastructure.Services.Impls
                 return new()
                 {
                     FileName = dto.Data,
-                    Message = $"Some error has occurred during uploading file:\n{e.Message}"
+                    Message = $"Some error has occurred during downloading file:\n{e.Message}"
                 };
+            }
+            finally
+            {
+                client.Disconnect();
+            }
+        }
+
+        public async Task<string> UploadFileAsync(SFTPRequestDto dto)
+        {
+            var client = GetClient(dto.VirtualMachine!, dto.UserId!);
+
+            try
+            {
+                Stream stream = Stream.Null;
+
+                await client.ConnectAsync(CancellationTokenSource.Token);
+                client.UploadFile(stream, dto.Data, true);
+
+                return $"File {dto.Data} successfully uploaded";
+            }
+            catch (Exception e)
+            {
+                return $"Some error has occurred during uploading file:\n{e.Message}";
             }
             finally
             {
