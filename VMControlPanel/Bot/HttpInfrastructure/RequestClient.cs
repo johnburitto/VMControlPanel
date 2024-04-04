@@ -163,5 +163,14 @@ namespace Bot.HttpInfrastructure
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }
+
+        public static async Task<FileDto?> GetFileFromVirtualMachineAsync(SFTPRequestDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/file/get", content);
+
+            return JsonConvert.DeserializeObject<FileDto>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

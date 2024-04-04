@@ -19,7 +19,8 @@ namespace Bot.Base
                 new ChooseVirtualMachineCommand(),
                 new ExecuteSSHCommandsCommand(),
                 new CreateDirectoryCommand(),
-                new DeleteDirectoryCommand()
+                new DeleteDirectoryCommand(),
+                new GetFileFromVirtualMachineCommand()
             ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)

@@ -1,19 +1,26 @@
-﻿using Infrastructure.Services.Interfaces;
+﻿using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Services.Impls
 {
     public static class FileManager
     {
-        public static void CreateDirectory(string path)
+        public static string FileDirectory => $"{Directory.GetCurrentDirectory()}/Files";
+
+        public static void CreateDirectory()
         {
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(FileDirectory))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(FileDirectory);
             }
         }
 
         public static void DeleteFile(string path)
         {
+            if (path.IsNullOrEmpty())
+            {
+                return;
+            }
+
             File.Delete(path);
         }
 

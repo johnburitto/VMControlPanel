@@ -8,7 +8,6 @@ namespace Infrastructure.Services.Impls
     public class SFTPRequestService : ISFTPRequestService
     {
         private Dictionary<string, SftpClient> _clients = new Dictionary<string, SftpClient>();
-        private const string FILE_DIRECTORY = "Files";
 
         public CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
 
@@ -60,16 +59,16 @@ namespace Infrastructure.Services.Impls
 
             try
             {
-                using (var stream = File.Create($"{FILE_DIRECTORY}/{dto.Data!}"))
+                using (var stream = File.Create($"{FileManager.FileDirectory}/{dto.Data!}"))
                 {
-                    FileManager.CreateDirectory(FILE_DIRECTORY);
+                    FileManager.CreateDirectory();
                     await client.ConnectAsync(CancellationTokenSource.Token);
                     client.DownloadFile(dto.Data, stream);
                 }
 
                 return new()
                 {
-                    FilePath = $"{FILE_DIRECTORY}/{dto.Data!}",
+                    FilePath = $"{FileManager.FileDirectory}/{dto.Data!}",
                     Message = $"File {dto.Data} successfully downloaded",
                     IsUploaded = true
                 };

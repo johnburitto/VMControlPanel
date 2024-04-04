@@ -12,7 +12,8 @@ namespace Bot.Commands
     {
         private readonly ReplyKeyboardMarkup _keyboard = new([
             new KeyboardButton[] { "Виконувати команди" },
-            new KeyboardButton[] { "Створити директорію", "Видалити директорію" }
+            new KeyboardButton[] { "Створити директорію", "Видалити директорію" },
+            new KeyboardButton[] { "Завантажити файл" }
         ])
         {
             ResizeKeyboard = true
