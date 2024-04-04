@@ -1,7 +1,6 @@
 ﻿using Bot.StateMachineBase;
 using Core.Dtos;
 using Core.Entities;
-using Infrastructure.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -171,6 +170,15 @@ namespace Bot.HttpInfrastructure
             var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/file/get", content);
 
             return JsonConvert.DeserializeObject<FileDto>(await response.Content.ReadAsStringAsync());
+        }
+
+        public static async Task<string> UploadFileToVirtualMachine(SFTPRequestDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/file/upload", content);
+
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

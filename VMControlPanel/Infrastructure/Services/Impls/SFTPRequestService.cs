@@ -88,24 +88,27 @@ namespace Infrastructure.Services.Impls
 
         public async Task<string> UploadFileAsync(SFTPRequestDto dto)
         {
-            return string.Empty;
-            //var client = GetClient(dto.VirtualMachine!, dto.UserId!);
+            var client = GetClient(dto.VirtualMachine!, dto.UserId!);
 
-            //try
-            //{
-            //    await client.ConnectAsync(CancellationTokenSource.Token);
-            //    client.UploadFile(dto.File, dto.Data, true);
+            try
+            {
+                await client.ConnectAsync(CancellationTokenSource.Token);
+                
+                using (var fileStream = FileManager.OpenFileAsStream(dto.FilePath!))
+                {
+                    client.UploadFile(fileStream, dto.FilePath!.Split("/").Last(), true);
+                }
 
-            //    return $"File {dto.Data} successfully uploaded";
-            //}
-            //catch (Exception e)
-            //{
-            //    return $"Some error has occurred during uploading file:\n{e.Message}";
-            //}
-            //finally
-            //{
-            //    client.Disconnect();
-            //}
+                return $"File {dto.Data} successfully uploaded";
+            }
+            catch (Exception e)
+            {
+                return $"Some error has occurred during uploading file:\n{e.Message}";
+            }
+            finally
+            {
+                client.Disconnect();
+            }
         }
 
         private SftpClient GetClient (VirtualMachine virtualMachine, string userId)
