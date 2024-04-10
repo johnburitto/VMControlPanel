@@ -1,28 +1,18 @@
-﻿using Azure;
-using Bot.Commands.Base;
+﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
+using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
 using Infrastructure.Services.Impls;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Commands
 {
     public class GetFileFromVirtualMachineCommand : MessageCommand
-    {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "Виконувати команди" },
-            new KeyboardButton[] { "Створити директорію", "Видалити директорію" },
-            new KeyboardButton[] { "Завантажити файл", "Вивантажити файл" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-        
+    {        
         public override List<string>? Names { get; set; } = ["Завантажити файл", "input_download_file_name"];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -38,7 +28,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, "Введіть шлях до файлу:", parseMode: ParseMode.Html);
+                await client.SendTextMessageAsync(message.Chat.Id, "Введіть шлях до файлу:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName == "input_download_file_name")
             {
@@ -61,7 +51,7 @@ namespace Bot.Commands
                 }
                 else
                 {
-                    await client.SendTextMessageAsync(message.Chat.Id, response.Message!, parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                    await client.SendTextMessageAsync(message.Chat.Id, response.Message!, parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
                 }
 
                 FileManager.DeleteFile(response.FilePath!);

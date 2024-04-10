@@ -1,6 +1,7 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
+using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
 using Infrastructure.Services.Impls;
@@ -13,15 +14,6 @@ namespace Bot.Commands
 {
     public class UploadFileToVirtualMachineCommand : MessageCommand
     {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "Виконувати команди" },
-            new KeyboardButton[] { "Створити директорію", "Видалити директорію" },
-            new KeyboardButton[] { "Завантажити файл", "Вивантажити файл" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-
         public override List<string>? Names { get; set; } = [ "Вивантажити файл", "input_upload_file" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -37,13 +29,13 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html);
+                await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName == "input_upload_file")
             {
                 if (message.Document == null)
                 {
-                    await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html);
+                    await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
 
                     return;
                 }
@@ -65,7 +57,7 @@ namespace Bot.Commands
                 };
                 var response = await RequestClient.UploadFileToVirtualMachine(dto);
 
-                await client.SendTextMessageAsync(message.Chat.Id, response, parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, response, parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
                 FileManager.DeleteFile($"{FileManager.FileDirectory}/{message.Document.FileName}");
             }

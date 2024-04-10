@@ -2,25 +2,18 @@
 using Bot.Extensions;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
+using Bot.Utilities;
 using Core.Dtos;
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using UserInfrastructure.Service.Interfaces;
 
 namespace Bot.Commands
 {
     public class AuthCommand : MessageCommand
     {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "❌ Відмінити" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-
         public override List<string>? Names { get; set; } = [ "/auth", "Увійти в акаунт", "input_username", "input_password" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -30,6 +23,7 @@ namespace Bot.Commands
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
+                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.StartKeyboar);
 
                 return;
             }
@@ -43,7 +37,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_username")
             {
@@ -51,7 +45,7 @@ namespace Bot.Commands
                 userState.StateName = "input_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else
             {
@@ -72,7 +66,7 @@ namespace Bot.Commands
                     userState.StateName = "input_username";
 
                     await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                    await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                    await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
                 }
             }
         }

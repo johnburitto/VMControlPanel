@@ -1,24 +1,17 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
+using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Commands
 {
     public class ExecuteSSHCommandsCommand : MessageCommand
     {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "❌ Відмінити" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-
         public override List<string>? Names { get; set; } = [ "Виконувати команди", "input_command", ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -26,6 +19,7 @@ namespace Bot.Commands
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
+                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.VMActionKeyboard);
 
                 return;
             }
@@ -53,7 +47,7 @@ namespace Bot.Commands
                 };
                 var response = await RequestClient.ExecuteSSHCommandAsync(dto);
 
-                await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.CancelKeyboard);
             }
         }
     }

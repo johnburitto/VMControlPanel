@@ -1,25 +1,19 @@
 ﻿using Bot.Commands.Base;
+using Bot.Extensions;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
+using Bot.Utilities;
 using Core.Dtos;
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using UserInfrastructure.Service.Interfaces;
 
 namespace Bot.Commands
 {
     public class RegisterCommand : MessageCommand
     {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "❌ Відмінити" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-
         public override List<string>? Names { get; set; } = [ "/register", "Створити акаунт", "create_username", "create_password", "create_email" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -29,6 +23,7 @@ namespace Bot.Commands
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
+                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.StartKeyboar);
 
                 return;
             }
@@ -42,7 +37,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Придумайте ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Придумайте ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState!.StateName == "create_username")
             {
@@ -50,7 +45,7 @@ namespace Bot.Commands
                 userState.StateName = "create_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Придумайте пароль:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Придумайте пароль:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState!.StateName == "create_password")
             {
@@ -58,7 +53,7 @@ namespace Bot.Commands
                 userState.StateName = "create_email";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть адрес електронної пошти:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть адрес електронної пошти:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else
             {
@@ -69,12 +64,14 @@ namespace Bot.Commands
 
                 if (response == AuthResponse.SuccessesRegister)
                 {
-                    await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно зареєструвалися", parseMode: ParseMode.Html);
+                    var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+
+                    await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно зареєструвалися", parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard());
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
                 else if (response == AuthResponse.AlreadyRegistered)
                 {
-                    await client.SendTextMessageAsync(message!.Chat.Id, "Користувач з даним іменем вже зареєстрований", parseMode: ParseMode.Html);
+                    await client.SendTextMessageAsync(message!.Chat.Id, "Користувач з даним іменем вже зареєстрований", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboar);
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
             }

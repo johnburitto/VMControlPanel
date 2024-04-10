@@ -1,27 +1,17 @@
-﻿using Azure;
-using Bot.Commands.Base;
+﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
+using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Commands
 {
     public class CreateDirectoryCommand : MessageCommand
     {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "Виконувати команди" },
-            new KeyboardButton[] { "Створити директорію", "Видалити директорію" },
-            new KeyboardButton[] { "Завантажити файл", "Вивантажити файл" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-
         public override List<string>? Names { get; set; } = [ "Створити директорію", "input_create_directory_name" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -36,7 +26,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть назву директорії:", parseMode: ParseMode.MarkdownV2, replyMarkup: null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть назву директорії:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName! == "input_create_directory_name")
             {
@@ -50,7 +40,7 @@ namespace Bot.Commands
                 var response = await RequestClient.CreateDirectoryAsync(dto);
 
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
             }
         }
     }

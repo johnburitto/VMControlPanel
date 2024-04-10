@@ -1,29 +1,20 @@
-﻿using Azure.Core;
-using Bot.Commands.Base;
+﻿using Bot.Commands.Base;
 using Bot.Extensions;
 using Bot.HttpInfrastructure;
 using Bot.StateMachineBase;
+using Bot.Utilities;
 using Core.Dtos;
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Commands
 {
     public class AddVirtualMachineCommand : MessageCommand
     {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "❌ Відмінити" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-
         public override List<string>? Names { get; set; } = [ "➕ Додати нову машину", "input_vm_name", "input_vm_username", 
                                                               "input_vm_password", "input_vm_host", "input_vm_port" ];
-
 
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -32,7 +23,10 @@ namespace Bot.Commands
 
             if (message!.Text!.Contains('❌'))
             {
+                var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
+                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: virtualMachines.ToKeyboard());
 
                 return;
             }
@@ -46,7 +40,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_name")
             {
@@ -54,7 +48,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_username";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача на віртуальній машині:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача на віртуальній машині:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_username")
             {
@@ -62,7 +56,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль користувача на віртуальній машині:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль користувача на віртуальній машині:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_password")
             {
@@ -70,7 +64,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_host";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть хоста віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть хоста віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_host")
             {
@@ -78,7 +72,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_port";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть порт віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть порт віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_port")
             {

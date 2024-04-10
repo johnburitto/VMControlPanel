@@ -4,23 +4,14 @@ using Bot.StateMachineBase;
 using Core.Dtos;
 using Core.Entities;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Bot.Utilities;
 
 namespace Bot.Commands
 {
     public class DeleteDirectoryCommand : MessageCommand
     {
-        private readonly ReplyKeyboardMarkup _keyboard = new([
-            new KeyboardButton[] { "Виконувати команди" },
-            new KeyboardButton[] { "Створити директорію", "Видалити директорію" },
-            new KeyboardButton[] { "Завантажити файл", "Вивантажити файл" }
-        ])
-        {
-            ResizeKeyboard = true
-        };
-
         public override List<string>? Names { get; set; } = ["Видалити директорію", "input_delete_directory_name"];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
@@ -35,7 +26,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть назву директорії:", parseMode: ParseMode.MarkdownV2, replyMarkup: null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть назву директорії:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName! == "input_delete_directory_name")
             {
@@ -49,7 +40,7 @@ namespace Bot.Commands
                 var response = await RequestClient.DeleteDirectoryAsync(dto);
 
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: _keyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
             }
         }
     }
