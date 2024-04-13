@@ -21,7 +21,8 @@ namespace Bot.Base
                 new CreateDirectoryCommand(),
                 new DeleteDirectoryCommand(),
                 new GetFileFromVirtualMachineCommand(),
-                new UploadFileToVirtualMachineCommand()
+                new UploadFileToVirtualMachineCommand(),
+                new GetMetricsCommand()
             ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
 import time
+from dtos import cpu_dto
 
 def cpu_times():
     with open('/proc/stat') as stat:
@@ -13,15 +14,7 @@ def cpu_percentage(sample_duration=1):
     total = sum(deltas)
     percents = [100 - (100 * (float(total - x)/ total)) for x in deltas]
 
-    return {
-        'user': percents[0],
-        'nice': percents[1],
-        'system': percents[2],
-        'idle': percents[3],
-        'iowait': percents[4],
-        'irq': percents[5],
-        'softirq': percents[6],
-    }
+    return cpu_dto.CpuPercentageDto(percents[0], percents[1], percents[2], percents[3], percents[4], percents[5], percents[6])
 
 def procs_running():
     return proc_stat('procs_running')
@@ -43,14 +36,14 @@ def load_avg():
 
 def cpu_info():
     with open('/proc/cpuinfo') as cpuinfo_file:
-        cpuinfo = {'processor_count': 0}
+        cpuinfo = {'processor_count': '0'}
 
         for line in cpuinfo_file:
             if ':' in line:
                 fields = line.replace('\t', '').strip().split(': ')
 
                 if fields[0] == 'processor':
-                    cpuinfo['processor_count'] += 1
+                    cpuinfo['processor_count'] = str(int(cpuinfo['processor_count']) + 1)
                 elif fields[0] != 'code id':
                     try:
                         cpuinfo[fields[0]] = fields[1]

@@ -22,5 +22,13 @@ namespace API.Controllers
         {
             return Ok(await _service.ExecuteCommandAsync(dto.VirtualMachine!, dto.Command!, dto.UserId!));
         }
+
+        [HttpPost("metrics")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<string>> GetMetricsAsync(SSHRequestDto dto)
+        {
+            return Ok(await _service.GetMetricsAsync(dto.VirtualMachine!, dto.UserId!));
+        }
     }
 }

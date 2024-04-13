@@ -120,5 +120,19 @@ namespace Infrastructure.Services.Impls
 
             return log != null;
         }
+
+        public async Task<string> GetMetricsAsync(VirtualMachine virtualMachine, string userId)
+        {
+            var client = GetClient(virtualMachine, userId);
+
+            if (!client.IsConnected)
+            {
+                await client.ConnectAsync(CancellationTokenSource.Token);
+            }
+
+            var response = client.RunCommand("./metrics.sh");
+
+            return response.Result;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Bot.StateMachineBase;
 using Core.Dtos;
+using Core.Dtos.Metrics;
 using Core.Entities;
 using Newtonsoft.Json;
 using System.Text;
@@ -143,6 +144,15 @@ namespace Bot.HttpInfrastructure
             var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
+        }
+
+        public static async Task<MetricsDto?> GetMetircsAsync(SSHRequestDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest/metrics", content);
+
+            return JsonConvert.DeserializeObject<MetricsDto>(await response.Content.ReadAsStringAsync());
         }
 
         public static async Task<string> CreateDirectoryAsync(SFTPRequestDto dto)

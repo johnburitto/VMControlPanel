@@ -51,7 +51,7 @@ def disk_reads_writes(device):
     if not found:
             raise DiskError('Device not found: %r' % device)
         
-    return (num_reads, num_writes)
+    return [num_reads, num_writes]
 
 def disk_usage(path):
     output = Popen(['df', '-k', path], stdout=PIPE).communicate()[0]
@@ -97,7 +97,18 @@ def disk_reads_writes_persec(device, sample_duration=1):
     reads_persec = (second_num_reads - first_num_reads) / float(sample_duration)
     writes_persec = (second_num_writes - first_num_writes) / float(sample_duration)
 
-    return (reads_persec, writes_persec)
+    return [reads_persec, writes_persec]
+
+def get_discs():
+    discs = []
+
+    with open('/proc/diskstats') as diskstats:
+        for line in diskstats.readlines():
+            if not 'ram' in line and not 'loop' in line:
+                discs.append(line.split()[2])
+    
+    return discs
+
 
 class DiskError(Exception):
     pass

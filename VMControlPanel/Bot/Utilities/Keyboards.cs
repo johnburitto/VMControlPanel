@@ -1,5 +1,4 @@
-﻿using Bot.HttpInfrastructure;
-using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Utilities
 {
@@ -21,7 +20,8 @@ namespace Bot.Utilities
         public static ReplyKeyboardMarkup VMActionKeyboard = new([
             new KeyboardButton[] { "Виконувати команди" },
             new KeyboardButton[] { "Створити директорію", "Видалити директорію" },
-            new KeyboardButton[] { "Завантажити файл", "Вивантажити файл" }
+            new KeyboardButton[] { "Завантажити файл", "Вивантажити файл" },
+            new KeyboardButton[] { "Метрики" }
         ])
         {
             ResizeKeyboard = true
