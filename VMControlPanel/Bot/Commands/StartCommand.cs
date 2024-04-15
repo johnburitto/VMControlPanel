@@ -17,7 +17,7 @@ namespace Bot.Commands
             var accounts = await RequestClient.GetUserAccountsAsync(message!.Chat.Id);
 
             await client.SendTextMessageAsync(message!.Chat.Id, $"Привіт! Я допоможу тобі взаємодіяти із твоїми віртуальними машинами\n\n{accounts?.ToStringList()}", 
-                parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboar);
+                parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
     }
 }

@@ -6,5 +6,6 @@ namespace Infrastructure.Services.Interfaces
     {
         Task<string> ExecuteCommandAsync(VirtualMachine virtualMachine, string command, string userId);
         Task<string> GetMetricsAsync(VirtualMachine virtualMachine, string userId);
+        void DisposeClientAndStream(VirtualMachine virtualMachine, string userId);
     }
 }

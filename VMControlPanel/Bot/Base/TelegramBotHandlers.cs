@@ -13,6 +13,7 @@ namespace Bot.Base
         private readonly List<MessageCommand> _commands =
             [
                 new StartCommand(),
+                new ExitCommand(),
                 new AuthCommand(),
                 new RegisterCommand(),
                 new AddVirtualMachineCommand(),

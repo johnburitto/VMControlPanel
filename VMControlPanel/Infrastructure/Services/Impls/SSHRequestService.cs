@@ -134,5 +134,21 @@ namespace Infrastructure.Services.Impls
 
             return response.Result;
         }
+
+        public void DisposeClientAndStream(VirtualMachine virtualMachine, string userId)
+        {
+            var client = GetClient(virtualMachine, userId);
+            var stream = GetStream(client, userId, out string? log);
+
+            if (client.IsConnected)
+            {
+                client.Disconnect();
+            }
+
+            stream.Dispose();
+            client.Dispose();
+            _clients.Remove(userId);
+            _streams.Remove(userId);
+        }
     }
 }

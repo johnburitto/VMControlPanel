@@ -23,7 +23,7 @@ namespace Bot.Commands
                 VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
                 UserId = userId
             };
-            var metrics = await RequestClient.GetMetircsAsync(dto);
+            var metrics = await RequestClient.GetMetricsAsync(dto);
 
             if (message!.Text!.Contains("-r") || message!.Text!.Contains("--raw"))
             {

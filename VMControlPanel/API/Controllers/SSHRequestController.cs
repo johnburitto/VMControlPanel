@@ -30,5 +30,15 @@ namespace API.Controllers
         {
             return Ok(await _service.GetMetricsAsync(dto.VirtualMachine!, dto.UserId!));
         }
+
+        [HttpPost("exit")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult DisposeClientAndStream(SSHRequestDto dto)
+        {
+            _service.DisposeClientAndStream(dto.VirtualMachine!, dto.UserId!);
+
+            return Ok();
+        }
     }
 }

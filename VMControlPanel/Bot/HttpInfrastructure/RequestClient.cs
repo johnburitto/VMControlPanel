@@ -93,6 +93,11 @@ namespace Bot.HttpInfrastructure
             return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
         }
 
+        public static async Task DeleteCachedAsync(string key)
+        {
+            var response = await Client!.DeleteAsync($"https://localhost:8081/api/Cache/{key}");
+        }
+
         public static async Task<bool> CheckIfHasCacheAsync(string key)
         {
             var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{key}");
@@ -146,13 +151,20 @@ namespace Bot.HttpInfrastructure
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }
 
-        public static async Task<MetricsDto?> GetMetircsAsync(SSHRequestDto dto)
+        public static async Task<MetricsDto?> GetMetricsAsync(SSHRequestDto dto)
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
             var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest/metrics", content);
 
             return JsonConvert.DeserializeObject<MetricsDto>(await response.Content.ReadAsStringAsync());
+        }
+
+        public static async Task DisposeClientAndStream(SSHRequestDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest/exit", content);
         }
 
         public static async Task<string> CreateDirectoryAsync(SFTPRequestDto dto)

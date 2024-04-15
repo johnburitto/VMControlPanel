@@ -23,7 +23,7 @@ namespace Bot.Commands
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.StartKeyboar);
+                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.StartKeyboard);
 
                 return;
             }
@@ -71,7 +71,7 @@ namespace Bot.Commands
                 }
                 else if (response == AuthResponse.AlreadyRegistered)
                 {
-                    await client.SendTextMessageAsync(message!.Chat.Id, "Користувач з даним іменем вже зареєстрований", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboar);
+                    await client.SendTextMessageAsync(message!.Chat.Id, "Користувач з даним іменем вже зареєстрований", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
             }

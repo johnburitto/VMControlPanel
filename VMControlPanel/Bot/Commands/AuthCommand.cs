@@ -23,7 +23,7 @@ namespace Bot.Commands
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.StartKeyboar);
+                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.StartKeyboard);
 
                 return;
             }
