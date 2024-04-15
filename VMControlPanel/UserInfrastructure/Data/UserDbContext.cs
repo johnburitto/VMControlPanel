@@ -6,7 +6,12 @@ namespace UserInfrastructure.Data
 {
     public class UserDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+
+        public UserDbContext()
+        {
+
+        }
 
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options) 
         { 

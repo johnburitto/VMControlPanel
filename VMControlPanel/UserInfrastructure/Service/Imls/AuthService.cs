@@ -1,18 +1,17 @@
 ﻿using Core.Dtos;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
 using UserInfrastructure.Data;
 using UserInfrastructure.Service.Interfaces;
+using Utilities;
 
 namespace UserInfrastructure.Service.Imls
 {
-    public class UserService : IUserService
+    public class AuthService : IAuthService
     {
         private readonly UserDbContext _context;
 
-        public UserService(UserDbContext context)
+        public AuthService(UserDbContext context)
         {
             _context = context;
         }
@@ -22,14 +21,14 @@ namespace UserInfrastructure.Service.Imls
             return await _context.Users.Where(_ => _.TelegramId == telegramId).AnyAsync();
         }
 
-        public async Task<bool> CheckIfAccountWithUserNameExistAsync(string? userName)
+        public async Task<bool> CheckIfAccountWithUserNameExistAsync(string? UserName)
         {
-            return await _context.Users.Where(_ => _.UserName == userName).AnyAsync();
+            return await _context.Users.Where(_ => _.UserName == UserName).AnyAsync();
         }
 
         public async Task<AuthResponse> LoginAsync(LoginDto dto)
         {
-            var user = await _context.Users.Where(_ => _.UserName == dto.UserName && _.PasswordHash == ComputeSha256Hash(dto.Password)).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(_ => _.UserName == dto.UserName && _.PasswordHash == CryptoService.ComputeSha256Hash(dto.Password)).FirstOrDefaultAsync();
 
             return user == null ? AuthResponse.BadCredentials : AuthResponse.SuccessesLogin;
         }
@@ -66,7 +65,7 @@ namespace UserInfrastructure.Service.Imls
             {
                 TelegramId = dto.TelegramId,
                 UserName = dto.UserName,
-                PasswordHash = ComputeSha256Hash(dto.Password),
+                PasswordHash = CryptoService.ComputeSha256Hash(dto.Password),
                 Email = dto.Email
             };
 
@@ -74,25 +73,14 @@ namespace UserInfrastructure.Service.Imls
             await _context.SaveChangesAsync();
         }
 
-        private string ComputeSha256Hash(string? data)
+        public async Task<List<User>> GetUsersByTelegramIdAsync(long telegramId)
         {
-            if (data == null)
-            {
-                return "";
-            }
+            return await CheckIfUserHasAccountAsync(telegramId) ? await _context.Users.Where(_ => _.TelegramId == telegramId).ToListAsync() : [];
+        }
 
-            using (var sha256Hash = SHA256.Create())
-            {
-                var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(data));
-                var strBuilder = new StringBuilder();
-
-                foreach (var _ in bytes)
-                {
-                    strBuilder.Append(_.ToString("x2"));
-                }
-
-                return strBuilder.ToString();
-            }
+        public  Task<User?> GetUserByTelegramIdAndUserNameAsync(long telegramId, string? userName)
+        {
+            return _context.Users.Where(_ => _.TelegramId == telegramId && _.UserName == userName).FirstOrDefaultAsync();
         }
     }
 }

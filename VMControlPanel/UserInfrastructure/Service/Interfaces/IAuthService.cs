@@ -1,14 +1,17 @@
 ﻿using Core.Dtos;
+using Core.Entities;
 
 namespace UserInfrastructure.Service.Interfaces
 {
-    public interface IUserService
+    public interface IAuthService
     {
         Task<bool> CheckIfUserHasAccountAsync(long telegramId);
-        Task<bool> CheckIfAccountWithUserNameExistAsync(string? userName);
+        Task<bool> CheckIfAccountWithUserNameExistAsync(string? UserName);
         Task<AuthResponse> LoginAsync(LoginDto dto);
         Task<AuthResponse> RegisterAsync(RegisterDto dto);
         Task<AuthResponse> RegisterAndLoginAsync(RegisterDto dto);
+        Task<List<User>> GetUsersByTelegramIdAsync(long telegramId);
+        Task<User?> GetUserByTelegramIdAndUserNameAsync(long telegramId, string? name);
     }
 
     public enum AuthResponse
