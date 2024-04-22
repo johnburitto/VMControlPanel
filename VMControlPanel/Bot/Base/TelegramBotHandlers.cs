@@ -57,10 +57,10 @@ namespace Bot.Base
 
         private async Task MessageHandlerAsync(ITelegramBotClient client, Message? message)
         {
-            if (await StateHandlerAsync(client, message!.Chat.Id, message))
-            {
-                return;
-            }
+            //if (await StateHandlerAsync(client, message!.Chat.Id, message))
+            //{
+            //    return;
+            //}
 
             foreach (var command in _commands)
             {
@@ -70,10 +70,10 @@ namespace Bot.Base
 
         private async Task CallbackQueryHandlerAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
         {
-            if (await StateHandlerAsync(client, callbackQuery!.Message!.Chat.Id, callbackQuery))
-            {
-                return;
-            }
+            //if (await StateHandlerAsync(client, callbackQuery!.Message!.Chat.Id, callbackQuery))
+            //{
+            //    return;
+            //}
 
             foreach (var command in _commands)
             {
@@ -81,21 +81,21 @@ namespace Bot.Base
             }
         }
 
-        private async Task<bool> StateHandlerAsync(ITelegramBotClient client, long telegramId, dynamic data)
-        {
-            var state = await RequestClient.GetStateNameAsync(telegramId);
+        //private async Task<bool> StateHandlerAsync(ITelegramBotClient client, long telegramId, dynamic data)
+        //{
+        //    var state = await RequestClient.GetStateNameAsync(telegramId);
 
-            foreach (var command in _commands)
-            {
-                if (command.IsCanBeExecuted(state))
-                {
-                    await command.ExecuteAsync(client, data);
+        //    foreach (var command in _commands)
+        //    {
+        //        if (command.IsCanBeExecuted(state))
+        //        {
+        //            await command.ExecuteAsync(client, data);
 
-                    return true;
-                }
-            }
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        } 
+        //    return false;
+        //} 
     }
 }

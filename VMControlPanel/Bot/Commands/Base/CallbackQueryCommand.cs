@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using Bot.StateMachineBase;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Bot.Commands.Base
@@ -14,7 +15,10 @@ namespace Bot.Commands.Base
 
         public override async Task TryExecuteAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
         {
-            if (IsCanBeExecuted(callbackQuery?.Data ?? ""))
+            var state = await StateMachine.GetSateAsync(callbackQuery!.Message!.Chat.Id);
+            var data = state == null ? callbackQuery.Data : state.StateName;
+
+            if (IsCanBeExecuted(data ?? ""))
             {
                 await ExecuteAsync(client, callbackQuery);
             }
