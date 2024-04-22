@@ -14,7 +14,7 @@ namespace Bot.Commands
 {
     public class AuthCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "/auth", "Увійти в акаунт", "input_username", "input_password" ];
+        public override List<string>? Names { get; set; } = [ "/auth", "Увійти в акаунт", "start_auth", "input_username", "input_password" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
@@ -28,7 +28,7 @@ namespace Bot.Commands
                 return;
             }
 
-            if (userState == null)
+            if (userState == null || userState?.StateName == "start_auth")
             {
                 userState = new State
                 {

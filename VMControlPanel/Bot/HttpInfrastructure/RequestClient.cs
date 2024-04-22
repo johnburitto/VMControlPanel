@@ -93,6 +93,13 @@ namespace Bot.HttpInfrastructure
             return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
         }
 
+        public static async Task<string> GetCachedAsync(string key)
+        {
+            var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{key}");
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
         public static async Task DeleteCachedAsync(string key)
         {
             var response = await Client!.DeleteAsync($"https://localhost:8081/api/Cache/{key}");
