@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace UserInfrastructure.Configurations
 {
@@ -29,6 +30,10 @@ namespace UserInfrastructure.Configurations
                    .IsRequired();
 
             builder.Property(_ => _.NormalizedEmail)
+                   .IsRequired();
+            
+            builder.Property(_ => _.Culture)
+                   .HasConversion(new EnumToStringConverter<Cultures>())
                    .IsRequired();
         }
     }
