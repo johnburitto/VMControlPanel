@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.Utilities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -16,7 +17,7 @@ namespace Bot.Commands
         {
             var accounts = await RequestClient.GetUserAccountsAsync(message!.Chat.Id);
 
-            await client.SendTextMessageAsync(message!.Chat.Id, $"Привіт! Я допоможу тобі взаємодіяти із твоїми віртуальними машинами\n\n{accounts?.ToStringList()}", 
+            await client.SendTextMessageAsync(message!.Chat.Id, $"${LocalizationManager.GetString("HelloMessage")}\n\n{accounts?.ToStringList()}", 
                 parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
     }

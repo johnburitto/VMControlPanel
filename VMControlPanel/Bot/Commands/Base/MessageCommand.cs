@@ -1,4 +1,5 @@
 ﻿using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -26,7 +27,7 @@ namespace Bot.Commands.Base
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, state);
-                await client.SendTextMessageAsync(message.Chat.Id, "Вам необхідно увійти до системи", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("YouHaveToLogin"), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
 
                 return;
             }

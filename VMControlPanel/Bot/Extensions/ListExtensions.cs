@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Bot.Localization;
+using Core.Entities;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Extensions
@@ -12,7 +13,7 @@ namespace Bot.Extensions
                                          .Select(_ => _.Select(_ => new KeyboardButton($"{_.Name}")))
                                          .ToList();
 
-            buttons.Add([new KeyboardButton("➕ Додати нову машину")]);
+            buttons.Add([new KeyboardButton($"➕ {LocalizationManager.GetString("AddNewMachine")}")]);
 
             return new(buttons) { ResizeKeyboard = true };
         }

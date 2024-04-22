@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Bot.Localization;
+using Core.Entities;
 
 namespace UserInfrastructure.Extensions
 {
@@ -8,7 +9,7 @@ namespace UserInfrastructure.Extensions
         {
             var account = string.Join("\n", users.Select((user, index) => $"{index + 1}. <i>{user.UserName}</i>"));
 
-            return account == string.Empty ? "У вас немає зареєстрованих акаунтів" : $"Ваші акаунти:\n{account}";
+            return account == string.Empty ? $"{LocalizationManager.GetString("YouDontHaveAccounts")}" : $"{LocalizationManager.GetString("YourAccounts")}:\n{account}";
         }
     }
 }
