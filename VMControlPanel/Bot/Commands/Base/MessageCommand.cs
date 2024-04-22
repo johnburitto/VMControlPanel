@@ -1,5 +1,11 @@
-﻿using Telegram.Bot;
+﻿using Bot.HttpInfrastructure;
+using Bot.StateMachineBase;
+using Bot.Utilities;
+using Core.Dtos;
+using Microsoft.IdentityModel.Tokens;
+using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Bot.Commands.Base
 {
@@ -7,7 +13,25 @@ namespace Bot.Commands.Base
     {
         public override async Task TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
-            if (IsCanBeExecuted(message?.Text ?? ""))
+            var token = await RequestClient.GetCachedAsync($"{message!.Chat.Id}_auth");
+            var state = await StateMachine.GetSateAsync(message.Chat.Id);
+            var data = state == null ? message.Text : state.StateName;
+
+            if (token.IsNullOrEmpty() && !NoAuthCommands.Commands.Contains(message.Text!) && state == null)
+            {
+                state = new State
+                {
+                    StateName = "start_auth",
+                    StateObject = new LoginDto()
+                };
+
+                await StateMachine.SaveStateAsync(message.Chat.Id, state);
+                await client.SendTextMessageAsync(message.Chat.Id, "Вам необхідно увійти до системи", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+
+                return;
+            }
+
+            if (IsCanBeExecuted(data ?? ""))
             {
                 await ExecuteAsync(client, message);
             }

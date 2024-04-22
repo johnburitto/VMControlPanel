@@ -21,7 +21,8 @@ namespace Bot.Commands
             var dto = new SSHRequestDto
             {
                 VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
-                UserId = userId
+                UserId = userId,
+                TelegramId = message!.Chat.Id
             };
             var metrics = await RequestClient.GetMetricsAsync(dto);
 

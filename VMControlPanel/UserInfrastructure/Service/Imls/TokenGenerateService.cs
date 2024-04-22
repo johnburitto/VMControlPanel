@@ -17,7 +17,7 @@ namespace UserInfrastructure.Service.Imls
             ];
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my secret key This is my secret key"));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var tokenInfo = new JwtSecurityToken(claims: claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: cred);
+            var tokenInfo = new JwtSecurityToken(issuer: "https://localhost:8080", audience: "https://localhost:8080", claims: claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: cred);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenInfo);
 
             return token;

@@ -35,6 +35,7 @@ namespace Bot.Commands
                     VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     Data = message.Text,
                     UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    TelegramId = message.Chat.Id
                 };
 
                 var response = await RequestClient.DeleteDirectoryAsync(dto);
