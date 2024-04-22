@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Загальна блок-схема/Кінець.md",
+                "file": "Загальна блок-схема/Початок.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Загальна блок-схема/Кінець.md",
+                "file": "Загальна блок-схема/Початок.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Загальна блок-схема/Кінець.md",
+                "file": "Загальна блок-схема/Початок.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Загальна блок-схема/Кінець.md"
+                "file": "Загальна блок-схема/Початок.md"
               }
             }
           }
@@ -150,8 +150,8 @@
   },
   "active": "ed4e4cd9c0e8e322",
   "lastOpenFiles": [
-    "Загальна блок-схема/Початок.md",
     "Загальна блок-схема/Кінець.md",
+    "Загальна блок-схема/Початок.md",
     "Загальна блок-схема/Загальна блок-схема застосунку.canvas",
     "Загальна блок-схема/Отримання та аналіз метрик системи.md",
     "Загальна блок-схема/Вхід в систему.md",
