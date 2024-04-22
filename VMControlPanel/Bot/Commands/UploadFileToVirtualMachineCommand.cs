@@ -53,7 +53,8 @@ namespace Bot.Commands
                 {
                     VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     FilePath = $"{FileManager.FileDirectory}/{message.Document.FileName}",
-                    UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync()
+                    UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    TelegramId = message.Chat.Id
                 };
                 var response = await RequestClient.UploadFileToVirtualMachine(dto);
 

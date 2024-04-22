@@ -81,6 +81,7 @@ namespace Bot.Commands
                     userState.StateObject!.Port = int.Parse(message.Text);
                     userState.StateObject!.UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message!.Chat.Id}_current_user_id"))
                         .Content.ReadAsStringAsync();
+                    userState.StateObject!.TelegramId = message.Chat.Id;
 
                     var virtualMachine = await RequestClient.AddVirtualMachineAsync((userState.StateObject as JObject)!.ToObject<VirtualMachineDto>()!);
                     var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);

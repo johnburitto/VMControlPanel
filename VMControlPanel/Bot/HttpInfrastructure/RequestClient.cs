@@ -3,6 +3,8 @@ using Core.Dtos;
 using Core.Dtos.Metrics;
 using Core.Entities;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using UserInfrastructure.Service.Interfaces;
@@ -117,6 +119,10 @@ namespace Bot.HttpInfrastructure
         {
             var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
             var userId = await response.Content.ReadAsStringAsync();
+            var token = await GetCachedAsync($"{telegramId}_auth");
+
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var virtualMachinesResponse = await Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/all");
 
             return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync()) ?? [];
@@ -126,6 +132,10 @@ namespace Bot.HttpInfrastructure
         {
             var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
             var userId = await response.Content.ReadAsStringAsync();
+            var token = await GetCachedAsync($"{telegramId}_auth");
+
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var virtualMachinesResponse = await Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/all");
 
             return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync())?.Select(_ => _.Name ?? "").ToList() ?? [];
@@ -135,6 +145,10 @@ namespace Bot.HttpInfrastructure
         {
             var response = await Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
             var userId = await response.Content.ReadAsStringAsync();
+            var token = await GetCachedAsync($"{telegramId}_auth");
+
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var virtualMachinesResponse = await Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/{name}");
 
             return JsonConvert.DeserializeObject<VirtualMachine>(await virtualMachinesResponse.Content.ReadAsStringAsync());
@@ -144,6 +158,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/VirtualMachine", content);
 
             return JsonConvert.DeserializeObject<VirtualMachine>(await response.Content.ReadAsStringAsync());
@@ -153,6 +171,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
@@ -162,6 +184,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest/metrics", content);
 
             return JsonConvert.DeserializeObject<MetricsDto>(await response.Content.ReadAsStringAsync());
@@ -171,6 +197,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/SSHRequest/exit", content);
         }
 
@@ -178,6 +208,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/directory/create", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
@@ -187,6 +221,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/directory/delete", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
@@ -196,6 +234,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/file/get", content);
 
             return JsonConvert.DeserializeObject<FileDto>(await response.Content.ReadAsStringAsync());
@@ -205,6 +247,10 @@ namespace Bot.HttpInfrastructure
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var token = await GetCachedAsync($"{dto.TelegramId}_auth");
+
+            Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/file/upload", content);
 
             return await response.Content.ReadAsStringAsync();

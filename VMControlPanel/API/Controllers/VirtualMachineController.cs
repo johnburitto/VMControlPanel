@@ -1,12 +1,14 @@
 ﻿using Core.Dtos;
 using Core.Entities;
 using Infrastructure.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VirtualMachineController : ControllerBase
     {
         private readonly IVirtualMachineService _service;

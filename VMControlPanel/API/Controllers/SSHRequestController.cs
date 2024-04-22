@@ -1,11 +1,13 @@
 ﻿using Core.Dtos;
 using Infrastructure.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SSHRequestController : ControllerBase
     {
         private readonly ISSHRequestService _service;
