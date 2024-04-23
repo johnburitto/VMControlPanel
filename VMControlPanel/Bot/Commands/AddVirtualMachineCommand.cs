@@ -14,12 +14,10 @@ namespace Bot.Commands
 {
     public class AddVirtualMachineCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ $"➕ {LocalizationManager.GetString("AddNewMachine")}", "input_vm_name", "input_vm_username", 
-                                                              "input_vm_password", "input_vm_host", "input_vm_port" ];
-
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (message!.Text!.Contains('❌'))
@@ -27,7 +25,7 @@ namespace Bot.Commands
                 var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel"), replyMarkup: virtualMachines.ToKeyboard());
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel", Culture), replyMarkup: virtualMachines.ToKeyboard(Culture));
 
                 return;
             }
@@ -41,7 +39,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMName")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMName", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_name")
             {
@@ -49,7 +47,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_username";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMUser")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMUser", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_username")
             {
@@ -57,7 +55,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMUserPassword")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMUserPassword", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_password")
             {
@@ -65,7 +63,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_host";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMHost")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMHost", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_host")
             {
@@ -73,7 +71,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_port";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMPort")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMPort", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_port")
             {
@@ -89,11 +87,11 @@ namespace Bot.Commands
 
                     if (virtualMachine != null)
                     {
-                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesAdd"), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard()); 
+                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesAdd", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture)); 
                     }
                     else
                     {
-                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("AddingError"), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard());
+                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("AddingError", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
                     }
 
                     await RequestClient.RemoveStateAsync(message!.Chat.Id);
@@ -105,6 +103,13 @@ namespace Bot.Commands
                     await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
                 }
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [ $"➕ {LocalizationManager.GetString("AddNewMachine", Culture)}", "input_vm_name", "input_vm_username", "input_vm_password", "input_vm_host", "input_vm_port" ];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }

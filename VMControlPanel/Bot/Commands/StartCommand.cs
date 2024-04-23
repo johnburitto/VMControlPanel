@@ -15,11 +15,11 @@ namespace Bot.Commands
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             var accounts = await RequestClient.GetUserAccountsAsync(message!.Chat.Id);
 
-            Console.WriteLine(LocalizationManager.GetString("HelloMessage"));
-
-            await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("HelloMessage")}\n\n{accounts?.ToStringList()}", 
+            await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("HelloMessage", Culture)}\n\n{accounts?.ToStringList(Culture)}", 
                 parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
     }

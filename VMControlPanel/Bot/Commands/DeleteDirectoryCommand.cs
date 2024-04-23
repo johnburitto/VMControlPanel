@@ -13,10 +13,10 @@ namespace Bot.Commands
 {
     public class DeleteDirectoryCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("DeleteDirectory"), "input_delete_directory_name" ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (userState == null)
@@ -27,7 +27,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputDirectoryName")}:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputDirectoryName", Culture)}:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName! == "input_delete_directory_name")
             {
@@ -44,6 +44,13 @@ namespace Bot.Commands
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
                 await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [LocalizationManager.GetString("DeleteDirectory", Culture), "input_delete_directory_name"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }

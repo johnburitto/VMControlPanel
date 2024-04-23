@@ -15,16 +15,16 @@ namespace Bot.Commands
 {
     public class RegisterCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "/register", LocalizationManager.GetString("Register"), "create_username", "create_password", "create_email" ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel"), replyMarkup: Keyboards.StartKeyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel", Culture), replyMarkup: Keyboards.StartKeyboard);
 
                 return;
             }
@@ -38,7 +38,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputUserName")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputUserName", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState!.StateName == "create_username")
             {
@@ -46,7 +46,7 @@ namespace Bot.Commands
                 userState.StateName = "create_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputPassword")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputPassword", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState!.StateName == "create_password")
             {
@@ -54,7 +54,7 @@ namespace Bot.Commands
                 userState.StateName = "create_email";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputEmail")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputEmail", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else
             {
@@ -67,15 +67,22 @@ namespace Bot.Commands
                 {
                     var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
-                    await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesRegister"), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard());
+                    await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesRegister", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
                 else if (response == AuthResponse.AlreadyRegistered)
                 {
-                    await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("AlreadyRegistered"), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+                    await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("AlreadyRegistered", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = ["/register", LocalizationManager.GetString("Register", Culture), "create_username", "create_password", "create_email"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }

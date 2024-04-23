@@ -14,10 +14,10 @@ namespace Bot.Commands
 {
     public class GetFileFromVirtualMachineCommand : MessageCommand
     {        
-        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("DownloadFile"), "input_download_file_name" ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (userState == null)
@@ -29,7 +29,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputFilePath")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputFilePath", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName == "input_download_file_name")
             {
@@ -59,6 +59,13 @@ namespace Bot.Commands
                 FileManager.DeleteFile(response.FilePath!);
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [LocalizationManager.GetString("DownloadFile", Culture), "input_download_file_name"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }

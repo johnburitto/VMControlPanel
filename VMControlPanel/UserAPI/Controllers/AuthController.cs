@@ -35,6 +35,7 @@ namespace UserAPI.Controllers
 
                 await _cacheService.SetValueAsync($"{dto.TelegramId}_auth", token, 1f);
                 await _cacheService.SetValueAsync($"{dto.TelegramId}_current_user_id", $"{user?.Id}", 1f);
+                await _cacheService.SetValueAsync($"{dto.TelegramId}_culture", user?.Culture, 1f);
             }
 
             return Ok(result);

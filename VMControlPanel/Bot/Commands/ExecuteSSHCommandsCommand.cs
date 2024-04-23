@@ -13,14 +13,14 @@ namespace Bot.Commands
 {
     public class ExecuteSSHCommandsCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("ExecuteCommands"), "input_command", ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel"), replyMarkup: Keyboards.VMActionKeyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel", Culture), replyMarkup: Keyboards.VMActionKeyboard);
 
                 return;
             }
@@ -36,7 +36,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputCommand")}:", parseMode: ParseMode.Html);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputCommand", Culture)}:", parseMode: ParseMode.Html);
             }
             else if (userState.StateName == "input_command")
             {
@@ -51,6 +51,13 @@ namespace Bot.Commands
 
                 await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.CancelKeyboard);
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [LocalizationManager.GetString("ExecuteCommands", Culture), "input_command"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }
