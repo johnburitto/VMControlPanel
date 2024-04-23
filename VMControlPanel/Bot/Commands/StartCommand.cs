@@ -15,7 +15,10 @@ namespace Bot.Commands
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Culture = LocalizationManager.GetLanguage(message!.From!.LanguageCode);
             Keyboards.Culture = Culture;
+            NoAuthCommands.Culture = Culture;
+            await RequestClient.CacheAsync($"{message!.Chat.Id}_culture", ((int)Culture).ToString(), 1f);
 
             var accounts = await RequestClient.GetUserAccountsAsync(message!.Chat.Id);
 

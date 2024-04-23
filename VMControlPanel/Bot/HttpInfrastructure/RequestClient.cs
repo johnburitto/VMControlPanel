@@ -255,5 +255,10 @@ namespace Bot.HttpInfrastructure
 
             return await response.Content.ReadAsStringAsync();
         }
+
+        public static async Task ChangeUserCultureAsync(string userId, Cultures culture)
+        {
+            await Client!.PutAsync($"https://localhost:8080/api/Auth/language/{userId}/{culture}", null);
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace UserInfrastructure.Service.Interfaces
         Task<AuthResponse> RegisterAndLoginAsync(RegisterDto dto);
         Task<List<User>> GetUsersByTelegramIdAsync(long telegramId);
         Task<User?> GetUserByTelegramIdAndUserNameAsync(long telegramId, string? name);
+        Task ChangeUserCultureAsync(string userId, Cultures culture);
     }
 
     public enum AuthResponse

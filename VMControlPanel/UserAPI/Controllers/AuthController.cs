@@ -56,6 +56,14 @@ namespace UserAPI.Controllers
         {
             return Ok(await _service.GetUsersByTelegramIdAsync(telegramId));
         }
+        
+        [HttpPut("language/{userId}/{culture}")]
+        [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task ChangeUserCultureAsync(string userId, Cultures culture)
+        {
+            await _service.ChangeUserCultureAsync(userId, culture);
+        }
 
         [HttpGet("{telegramId}/{userName}")]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]

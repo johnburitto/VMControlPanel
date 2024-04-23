@@ -60,6 +60,7 @@ namespace Bot.Commands
             {
                 userState.StateObject!.Email = message?.Text;
                 userState.StateObject!.TelegramId = message?.Chat.Id;
+                userState.StateObject!.Culture = LocalizationManager.GetLanguage(message!.From!.LanguageCode);
 
                 var response = await RequestClient.RegisterAsync((userState.StateObject as JObject)!.ToObject<RegisterDto>()!);
 

@@ -36,6 +36,19 @@ namespace Bot.Localization
             };
         }
 
+        public static Cultures GetLanguage(string? code)
+        {
+            if (code == null)
+            {
+                return Cultures.En;
+            }
+
+            var languages = Enum.GetNames(typeof(Cultures)).Select(_ => _.ToLower()).ToList();
+            var language = languages.IndexOf(code);
+
+            return language == -1 ? Cultures.En : (Cultures)language;
+        }
+
         public static Cultures? DetermineLanguage(string? language)
         {
             if (language == null)

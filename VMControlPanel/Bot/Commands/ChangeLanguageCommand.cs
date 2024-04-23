@@ -37,11 +37,14 @@ namespace Bot.Commands
                 }
                 else
                 {
+                    var userId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
+
                     Culture = (Cultures)language;
                     Keyboards.Culture = Culture;
                     NoAuthCommands.Culture = Culture;
 
                     await RequestClient.CacheAsync($"{message.Chat.Id}_culture", ((int)language).ToString(), 1f);
+                    await RequestClient.ChangeUserCultureAsync(userId, Culture);
                     await StateMachine.RemoveStateAsync(message.Chat.Id);
                     await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("SuccessesChange", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
                 }
