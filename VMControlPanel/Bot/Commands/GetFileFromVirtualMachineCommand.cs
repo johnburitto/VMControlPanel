@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -13,7 +14,7 @@ namespace Bot.Commands
 {
     public class GetFileFromVirtualMachineCommand : MessageCommand
     {        
-        public override List<string>? Names { get; set; } = ["Завантажити файл", "input_download_file_name"];
+        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("DownloadFile"), "input_download_file_name" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
@@ -28,7 +29,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, "Введіть шлях до файлу:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputFilePath")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName == "input_download_file_name")
             {

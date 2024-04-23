@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -12,7 +13,7 @@ namespace Bot.Commands
 {
     public class CreateDirectoryCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "Створити директорію", "input_create_directory_name" ];
+        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("CreateDirectory"), "input_create_directory_name" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
@@ -26,7 +27,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть назву директорії:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputDirectoryName")}:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName! == "input_create_directory_name")
             {

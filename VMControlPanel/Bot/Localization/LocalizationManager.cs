@@ -1,5 +1,5 @@
-﻿using Core.Entities;
-using Core.Localization.Languages;
+﻿using Bot.Localization.Languages;
+using Core.Entities;
 using System.Globalization;
 
 namespace Bot.Localization
@@ -10,7 +10,7 @@ namespace Bot.Localization
         {
             Strings.Culture = CultureInfo.GetCultureInfo(culture.ToString());
 
-            return Strings.ResourceManager.GetString(key) ?? Strings.InvalidKey;
+            return Strings.ResourceManager.GetString(key, Strings.Culture) ?? Strings.InvalidKey;
         }
     }
 }

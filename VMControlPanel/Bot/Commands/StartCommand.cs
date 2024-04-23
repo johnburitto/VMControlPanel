@@ -1,11 +1,11 @@
 ﻿using Bot.Commands.Base;
+using Bot.Extensions;
 using Bot.HttpInfrastructure;
 using Bot.Localization;
 using Bot.Utilities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using UserInfrastructure.Extensions;
 
 namespace Bot.Commands
 {
@@ -17,7 +17,9 @@ namespace Bot.Commands
         {
             var accounts = await RequestClient.GetUserAccountsAsync(message!.Chat.Id);
 
-            await client.SendTextMessageAsync(message!.Chat.Id, $"${LocalizationManager.GetString("HelloMessage")}\n\n{accounts?.ToStringList()}", 
+            Console.WriteLine(LocalizationManager.GetString("HelloMessage"));
+
+            await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("HelloMessage")}\n\n{accounts?.ToStringList()}", 
                 parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
     }

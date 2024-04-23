@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.Utilities;
 using Newtonsoft.Json;
 using Telegram.Bot;
@@ -17,7 +18,7 @@ namespace Bot.Commands
             var virtualMachine = await RequestClient.GetVirtualMachineByUserIdAndVMNameAsync(message!.Chat.Id, message?.Text);
 
             await RequestClient.CacheAsync($"{message!.Chat.Id}_vm", JsonConvert.SerializeObject(virtualMachine), 1f);
-            await client.SendTextMessageAsync(message!.Chat.Id, $"Ви обрали для взаємодії віртуальну машину {virtualMachine?.Name}", parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
+            await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("VMChosen")} {virtualMachine?.Name}", parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
         }
 
         public override async Task TryExecuteAsync(ITelegramBotClient client, Message? message)

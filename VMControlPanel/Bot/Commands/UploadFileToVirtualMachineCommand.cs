@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -8,13 +9,12 @@ using Infrastructure.Services.Impls;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Commands
 {
     public class UploadFileToVirtualMachineCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "Вивантажити файл", "input_upload_file" ];
+        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("UploadFile"), "input_upload_file" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
@@ -29,13 +29,13 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputFile")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName == "input_upload_file")
             {
                 if (message.Document == null)
                 {
-                    await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
+                    await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputFile")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
 
                     return;
                 }

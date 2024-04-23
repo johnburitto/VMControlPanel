@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -12,7 +13,7 @@ namespace Bot.Commands
 {
     public class ExitCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "🚪 Вийти із акаунта", "/exit" ];
+        public override List<string>? Names { get; set; } = [ $"🚪 {LocalizationManager.GetString("Logout")}", "/exit" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
@@ -27,7 +28,7 @@ namespace Bot.Commands
             await RequestClient.DeleteCachedAsync($"{message.Chat.Id}_current_user_id");
             await RequestClient.DeleteCachedAsync($"{message.Chat.Id}_auth");
             await RequestClient.DisposeClientAndStream(dto);
-            await client.SendTextMessageAsync(message.Chat.Id, "Ви вийшли із системи", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+            await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("LoggedOut"), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
     }
 }

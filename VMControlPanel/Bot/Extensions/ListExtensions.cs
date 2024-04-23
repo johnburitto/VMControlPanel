@@ -17,5 +17,12 @@ namespace Bot.Extensions
 
             return new(buttons) { ResizeKeyboard = true };
         }
+
+        public static string ToStringList(this IEnumerable<User> users)
+        {
+            var account = string.Join("\n", users.Select((user, index) => $"{index + 1}. <i>{user.UserName}</i>"));
+
+            return account == string.Empty ? $"{LocalizationManager.GetString("YouDontHaveAccounts")}" : $"{LocalizationManager.GetString("YourAccounts")}:\n{account}";
+        }
     }
 }

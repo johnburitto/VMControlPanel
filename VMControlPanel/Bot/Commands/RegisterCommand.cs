@@ -15,7 +15,7 @@ namespace Bot.Commands
 {
     public class RegisterCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "/register", "Створити акаунт", "create_username", "create_password", "create_email" ];
+        public override List<string>? Names { get; set; } = [ "/register", LocalizationManager.GetString("Register"), "create_username", "create_password", "create_email" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {

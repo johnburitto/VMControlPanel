@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -12,14 +13,14 @@ namespace Bot.Commands
 {
     public class ExecuteSSHCommandsCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "Виконувати команди", "input_command", ];
+        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("ExecuteCommands"), "input_command", ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.VMActionKeyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel"), replyMarkup: Keyboards.VMActionKeyboard);
 
                 return;
             }
@@ -35,7 +36,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть команду:", parseMode: ParseMode.Html);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputCommand")}:", parseMode: ParseMode.Html);
             }
             else if (userState.StateName == "input_command")
             {

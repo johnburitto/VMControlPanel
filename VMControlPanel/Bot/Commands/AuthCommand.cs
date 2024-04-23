@@ -1,6 +1,7 @@
 ﻿using Bot.Commands.Base;
 using Bot.Extensions;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -14,7 +15,7 @@ namespace Bot.Commands
 {
     public class AuthCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "/auth", "Увійти в акаунт", "start_auth", "input_username", "input_password" ];
+        public override List<string>? Names { get; set; } = [ "/auth", LocalizationManager.GetString("Login"), "start_auth", "input_username", "input_password" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
@@ -23,7 +24,7 @@ namespace Bot.Commands
             if (message!.Text!.Contains('❌'))
             {
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: Keyboards.StartKeyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel"), replyMarkup: Keyboards.StartKeyboard);
 
                 return;
             }
@@ -37,7 +38,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("LoginUserName")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_username")
             {
@@ -45,7 +46,7 @@ namespace Bot.Commands
                 userState.StateName = "input_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("LoginPassword")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else
             {
@@ -58,7 +59,7 @@ namespace Bot.Commands
                 {
                     var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
-                    await client.SendTextMessageAsync(message!.Chat.Id, "Ви успішно увійшли до системи", parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard());
+                    await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("SuccessesLogin")}", parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard());
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
                 else if (response == AuthResponse.BadCredentials)
@@ -66,7 +67,7 @@ namespace Bot.Commands
                     userState.StateName = "input_username";
 
                     await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                    await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                    await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("LoginUserName")}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
                 }
             }
         }

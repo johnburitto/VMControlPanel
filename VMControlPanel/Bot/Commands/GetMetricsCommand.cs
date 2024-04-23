@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
@@ -13,7 +14,7 @@ namespace Bot.Commands
 {
     public class GetMetricsCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "Метрики", "/metrics" ];
+        public override List<string>? Names { get; set; } = [ LocalizationManager.GetString("Metrics"), "/metrics" ];
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
@@ -28,7 +29,7 @@ namespace Bot.Commands
 
             if (message!.Text!.Contains("-r") || message!.Text!.Contains("--raw"))
             {
-                await client.SendTextMessageAsync(message!.Chat.Id, $"Raw data:```\n{JsonConvert.SerializeObject(metrics)}```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("RawData")}:```\n{JsonConvert.SerializeObject(metrics)}```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
 
                 return;
             }
