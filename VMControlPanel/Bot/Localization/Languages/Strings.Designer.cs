@@ -97,6 +97,24 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change language.
+        /// </summary>
+        internal static string ChangeLanguage {
+            get {
+                return ResourceManager.GetString("ChangeLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose language.
+        /// </summary>
+        internal static string ChooseLanguage {
+            get {
+                return ResourceManager.GetString("ChooseLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a directory.
         /// </summary>
         internal static string CreateDirectory {
@@ -120,6 +138,15 @@ namespace Bot.Localization.Languages {
         internal static string DownloadFile {
             get {
                 return ResourceManager.GetString("DownloadFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🇬🇧 English.
+        /// </summary>
+        internal static string En {
+            get {
+                return ResourceManager.GetString("En", resourceCulture);
             }
         }
         
@@ -336,6 +363,15 @@ namespace Bot.Localization.Languages {
         internal static string SuccessesAdd {
             get {
                 return ResourceManager.GetString("SuccessesAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language successfully changed.
+        /// </summary>
+        internal static string SuccessesChange {
+            get {
+                return ResourceManager.GetString("SuccessesChange", resourceCulture);
             }
         }
         

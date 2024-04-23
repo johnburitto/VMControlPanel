@@ -36,7 +36,8 @@ namespace Bot.Utilities
                 new KeyboardButton[] { LocalizationManager.GetString("ExecuteCommands", Culture) },
                 new KeyboardButton[] { LocalizationManager.GetString("CreateDirectory", Culture), LocalizationManager.GetString("DeleteDirectory", Culture) },
                 new KeyboardButton[] { LocalizationManager.GetString("DownloadFile", Culture), LocalizationManager.GetString("UploadFile", Culture) },
-                new KeyboardButton[] { LocalizationManager.GetString("Metrics", Culture), $"🚪 {LocalizationManager.GetString("Logout", Culture)}" }
+                new KeyboardButton[] { LocalizationManager.GetString("Metrics", Culture), $"🚪 {LocalizationManager.GetString("Logout", Culture)}" },
+                new KeyboardButton[] { LocalizationManager.GetString("ChangeLanguage", Culture) },
             ])
             {
                 ResizeKeyboard = true

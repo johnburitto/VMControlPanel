@@ -129,6 +129,12 @@
   <data name="Cancel" xml:space="preserve">
     <value>Ви відмінили дію</value>
   </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Змінити мову</value>
+  </data>
+  <data name="ChooseLanguage" xml:space="preserve">
+    <value>Оберіть мову</value>
+  </data>
   <data name="CreateDirectory" xml:space="preserve">
     <value>Створити директорію</value>
   </data>
@@ -210,6 +216,9 @@
   <data name="SuccessesAdd" xml:space="preserve">
     <value>Віртуальна машина успішно додана</value>
   </data>
+  <data name="SuccessesChange" xml:space="preserve">
+    <value>Мову успішно змінено</value>
+  </data>
   <data name="SuccessesLogin" xml:space="preserve">
     <value>Ви успішно увійшли до системи</value>
   </data>
@@ -218,6 +227,9 @@
   </data>
   <data name="ToCancel" xml:space="preserve">
     <value>Відмінити</value>
+  </data>
+  <data name="Uk" xml:space="preserve">
+    <value>🇺🇦 Українська</value>
   </data>
   <data name="UploadFile" xml:space="preserve">
     <value>Вивантажити файл</value>

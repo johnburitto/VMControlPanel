@@ -129,6 +129,12 @@
   <data name="Cancel" xml:space="preserve">
     <value>You have canceled the action</value>
   </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Change language</value>
+  </data>
+  <data name="ChooseLanguage" xml:space="preserve">
+    <value>Choose language</value>
+  </data>
   <data name="CreateDirectory" xml:space="preserve">
     <value>Create a directory</value>
   </data>
@@ -137,6 +143,9 @@
   </data>
   <data name="DownloadFile" xml:space="preserve">
     <value>Download the file</value>
+  </data>
+  <data name="En" xml:space="preserve">
+    <value>🇬🇧 English</value>
   </data>
   <data name="ExecuteCommands" xml:space="preserve">
     <value>Execute commands</value>
@@ -209,6 +218,9 @@
   </data>
   <data name="SuccessesAdd" xml:space="preserve">
     <value>Virtual machine added successfully</value>
+  </data>
+  <data name="SuccessesChange" xml:space="preserve">
+    <value>Language successfully changed</value>
   </data>
   <data name="SuccessesLogin" xml:space="preserve">
     <value>You have successfully logged in</value>

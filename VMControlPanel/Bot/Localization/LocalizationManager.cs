@@ -1,6 +1,7 @@
 ﻿using Bot.Localization.Languages;
 using Core.Entities;
 using System.Globalization;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Localization
 {
@@ -11,6 +12,47 @@ namespace Bot.Localization
             Strings.Culture = CultureInfo.GetCultureInfo(culture.ToString());
 
             return Strings.ResourceManager.GetString(key, Strings.Culture) ?? Strings.InvalidKey;
+        }
+
+        public static string GetStringRaw(string key, CultureInfo culture)
+        {
+            return Strings.ResourceManager.GetString(key, culture) ?? Strings.InvalidKey;
+        }
+
+        public static List<string> GetLanguages()
+        {
+            var enums = Enum.GetNames(typeof(Cultures));
+
+            return enums.Select(_ => GetStringRaw(_, CultureInfo.GetCultureInfo(_))).ToList();
+        }
+
+        public static ReplyKeyboardMarkup GetLanguagesKeyboard()
+        {
+            var languages = GetLanguages();
+
+            return new(languages.Select(_ => new KeyboardButton[] { new KeyboardButton(_) }))
+            {
+                ResizeKeyboard = true
+            };
+        }
+
+        public static Cultures? DetermineLanguage(string? language)
+        {
+            if (language == null)
+            {
+                return null;
+            }
+
+            if (language.Contains("🇺🇦"))
+            {
+                return Cultures.Uk;
+            }
+            else if (language.Contains("🇬🇧"))
+            {
+                return Cultures.En;
+            }
+
+            return null;
         }
     }
 }
