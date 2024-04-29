@@ -1,8 +1,11 @@
 ﻿using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
+using Core.Entities;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -13,6 +16,11 @@ namespace Bot.Commands.Base
     {
         public override async Task TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            var culture = await RequestClient.GetCachedAsync($"{message!.Chat.Id}_culture");
+
+            Culture = culture.IsNullOrEmpty() ? Cultures.En : JsonConvert.DeserializeObject<Cultures>(culture);
+            NoAuthCommands.Culture = Culture;
+
             var token = await RequestClient.GetCachedAsync($"{message!.Chat.Id}_auth");
             var state = await StateMachine.GetSateAsync(message.Chat.Id);
             var data = state == null ? message.Text : state.StateName;
@@ -26,7 +34,7 @@ namespace Bot.Commands.Base
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, state);
-                await client.SendTextMessageAsync(message.Chat.Id, "Вам необхідно увійти до системи", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("YouHaveToLogin"), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
 
                 return;
             }

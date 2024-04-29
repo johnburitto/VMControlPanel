@@ -1,7 +1,16 @@
-﻿namespace Bot.Utilities
+﻿using Bot.Localization;
+using Core.Entities;
+
+namespace Bot.Utilities
 {
     public static class NoAuthCommands
     {
-        public static List<string> Commands = [ "/start", "Створити акаунт", "Увійти в акаунт", "🚪 Вийти із акаунта" ];
+        public static Cultures Culture { get; set; } = Cultures.En;
+        public static List<string> Commands => GetCommands();
+
+        private static List<string> GetCommands()
+        {
+            return ["/start", LocalizationManager.GetString("Register", Culture), LocalizationManager.GetString("Login", Culture), $"🚪 {LocalizationManager.GetString("Logout", Culture)}"];
+        }
     }
 }

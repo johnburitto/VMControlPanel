@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -12,10 +13,10 @@ namespace Bot.Commands
 {
     public class CreateDirectoryCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "Створити директорію", "input_create_directory_name" ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (userState == null)
@@ -26,7 +27,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, $"Введіть назву директорії:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputDirectoryName", Culture)}:", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName! == "input_create_directory_name")
             {
@@ -43,6 +44,13 @@ namespace Bot.Commands
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
                 await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [LocalizationManager.GetString("CreateDirectory", Culture), "input_create_directory_name"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }

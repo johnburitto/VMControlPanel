@@ -35,6 +35,7 @@ namespace UserAPI.Controllers
 
                 await _cacheService.SetValueAsync($"{dto.TelegramId}_auth", token, 1f);
                 await _cacheService.SetValueAsync($"{dto.TelegramId}_current_user_id", $"{user?.Id}", 1f);
+                await _cacheService.SetValueAsync($"{dto.TelegramId}_culture", user?.Culture, 1f);
             }
 
             return Ok(result);
@@ -54,6 +55,14 @@ namespace UserAPI.Controllers
         public async Task<ActionResult<List<User>>> GetUsersByTelegramIdAsync(long telegramId)
         {
             return Ok(await _service.GetUsersByTelegramIdAsync(telegramId));
+        }
+        
+        [HttpPut("language/{userId}/{culture}")]
+        [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task ChangeUserCultureAsync(string userId, Cultures culture)
+        {
+            await _service.ChangeUserCultureAsync(userId, culture);
         }
 
         [HttpGet("{telegramId}/{userName}")]

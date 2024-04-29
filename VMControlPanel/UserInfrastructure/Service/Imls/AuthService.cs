@@ -66,7 +66,8 @@ namespace UserInfrastructure.Service.Imls
                 TelegramId = dto.TelegramId,
                 UserName = dto.UserName,
                 PasswordHash = CryptoService.ComputeSha256Hash(dto.Password),
-                Email = dto.Email
+                Email = dto.Email,
+                Culture = dto.Culture
             };
 
             await _context.Users.AddAsync(user);
@@ -81,6 +82,20 @@ namespace UserInfrastructure.Service.Imls
         public  Task<User?> GetUserByTelegramIdAndUserNameAsync(long telegramId, string? userName)
         {
             return _context.Users.Where(_ => _.TelegramId == telegramId && _.UserName == userName).FirstOrDefaultAsync();
+        }
+
+        public async Task ChangeUserCultureAsync(string userId, Cultures culture)
+        {
+            var user = await _context.Users.Where(_ => _.Id == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return;
+            }
+
+            user.Culture = culture;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

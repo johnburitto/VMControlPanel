@@ -1,30 +1,47 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
+﻿using Bot.Localization;
+using Core.Entities;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Utilities
 {
     public static class Keyboards
     {
+        public static Cultures Culture { get; set; } = Cultures.En;
         public static ReplyKeyboardMarkup? Null = null;
-        public static ReplyKeyboardMarkup StartKeyboard = new ReplyKeyboardMarkup([
-            new KeyboardButton[] { "Створити акаунт", "Увійти в акаунт" }
-        ])
+        public static ReplyKeyboardMarkup StartKeyboard => CreateStartKeyboard();
+        public static ReplyKeyboardMarkup CancelKeyboard => CreateCancelKeyboard();
+        public static ReplyKeyboardMarkup VMActionKeyboard => CreateVMActionKeyboard();
+        private static ReplyKeyboardMarkup CreateStartKeyboard()
         {
-            ResizeKeyboard = true
-        };
-        public static ReplyKeyboardMarkup CancelKeyboard = new([
-            new KeyboardButton[] { "❌ Відмінити" }
-        ])
+            return new ReplyKeyboardMarkup([
+                new KeyboardButton[] { LocalizationManager.GetString("Register", Culture), LocalizationManager.GetString("Login", Culture) }
+            ])
+            {
+                ResizeKeyboard = true
+            };
+        }
+        private static ReplyKeyboardMarkup CreateCancelKeyboard()
         {
-            ResizeKeyboard = true
-        };
-        public static ReplyKeyboardMarkup VMActionKeyboard = new([
-            new KeyboardButton[] { "Виконувати команди" },
-            new KeyboardButton[] { "Створити директорію", "Видалити директорію" },
-            new KeyboardButton[] { "Завантажити файл", "Вивантажити файл" },
-            new KeyboardButton[] { "Метрики", "🚪 Вийти із акаунта" }
-        ])
+            return new([
+                new KeyboardButton[] { $"❌ {LocalizationManager.GetString("ToCancel", Culture)}" }
+            ])
+            {
+                ResizeKeyboard = true
+            };
+        }
+
+        private static ReplyKeyboardMarkup CreateVMActionKeyboard()
         {
-            ResizeKeyboard = true
-        };
+            return new([
+                new KeyboardButton[] { LocalizationManager.GetString("ExecuteCommands", Culture) },
+                new KeyboardButton[] { LocalizationManager.GetString("CreateDirectory", Culture), LocalizationManager.GetString("DeleteDirectory", Culture) },
+                new KeyboardButton[] { LocalizationManager.GetString("DownloadFile", Culture), LocalizationManager.GetString("UploadFile", Culture) },
+                new KeyboardButton[] { LocalizationManager.GetString("Metrics", Culture), $"🚪 {LocalizationManager.GetString("Logout", Culture)}" },
+                new KeyboardButton[] { LocalizationManager.GetString("ChangeLanguage", Culture) },
+            ])
+            {
+                ResizeKeyboard = true
+            };
+        }
     }
 }

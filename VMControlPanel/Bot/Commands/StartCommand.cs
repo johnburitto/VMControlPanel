@@ -1,10 +1,11 @@
 ﻿using Bot.Commands.Base;
+using Bot.Extensions;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.Utilities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using UserInfrastructure.Extensions;
 
 namespace Bot.Commands
 {
@@ -14,9 +15,14 @@ namespace Bot.Commands
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Culture = LocalizationManager.GetLanguage(message!.From!.LanguageCode);
+            Keyboards.Culture = Culture;
+            NoAuthCommands.Culture = Culture;
+            await RequestClient.CacheAsync($"{message!.Chat.Id}_culture", ((int)Culture).ToString(), 1f);
+
             var accounts = await RequestClient.GetUserAccountsAsync(message!.Chat.Id);
 
-            await client.SendTextMessageAsync(message!.Chat.Id, $"Привіт! Я допоможу тобі взаємодіяти із твоїми віртуальними машинами\n\n{accounts?.ToStringList()}", 
+            await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("HelloMessage", Culture)}\n\n{accounts?.ToStringList(Culture)}", 
                 parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
     }

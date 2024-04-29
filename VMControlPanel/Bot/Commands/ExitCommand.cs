@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
@@ -12,10 +13,10 @@ namespace Bot.Commands
 {
     public class ExitCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "🚪 Вийти із акаунта", "/exit" ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Keyboards.Culture = Culture;
+
             var dto = new SSHRequestDto
             {
                 VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message!.Chat.Id}_vm"),
@@ -26,8 +27,16 @@ namespace Bot.Commands
             await RequestClient.DeleteCachedAsync($"{message.Chat.Id}_vm");
             await RequestClient.DeleteCachedAsync($"{message.Chat.Id}_current_user_id");
             await RequestClient.DeleteCachedAsync($"{message.Chat.Id}_auth");
+            await RequestClient.DeleteCachedAsync($"{message.Chat.Id}_culture");
             await RequestClient.DisposeClientAndStream(dto);
-            await client.SendTextMessageAsync(message.Chat.Id, "Ви вийшли із системи", parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+            await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("LoggedOut", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [$"🚪 {LocalizationManager.GetString("Logout", Culture)}", "/exit"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }
