@@ -1,6 +1,5 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
-using Bot.HttpInfrastructure.Extensions;
 using Bot.Localization;
 using Bot.Utilities;
 using Core.Dtos;
@@ -24,14 +23,14 @@ namespace Bot.Commands
         {
             Keyboards.Culture = Culture;
 
-            var userId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message?.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
+            var userId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message?.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
             var dto = new SSHRequestDto
             {
-                VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
+                VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
                 UserId = userId,
                 TelegramId = message!.Chat.Id
             };
-            var metrics = await _requestClient.GetMetricsAsync(dto);
+            var metrics = await RequestClient.GetMetricsAsync(dto);
 
             if (message!.Text!.Contains("-r") || message!.Text!.Contains("--raw"))
             {

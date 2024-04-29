@@ -1,5 +1,4 @@
 ﻿using Bot.HttpInfrastructure;
-using Bot.HttpInfrastructure.Extensions;
 using Newtonsoft.Json;
 
 namespace Bot.StateMachineBase

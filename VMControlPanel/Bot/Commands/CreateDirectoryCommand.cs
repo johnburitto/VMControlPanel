@@ -1,6 +1,5 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
-using Bot.HttpInfrastructure.Extensions;
 using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
@@ -39,13 +38,13 @@ namespace Bot.Commands
             {
                 var dto = new SFTPRequestDto
                 {
-                    VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     Data = message.Text,
-                    UserId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
                     TelegramId = message.Chat.Id
                 };
 
-                var response = await _requestClient.CreateDirectoryAsync(dto);
+                var response = await RequestClient.CreateDirectoryAsync(dto);
 
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
                 await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);

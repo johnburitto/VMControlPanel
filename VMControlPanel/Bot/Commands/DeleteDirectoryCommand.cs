@@ -8,7 +8,6 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Bot.Utilities;
 using Bot.Localization;
-using Bot.HttpInfrastructure.Extensions;
 
 namespace Bot.Commands
 {
@@ -39,13 +38,13 @@ namespace Bot.Commands
             {
                 var dto = new SFTPRequestDto
                 {
-                    VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     Data = message.Text,
-                    UserId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
                     TelegramId = message.Chat.Id
                 };
 
-                var response = await _requestClient.DeleteDirectoryAsync(dto);
+                var response = await RequestClient.DeleteDirectoryAsync(dto);
 
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
                 await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);

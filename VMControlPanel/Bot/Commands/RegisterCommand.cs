@@ -1,7 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.Extensions;
 using Bot.HttpInfrastructure;
-using Bot.HttpInfrastructure.Extensions;
 using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
@@ -68,11 +67,11 @@ namespace Bot.Commands
                 userState.StateObject!.TelegramId = message?.Chat.Id;
                 userState.StateObject!.Culture = LocalizationManager.GetLanguage(message!.From!.LanguageCode);
 
-                var response = await _requestClient.RegisterAsync((userState.StateObject as JObject)!.ToObject<RegisterDto>()!);
+                var response = await RequestClient.RegisterAsync((userState.StateObject as JObject)!.ToObject<RegisterDto>()!);
 
                 if (response == AuthResponse.SuccessesRegister)
                 {
-                    var virtualMachines = await _requestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+                    var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
                     await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesRegister", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);

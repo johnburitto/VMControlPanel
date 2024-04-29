@@ -1,6 +1,5 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
-using Bot.HttpInfrastructure.Extensions;
 using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
@@ -48,12 +47,12 @@ namespace Bot.Commands
             {
                 var dto = new SSHRequestDto
                 {
-                    VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     Command = message.Text,
-                    UserId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
                     TelegramId = message.Chat.Id
                 };
-                var response = await _requestClient.ExecuteSSHCommandAsync(dto);
+                var response = await RequestClient.ExecuteSSHCommandAsync(dto);
 
                 await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.CancelKeyboard);
             }

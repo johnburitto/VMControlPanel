@@ -1,6 +1,5 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
-using Bot.HttpInfrastructure.Extensions;
 using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
@@ -43,14 +42,14 @@ namespace Bot.Commands
                 }
                 else
                 {
-                    var userId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
+                    var userId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
 
                     Culture = (Cultures)language;
                     Keyboards.Culture = Culture;
                     NoAuthCommands.Culture = Culture;
 
-                    await _requestClient.CacheAsync($"{message.Chat.Id}_culture", ((int)language).ToString(), 1f);
-                    await _requestClient.ChangeUserCultureAsync(userId, Culture);
+                    await RequestClient.CacheAsync($"{message.Chat.Id}_culture", ((int)language).ToString(), 1f);
+                    await RequestClient.ChangeUserCultureAsync(userId, Culture);
                     await StateMachine.RemoveStateAsync(message.Chat.Id);
                     await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("SuccessesChange", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
                 }
