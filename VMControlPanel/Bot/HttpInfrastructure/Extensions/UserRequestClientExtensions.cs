@@ -17,6 +17,8 @@ namespace Bot.HttpInfrastructure.Extensions
 
         public static async Task<AuthResponse> LoginAsync(this RequestClient client, LoginDto dto)
         {
+            Console.WriteLine(client._apiConfiguration.UserUrl);
+
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
             var response = await client.Client!.PostAsync($"https://localhost:8080/api/Auth/login", content);

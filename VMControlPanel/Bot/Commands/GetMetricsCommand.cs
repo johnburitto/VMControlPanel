@@ -15,18 +15,23 @@ namespace Bot.Commands
 {
     public class GetMetricsCommand : MessageCommand
     {
+        public GetMetricsCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
 
-            var userId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message?.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
+            var userId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message?.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
             var dto = new SSHRequestDto
             {
-                VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
+                VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
                 UserId = userId,
                 TelegramId = message!.Chat.Id
             };
-            var metrics = await RequestClient.Instance.GetMetricsAsync(dto);
+            var metrics = await _requestClient.GetMetricsAsync(dto);
 
             if (message!.Text!.Contains("-r") || message!.Text!.Contains("--raw"))
             {

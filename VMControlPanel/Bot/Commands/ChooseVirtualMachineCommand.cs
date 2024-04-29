@@ -12,21 +12,26 @@ namespace Bot.Commands
 {
     public class ChooseVirtualMachineCommand : MessageCommand
     {
+        public ChooseVirtualMachineCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override List<string>? Names { get; set; }
 
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
 
-            var virtualMachine = await RequestClient.Instance.GetVirtualMachineByUserIdAndVMNameAsync(message!.Chat.Id, message?.Text);
+            var virtualMachine = await _requestClient.GetVirtualMachineByUserIdAndVMNameAsync(message!.Chat.Id, message?.Text);
 
-            await RequestClient.Instance.CacheAsync($"{message!.Chat.Id}_vm", JsonConvert.SerializeObject(virtualMachine), 1f);
+            await _requestClient.CacheAsync($"{message!.Chat.Id}_vm", JsonConvert.SerializeObject(virtualMachine), 1f);
             await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("VMChosen", Culture)} {virtualMachine?.Name}", parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
         }
 
         public override async Task TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
-            Names = await RequestClient.Instance.GetUserVirtualMachinesNamesAsync(message!.Chat.Id);
+            Names = await _requestClient.GetUserVirtualMachinesNamesAsync(message!.Chat.Id);
 
             await base.TryExecuteAsync(client, message);
         }

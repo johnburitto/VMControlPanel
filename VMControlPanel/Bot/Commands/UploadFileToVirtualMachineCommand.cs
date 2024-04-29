@@ -15,6 +15,11 @@ namespace Bot.Commands
 {
     public class UploadFileToVirtualMachineCommand : MessageCommand
     {
+        public UploadFileToVirtualMachineCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
@@ -52,12 +57,12 @@ namespace Bot.Commands
 
                 var dto = new SFTPRequestDto
                 {
-                    VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     FilePath = $"{FileManager.FileDirectory}/{message.Document.FileName}",
-                    UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    UserId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
                     TelegramId = message.Chat.Id
                 };
-                var response = await RequestClient.Instance.UploadFileToVirtualMachine(dto);
+                var response = await _requestClient.UploadFileToVirtualMachine(dto);
 
                 await client.SendTextMessageAsync(message.Chat.Id, response, parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
                 await StateMachine.RemoveStateAsync(message.Chat.Id);

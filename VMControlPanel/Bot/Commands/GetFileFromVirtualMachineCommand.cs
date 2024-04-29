@@ -14,7 +14,12 @@ using Telegram.Bot.Types.Enums;
 namespace Bot.Commands
 {
     public class GetFileFromVirtualMachineCommand : MessageCommand
-    {        
+    {
+        public GetFileFromVirtualMachineCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
@@ -36,13 +41,13 @@ namespace Bot.Commands
             {
                 var dto = new SFTPRequestDto
                 {
-                    VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     Data = message.Text,
-                    UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    UserId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
                     TelegramId = message.Chat.Id
                 };
 
-                var response = await RequestClient.Instance.GetFileFromVirtualMachineAsync(dto);
+                var response = await _requestClient.GetFileFromVirtualMachineAsync(dto);
 
                 if (response!.IsUploaded)
                 {

@@ -16,6 +16,11 @@ namespace Bot.Commands
 {
     public class RegisterCommand : MessageCommand
     {
+        public RegisterCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
@@ -63,11 +68,11 @@ namespace Bot.Commands
                 userState.StateObject!.TelegramId = message?.Chat.Id;
                 userState.StateObject!.Culture = LocalizationManager.GetLanguage(message!.From!.LanguageCode);
 
-                var response = await RequestClient.Instance.RegisterAsync((userState.StateObject as JObject)!.ToObject<RegisterDto>()!);
+                var response = await _requestClient.RegisterAsync((userState.StateObject as JObject)!.ToObject<RegisterDto>()!);
 
                 if (response == AuthResponse.SuccessesRegister)
                 {
-                    var virtualMachines = await RequestClient.Instance.GetUserVirtualMachinesAsync(message!.Chat.Id);
+                    var virtualMachines = await _requestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
                     await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesRegister", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);

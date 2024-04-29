@@ -14,6 +14,11 @@ namespace Bot.Commands
 {
     public class ExecuteSSHCommandsCommand : MessageCommand
     {
+        public ExecuteSSHCommandsCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
@@ -43,12 +48,12 @@ namespace Bot.Commands
             {
                 var dto = new SSHRequestDto
                 {
-                    VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     Command = message.Text,
-                    UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    UserId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
                     TelegramId = message.Chat.Id
                 };
-                var response = await RequestClient.Instance.ExecuteSSHCommandAsync(dto);
+                var response = await _requestClient.ExecuteSSHCommandAsync(dto);
 
                 await client.SendTextMessageAsync(message.Chat.Id, $"```\n{response}\n```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.CancelKeyboard);
             }

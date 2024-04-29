@@ -15,14 +15,19 @@ namespace Bot.Commands.Base
 {
     public class MessageCommand : Command
     {
+        public MessageCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override async Task TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
-            var culture = await RequestClient.Instance.GetCachedAsync($"{message!.Chat.Id}_culture");
+            var culture = await _requestClient.GetCachedAsync($"{message!.Chat.Id}_culture");
 
             Culture = culture.IsNullOrEmpty() ? Cultures.En : JsonConvert.DeserializeObject<Cultures>(culture);
             NoAuthCommands.Culture = Culture;
 
-            var token = await RequestClient.Instance.GetCachedAsync($"{message!.Chat.Id}_auth");
+            var token = await _requestClient.GetCachedAsync($"{message!.Chat.Id}_auth");
             var state = await StateMachine.GetSateAsync(message.Chat.Id);
             var data = state == null ? message.Text : state.StateName;
 

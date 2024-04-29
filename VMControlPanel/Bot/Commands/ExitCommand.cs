@@ -14,22 +14,27 @@ namespace Bot.Commands
 {
     public class ExitCommand : MessageCommand
     {
+        public ExitCommand(RequestClient requestClient) : base(requestClient)
+        {
+
+        }
+
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
 
             var dto = new SSHRequestDto
             {
-                VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message!.Chat.Id}_vm"),
-                UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync()
+                VirtualMachine = await _requestClient.GetCachedAsync<VirtualMachine>($"{message!.Chat.Id}_vm"),
+                UserId = await (await _requestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync()
             };
 
             await StateMachine.RemoveStateAsync(message.Chat.Id);
-            await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_vm");
-            await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_current_user_id");
-            await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_auth");
-            await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_culture");
-            await RequestClient.Instance.DisposeClientAndStream(dto);
+            await _requestClient.DeleteCachedAsync($"{message.Chat.Id}_vm");
+            await _requestClient.DeleteCachedAsync($"{message.Chat.Id}_current_user_id");
+            await _requestClient.DeleteCachedAsync($"{message.Chat.Id}_auth");
+            await _requestClient.DeleteCachedAsync($"{message.Chat.Id}_culture");
+            await _requestClient.DisposeClientAndStream(dto);
             await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("LoggedOut", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
 
