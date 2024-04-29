@@ -1,5 +1,6 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.HttpInfrastructure.Extensions;
 using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
@@ -51,12 +52,12 @@ namespace Bot.Commands
 
                 var dto = new SFTPRequestDto
                 {
-                    VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     FilePath = $"{FileManager.FileDirectory}/{message.Document.FileName}",
-                    UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
                     TelegramId = message.Chat.Id
                 };
-                var response = await RequestClient.UploadFileToVirtualMachine(dto);
+                var response = await RequestClient.Instance.UploadFileToVirtualMachine(dto);
 
                 await client.SendTextMessageAsync(message.Chat.Id, response, parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
