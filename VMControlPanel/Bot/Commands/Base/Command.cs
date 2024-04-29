@@ -1,6 +1,4 @@
-﻿using Bot.HttpInfrastructure;
-using Core.Entities;
-using Org.BouncyCastle.Asn1.Ocsp;
+﻿using Core.Entities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -10,12 +8,6 @@ namespace Bot.Commands.Base
     {
         public virtual List<string>? Names { get; set; }
         protected static Cultures Culture { get; set; } = Cultures.En;
-        protected readonly RequestClient _requestClient;
-
-        public Command(RequestClient requestClient)
-        {
-            _requestClient = requestClient;
-        }
 
         public virtual Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {

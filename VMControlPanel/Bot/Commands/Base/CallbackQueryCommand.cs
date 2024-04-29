@@ -7,11 +7,6 @@ namespace Bot.Commands.Base
 {
     public class CallbackQueryCommand : Command
     {
-        public CallbackQueryCommand(RequestClient requestClient) : base(requestClient)
-        {
-
-        }
-
         public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Console.WriteLine("This is callback query command");

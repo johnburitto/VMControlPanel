@@ -10,48 +10,22 @@ namespace Bot.Base
 {
     public class TelegramBotHandlers : ITelegramBotHandlers
     {
-        private readonly RequestClient _client;
-        private readonly List<MessageCommand> _commands;
-        
-        public TelegramBotHandlers()
-        {
-            _commands = new List<MessageCommand>() {
-                new StartCommand(_client),
-                new ExitCommand(_client),
-                new AuthCommand(_client),
-                new RegisterCommand(_client),
-                new AddVirtualMachineCommand(_client),
-                new ChooseVirtualMachineCommand(_client),
-                new ExecuteSSHCommandsCommand(_client),
-                new CreateDirectoryCommand(_client),
-                new DeleteDirectoryCommand(_client),
-                new GetFileFromVirtualMachineCommand(_client),
-                new UploadFileToVirtualMachineCommand(_client),
-                new GetMetricsCommand(_client),
-                new ChangeLanguageCommand(_client)
-            };
-        }
-
-        public TelegramBotHandlers(RequestClient client)
-        {
-            _client = client;
-            _commands = new List<MessageCommand>() {
-                new StartCommand(_client),
-                new ExitCommand(_client),
-                new AuthCommand(_client),
-                new RegisterCommand(_client),
-                new AddVirtualMachineCommand(_client),
-                new ChooseVirtualMachineCommand(_client),
-                new ExecuteSSHCommandsCommand(_client),
-                new CreateDirectoryCommand(_client),
-                new DeleteDirectoryCommand(_client),
-                new GetFileFromVirtualMachineCommand(_client),
-                new UploadFileToVirtualMachineCommand(_client),
-                new GetMetricsCommand(_client),
-                new ChangeLanguageCommand(_client)
-            };
-        }
-
+        private readonly List<MessageCommand> _commands =
+            [
+                new StartCommand(),
+                new ExitCommand(),
+                new AuthCommand(),
+                new RegisterCommand(),
+                new AddVirtualMachineCommand(),
+                new ChooseVirtualMachineCommand(),
+                new ExecuteSSHCommandsCommand(),
+                new CreateDirectoryCommand(),
+                new DeleteDirectoryCommand(),
+                new GetFileFromVirtualMachineCommand(),
+                new UploadFileToVirtualMachineCommand(),
+                new GetMetricsCommand(),
+                new ChangeLanguageCommand()
+            ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
         {

@@ -1,6 +1,7 @@
 ﻿using Bot.Commands.Base;
 using Bot.Extensions;
 using Bot.HttpInfrastructure;
+using Bot.HttpInfrastructure.Extensions;
 using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
@@ -14,10 +15,6 @@ namespace Bot.Commands
 {
     public class AddVirtualMachineCommand : MessageCommand
     {
-        public AddVirtualMachineCommand(RequestClient requestClient) : base(requestClient)
-        {
-        }
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Keyboards.Culture = Culture;
@@ -26,7 +23,7 @@ namespace Bot.Commands
 
             if (message!.Text!.Contains('❌'))
             {
-                var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+                var virtualMachines = await RequestClient.Instance.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel", Culture), replyMarkup: virtualMachines.ToKeyboard(Culture));
@@ -82,12 +79,12 @@ namespace Bot.Commands
                 try
                 {
                     userState.StateObject!.Port = int.Parse(message.Text);
-                    userState.StateObject!.UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message!.Chat.Id}_current_user_id"))
+                    userState.StateObject!.UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message!.Chat.Id}_current_user_id"))
                         .Content.ReadAsStringAsync();
                     userState.StateObject!.TelegramId = message.Chat.Id;
 
-                    var virtualMachine = await RequestClient.AddVirtualMachineAsync((userState.StateObject as JObject)!.ToObject<VirtualMachineDto>()!);
-                    var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+                    var virtualMachine = await RequestClient.Instance.AddVirtualMachineAsync((userState.StateObject as JObject)!.ToObject<VirtualMachineDto>()!);
+                    var virtualMachines = await RequestClient.Instance.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
                     if (virtualMachine != null)
                     {
@@ -98,7 +95,7 @@ namespace Bot.Commands
                         await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("AddingError", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
                     }
 
-                    await RequestClient.RemoveStateAsync(message!.Chat.Id);
+                    await RequestClient.Instance.RemoveStateAsync(message!.Chat.Id);
                 }
                 catch (Exception)
                 {
