@@ -1,4 +1,7 @@
 ﻿using Bot.Base;
+using Bot.Utilities;
+
+ConfigurationManager.ConfigureApp();
 
 var bot = new TelegramBot<TelegramBotHandlers>();
 

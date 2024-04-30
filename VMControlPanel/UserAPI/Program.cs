@@ -1,6 +1,7 @@
 using Infrastructure.Services.Impls;
 using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using UserInfrastructure.Configurations;
 using UserInfrastructure.Data;
 using UserInfrastructure.Service.Imls;
 using UserInfrastructure.Service.Interfaces;
@@ -25,6 +26,9 @@ builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
+
+// Add Configurations
+builder.Services.Configure<TokenGenerateServiceConfiguration>(options => builder.Configuration.GetSection("TokenGenerateServiceConfiguration").Bind(options));
 
 // Add Dependencies
 builder.Services.AddScoped<IAuthService, AuthService>();

@@ -10,7 +10,7 @@ namespace Bot.HttpInfrastructure.Extensions
     {
         public static async Task<List<User>?> GetUserAccountsAsync(this RequestClient client, long telegramId)
         {
-            var response = await client.Client!.GetAsync($"https://localhost:8080/api/Auth/accounts/{telegramId}");
+            var response = await client.Client!.GetAsync($"{client.ApiConfiguration!.UserApiUrl}/Auth/accounts/{telegramId}");
 
             return JsonConvert.DeserializeObject<List<User>>(await response.Content.ReadAsStringAsync());
         }
@@ -19,7 +19,7 @@ namespace Bot.HttpInfrastructure.Extensions
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
-            var response = await client.Client!.PostAsync($"https://localhost:8080/api/Auth/login", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.UserApiUrl}/Auth/login", content);
 
             return JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
         }
@@ -28,7 +28,7 @@ namespace Bot.HttpInfrastructure.Extensions
         {
             var dtoString = JsonConvert.SerializeObject(dto);
             var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
-            var response = await client.Client!.PostAsync($"https://localhost:8080/api/Auth/register", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.UserApiUrl}/Auth/register", content);
 
             return JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
         }

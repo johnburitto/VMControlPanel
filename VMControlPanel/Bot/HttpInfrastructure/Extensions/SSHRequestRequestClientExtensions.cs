@@ -17,7 +17,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/SSHRequest", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SSHRequest", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }
@@ -30,7 +30,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/SSHRequest/metrics", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SSHRequest/metrics", content);
 
             return JsonConvert.DeserializeObject<MetricsDto>(await response.Content.ReadAsStringAsync());
         }
@@ -43,7 +43,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/SSHRequest/exit", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SSHRequest/exit", content);
         }
     }
 }
