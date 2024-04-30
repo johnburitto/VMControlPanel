@@ -10,39 +10,39 @@ namespace Bot.HttpInfrastructure.Extensions
     {
         public static async Task<List<VirtualMachine>> GetUserVirtualMachinesAsync(this RequestClient client, long telegramId)
         {
-            var response = await client.Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
+            var response = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/Cache/{telegramId}_current_user_id");
             var userId = await response.Content.ReadAsStringAsync();
             var token = await client.GetCachedAsync($"{telegramId}_auth");
 
             client.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var virtualMachinesResponse = await client.Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/all");
+            var virtualMachinesResponse = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/VirtualMachine/{userId}/all");
 
             return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync()) ?? [];
         }
 
         public static async Task<List<string>> GetUserVirtualMachinesNamesAsync(this RequestClient client, long telegramId)
         {
-            var response = await client.Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
+            var response = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/Cache/{telegramId}_current_user_id");
             var userId = await response.Content.ReadAsStringAsync();
             var token = await client.GetCachedAsync($"{telegramId}_auth");
 
             client.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var virtualMachinesResponse = await client.Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/all");
+            var virtualMachinesResponse = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/VirtualMachine/{userId}/all");
 
             return JsonConvert.DeserializeObject<List<VirtualMachine>>(await virtualMachinesResponse.Content.ReadAsStringAsync())?.Select(_ => _.Name ?? "").ToList() ?? [];
         }
 
         public static async Task<VirtualMachine?> GetVirtualMachineByUserIdAndVMNameAsync(this RequestClient client, long telegramId, string? name)
         {
-            var response = await client.Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_current_user_id");
+            var response = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/Cache/{telegramId}_current_user_id");
             var userId = await response.Content.ReadAsStringAsync();
             var token = await client.GetCachedAsync($"{telegramId}_auth");
 
             client.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var virtualMachinesResponse = await client.Client!.GetAsync($"https://localhost:8081/api/VirtualMachine/{userId}/{name}");
+            var virtualMachinesResponse = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/VirtualMachine/{userId}/{name}");
 
             return JsonConvert.DeserializeObject<VirtualMachine>(await virtualMachinesResponse.Content.ReadAsStringAsync());
         }
@@ -55,7 +55,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/VirtualMachine", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/VirtualMachine", content);
 
             return JsonConvert.DeserializeObject<VirtualMachine>(await response.Content.ReadAsStringAsync());
         }

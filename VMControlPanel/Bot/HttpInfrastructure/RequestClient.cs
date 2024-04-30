@@ -1,4 +1,8 @@
-﻿namespace Bot.HttpInfrastructure
+﻿using Bot.Configurations;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+
+namespace Bot.HttpInfrastructure
 {
     public class RequestClient
     {
@@ -8,6 +12,7 @@
 
         public static RequestClient Instance => GetInstance();
         public HttpClient? Client => GetClientInstance();
+        public ApiConfiguration? ApiConfiguration { get; set; }
 
         private static RequestClient GetInstance()
         {
@@ -33,6 +38,11 @@
             }
 
             return _client;
+        }
+
+        public static void Configure(IOptions<ApiConfiguration>? configuration)
+        {
+            Instance.ApiConfiguration = configuration?.Value;
         }
     }
 }

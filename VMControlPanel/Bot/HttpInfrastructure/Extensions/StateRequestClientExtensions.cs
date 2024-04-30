@@ -7,14 +7,14 @@ namespace Bot.HttpInfrastructure.Extensions
     {
         public static async Task<string> GetStateAsync(this RequestClient client, long telegramId)
         {
-            var response = await client.Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_state");
+            var response = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/Cache/{telegramId}_state");
 
             return await response.Content.ReadAsStringAsync();
         }
 
         public static async Task<string> GetStateNameAsync(this RequestClient client, long telegramId)
         {
-            var response = await client.Client!.GetAsync($"https://localhost:8081/api/Cache/{telegramId}_state");
+            var response = await client.Client!.GetAsync($"{client.ApiConfiguration!.ApiUrl}/Cache/{telegramId}_state");
             var obj = JsonConvert.DeserializeObject<State>(await response.Content.ReadAsStringAsync());
 
             return obj?.StateName ?? "";
@@ -24,12 +24,12 @@ namespace Bot.HttpInfrastructure.Extensions
         {
             var stateSting = JsonConvert.SerializeObject(state);
 
-            await client.Client!.PostAsync($"https://localhost:8081/api/Cache/{telegramId}_state?value={stateSting}&expTimeInHours={expTimeInHours}", null);
+            await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/Cache/{telegramId}_state?value={stateSting}&expTimeInHours={expTimeInHours}", null);
         }
 
         public static async Task RemoveStateAsync(this RequestClient client, long telegramId)
         {
-            await client.Client!.DeleteAsync($"https://localhost:8081/api/Cache/{telegramId}_state");
+            await client.Client!.DeleteAsync($"{client.ApiConfiguration!.ApiUrl}/Cache/{telegramId}_state");
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/directory/create", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SFTPRequest/directory/create", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }
@@ -30,7 +30,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/directory/delete", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SFTPRequest/directory/delete", content);
 
             return Regex.Replace(await response.Content.ReadAsStringAsync(), @"\x1B\[[^@-~]*[@-~]", "");
         }
@@ -43,7 +43,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/file/get", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SFTPRequest/file/get", content);
 
             return JsonConvert.DeserializeObject<FileDto>(await response.Content.ReadAsStringAsync());
         }
@@ -56,7 +56,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.Client!.PostAsync($"https://localhost:8081/api/SFTPRequest/file/upload", content);
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SFTPRequest/file/upload", content);
 
             return await response.Content.ReadAsStringAsync();
         }
