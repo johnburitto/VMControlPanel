@@ -9,6 +9,7 @@ using Telegram.Bot.Types;
 using Bot.Utilities;
 using Bot.Localization;
 using Bot.HttpInfrastructure.Extensions;
+using Serilog;
 
 namespace Bot.Commands
 {
@@ -16,6 +17,8 @@ namespace Bot.Commands
     {
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute DeleteDirectoryCommand");
+
             Keyboards.Culture = Culture;
 
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);

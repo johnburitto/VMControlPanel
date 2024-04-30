@@ -7,6 +7,7 @@ using Core.Dtos;
 using Core.Entities;
 using Infrastructure.Services.Impls;
 using Newtonsoft.Json;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -17,6 +18,8 @@ namespace Bot.Commands
     {
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute GetMetricsCommand");
+
             Keyboards.Culture = Culture;
 
             var userId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message?.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();

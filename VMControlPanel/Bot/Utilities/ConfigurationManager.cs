@@ -3,6 +3,8 @@ using Bot.HttpInfrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Exceptions;
 using Utilities;
 
 namespace Bot.Utilities
@@ -40,6 +42,17 @@ namespace Bot.Utilities
 
             RequestClient.Configure(serviceProvider.GetService<IOptions<ApiConfiguration>>());
             CryptoService.BlowfishKey = Configuration["BlowfishKey"]!;
+            ConfigureSerilog();
+        }
+
+        private static void ConfigureSerilog()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT"))
+                .ReadFrom.Configuration(Configuration)
+                .CreateBootstrapLogger();
         }
     }
 }

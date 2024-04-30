@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using Serilog;
+using Telegram.Bot;
 using Telegram.Bot.Polling;
 
 namespace Bot.Base
@@ -20,6 +21,8 @@ namespace Bot.Base
                 AllowedUpdates = [],
                 ThrowPendingUpdates = true
             };
+
+            Log.Information("Bot initialized");
         }
 
         public void StartReceiving()
@@ -30,6 +33,7 @@ namespace Bot.Base
                 ReceiverOptions,
                 CancellationTokenSource.Token);
 
+            Log.Information("Bot start receiving");
             Console.ReadKey();
             CancellationTokenSource.Cancel();
         }

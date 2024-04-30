@@ -6,6 +6,7 @@ using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -16,6 +17,8 @@ namespace Bot.Commands
     {
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute ExecuteSSHCommandsCommand");
+
             Keyboards.Culture = Culture;
 
             if (message!.Text!.Contains('❌'))

@@ -7,6 +7,7 @@ using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -17,6 +18,8 @@ namespace Bot.Commands
     {
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute AddVirtualMachineCommand");
+
             Keyboards.Culture = Culture;
 
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
@@ -88,11 +91,15 @@ namespace Bot.Commands
 
                     if (virtualMachine != null)
                     {
-                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesAdd", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture)); 
+                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesAdd", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
+                        
+                        Log.Information($"[{userState.StateObject.UserId}] virtual machine successfully added");
                     }
                     else
                     {
                         await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("AddingError", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
+
+                        Log.Information($"[{userState.StateObject.UserId}] some error has occured when virtual machine was adding");
                     }
 
                     await RequestClient.Instance.RemoveStateAsync(message!.Chat.Id);

@@ -5,6 +5,7 @@ using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Entities;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -15,6 +16,8 @@ namespace Bot.Commands
     {
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute ChangeLanguageCommand");
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (userState == null)
@@ -48,6 +51,8 @@ namespace Bot.Commands
                     await RequestClient.Instance.ChangeUserCultureAsync(userId, Culture);
                     await StateMachine.RemoveStateAsync(message.Chat.Id);
                     await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("SuccessesChange", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
+
+                    Log.Information($"[{userId}] language has been changed to {language}");
                 }
             }
         }

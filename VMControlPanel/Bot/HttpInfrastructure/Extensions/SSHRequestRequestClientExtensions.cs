@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Text;
+using Serilog;
 
 namespace Bot.HttpInfrastructure.Extensions
 {
@@ -16,6 +17,8 @@ namespace Bot.HttpInfrastructure.Extensions
             var token = await client.GetCachedAsync($"{dto.TelegramId}_auth");
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            Log.Information($"User {dto.UserId} try execure '{dto.Command}'");
 
             var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SSHRequest", content);
 

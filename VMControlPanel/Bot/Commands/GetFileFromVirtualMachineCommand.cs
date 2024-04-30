@@ -7,6 +7,7 @@ using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
 using Infrastructure.Services.Impls;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -17,6 +18,8 @@ namespace Bot.Commands
     {
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute GetFileFromVirtualMachineCommand");
+
             Keyboards.Culture = Culture;
 
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);

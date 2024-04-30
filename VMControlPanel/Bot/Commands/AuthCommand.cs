@@ -7,6 +7,7 @@ using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -18,6 +19,8 @@ namespace Bot.Commands
     {
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute AuthCommand");
+
             Keyboards.Culture = Culture;
 
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
@@ -55,6 +58,8 @@ namespace Bot.Commands
                 userState!.StateObject!.TelegramId = message?.Chat.Id;
 
                 var response = await RequestClient.Instance.LoginAsync((userState.StateObject as JObject)!.ToObject<LoginDto>()!);
+
+                Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] {response}");
 
                 if (response == AuthResponse.SuccessesLogin)
                 {
