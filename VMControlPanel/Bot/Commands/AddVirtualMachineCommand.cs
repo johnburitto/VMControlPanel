@@ -1,10 +1,13 @@
 ﻿using Bot.Commands.Base;
 using Bot.Extensions;
 using Bot.HttpInfrastructure;
+using Bot.HttpInfrastructure.Extensions;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -13,20 +16,20 @@ namespace Bot.Commands
 {
     public class AddVirtualMachineCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "➕ Додати нову машину", "input_vm_name", "input_vm_username", 
-                                                              "input_vm_password", "input_vm_host", "input_vm_port" ];
-
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute AddVirtualMachineCommand");
+
+            Keyboards.Culture = Culture;
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (message!.Text!.Contains('❌'))
             {
-                var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+                var virtualMachines = await RequestClient.Instance.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
                 await StateMachine.RemoveStateAsync(message!.Chat.Id);
-                await client.SendTextMessageAsync(message.Chat.Id, "Ви відмінили дію", replyMarkup: virtualMachines.ToKeyboard());
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("Cancel", Culture), replyMarkup: virtualMachines.ToKeyboard(Culture));
 
                 return;
             }
@@ -40,7 +43,7 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMName", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_name")
             {
@@ -48,7 +51,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_username";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть ім'я користувача на віртуальній машині:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMUser", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_username")
             {
@@ -56,7 +59,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_password";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть пароль користувача на віртуальній машині:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMUserPassword", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_password")
             {
@@ -64,7 +67,7 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_host";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть хоста віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMHost", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_host")
             {
@@ -72,29 +75,34 @@ namespace Bot.Commands
                 userState.StateName = "input_vm_port";
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message!.Chat.Id, "Введіть порт віртуальної машини:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("InputVMPort", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.CancelKeyboard);
             }
             else if (userState?.StateName == "input_vm_port")
             {
                 try
                 {
                     userState.StateObject!.Port = int.Parse(message.Text);
-                    userState.StateObject!.UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message!.Chat.Id}_current_user_id"))
+                    userState.StateObject!.UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message!.Chat.Id}_current_user_id"))
                         .Content.ReadAsStringAsync();
+                    userState.StateObject!.TelegramId = message.Chat.Id;
 
-                    var virtualMachine = await RequestClient.AddVirtualMachineAsync((userState.StateObject as JObject)!.ToObject<VirtualMachineDto>()!);
-                    var virtualMachines = await RequestClient.GetUserVirtualMachinesAsync(message!.Chat.Id);
+                    var virtualMachine = await RequestClient.Instance.AddVirtualMachineAsync((userState.StateObject as JObject)!.ToObject<VirtualMachineDto>()!);
+                    var virtualMachines = await RequestClient.Instance.GetUserVirtualMachinesAsync(message!.Chat.Id);
 
                     if (virtualMachine != null)
                     {
-                        await client.SendTextMessageAsync(message!.Chat.Id, "Віртуальна машина успішно додана", parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard()); 
+                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesAdd", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
+                        
+                        Log.Information($"[{userState.StateObject.UserId}] virtual machine successfully added");
                     }
                     else
                     {
-                        await client.SendTextMessageAsync(message!.Chat.Id, "Підчас додавання машини сталася помилка", parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard());
+                        await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("AddingError", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
+
+                        Log.Information($"[{userState.StateObject.UserId}] some error has occured when virtual machine was adding");
                     }
 
-                    await RequestClient.RemoveStateAsync(message!.Chat.Id);
+                    await RequestClient.Instance.RemoveStateAsync(message!.Chat.Id);
                 }
                 catch (Exception)
                 {
@@ -103,6 +111,13 @@ namespace Bot.Commands
                     await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
                 }
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [ $"➕ {LocalizationManager.GetString("AddNewMachine", Culture)}", "input_vm_name", "input_vm_username", "input_vm_password", "input_vm_host", "input_vm_port" ];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }

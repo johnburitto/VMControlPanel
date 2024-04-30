@@ -1,10 +1,13 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.HttpInfrastructure.Extensions;
+using Bot.Localization;
 using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
 using Infrastructure.Services.Impls;
 using Newtonsoft.Json;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -13,21 +16,24 @@ namespace Bot.Commands
 {
     public class GetMetricsCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "Метрики", "/metrics" ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
-            var userId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message?.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute GetMetricsCommand");
+
+            Keyboards.Culture = Culture;
+
+            var userId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message?.Chat.Id}_current_user_id")).Content.ReadAsStringAsync();
             var dto = new SSHRequestDto
             {
-                VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
-                UserId = userId
+                VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message?.Chat.Id}_vm"),
+                UserId = userId,
+                TelegramId = message!.Chat.Id
             };
-            var metrics = await RequestClient.GetMetricsAsync(dto);
+            var metrics = await RequestClient.Instance.GetMetricsAsync(dto);
 
             if (message!.Text!.Contains("-r") || message!.Text!.Contains("--raw"))
             {
-                await client.SendTextMessageAsync(message!.Chat.Id, $"Raw data:```\n{JsonConvert.SerializeObject(metrics)}```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
+                await client.SendTextMessageAsync(message!.Chat.Id, $"{LocalizationManager.GetString("RawData", Culture)}:```\n{JsonConvert.SerializeObject(metrics)}```", parseMode: ParseMode.MarkdownV2, replyMarkup: Keyboards.VMActionKeyboard);
 
                 return;
             }
@@ -109,6 +115,13 @@ namespace Bot.Commands
 
                 GraphsService.DeleteGraphFromLocal(_);
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [LocalizationManager.GetString("Metrics", Culture), "/metrics"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }

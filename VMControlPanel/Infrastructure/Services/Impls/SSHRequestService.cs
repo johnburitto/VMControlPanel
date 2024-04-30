@@ -55,7 +55,10 @@ namespace Infrastructure.Services.Impls
             }
             else
             {
-                client!.Connect();
+                if (!client!.IsConnected)
+                {
+                    client.Connect();
+                }
 
                 stream = client.CreateShellStream("xterm", 80, 24, 800, 600, 1024, _modes);
                 _streams.Add(userId, stream);

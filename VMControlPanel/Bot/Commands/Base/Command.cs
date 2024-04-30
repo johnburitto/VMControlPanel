@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using Core.Entities;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Bot.Commands.Base
@@ -6,6 +7,7 @@ namespace Bot.Commands.Base
     public abstract class Command
     {
         public virtual List<string>? Names { get; set; }
+        protected static Cultures Culture { get; set; } = Cultures.En;
 
         public virtual Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {

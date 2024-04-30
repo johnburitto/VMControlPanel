@@ -9,5 +9,12 @@
         public string? Email { get; set; }
         public string? NormalizedUserName { get => UserName?.ToUpper(); set { } }
         public string? NormalizedEmail { get => Email?.ToUpper(); set { } }
+        public Cultures Culture { get; set; }
+    }
+
+    public enum Cultures
+    {
+        Uk,
+        En
     }
 }

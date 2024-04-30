@@ -1,23 +1,27 @@
 ﻿using Bot.Commands.Base;
 using Bot.HttpInfrastructure;
+using Bot.HttpInfrastructure.Extensions;
+using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
 using Core.Dtos;
 using Core.Entities;
 using Infrastructure.Services.Impls;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Commands
 {
     public class UploadFileToVirtualMachineCommand : MessageCommand
     {
-        public override List<string>? Names { get; set; } = [ "Вивантажити файл", "input_upload_file" ];
-
         public override async Task ExecuteAsync(ITelegramBotClient client, Message? message)
         {
+            Log.Information($"[{message!.Chat.FirstName} {message.Chat.LastName} #{message.Chat.Id}] execute UploadFileToVirtualMachineCommand");
+
+            Keyboards.Culture = Culture;
+
             var userState = await StateMachine.GetSateAsync(message!.Chat.Id);
 
             if (userState == null)
@@ -29,13 +33,13 @@ namespace Bot.Commands
                 };
 
                 await StateMachine.SaveStateAsync(message!.Chat.Id, userState);
-                await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
+                await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputFile", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
             }
             else if (userState.StateName == "input_upload_file")
             {
                 if (message.Document == null)
                 {
-                    await client.SendTextMessageAsync(message.Chat.Id, "Надішліть файл, який хочете вивантажити:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
+                    await client.SendTextMessageAsync(message.Chat.Id, $"{LocalizationManager.GetString("InputFile", Culture)}:", parseMode: ParseMode.Html, replyMarkup: Keyboards.Null);
 
                     return;
                 }
@@ -51,16 +55,24 @@ namespace Bot.Commands
 
                 var dto = new SFTPRequestDto
                 {
-                    VirtualMachine = await RequestClient.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
+                    VirtualMachine = await RequestClient.Instance.GetCachedAsync<VirtualMachine>($"{message.Chat.Id}_vm"),
                     FilePath = $"{FileManager.FileDirectory}/{message.Document.FileName}",
-                    UserId = await (await RequestClient.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync()
+                    UserId = await (await RequestClient.Instance.Client!.GetAsync($"https://localhost:8081/api/Cache/{message.Chat.Id}_current_user_id")).Content.ReadAsStringAsync(),
+                    TelegramId = message.Chat.Id
                 };
-                var response = await RequestClient.UploadFileToVirtualMachine(dto);
+                var response = await RequestClient.Instance.UploadFileToVirtualMachine(dto);
 
                 await client.SendTextMessageAsync(message.Chat.Id, response, parseMode: ParseMode.Html, replyMarkup: Keyboards.VMActionKeyboard);
                 await StateMachine.RemoveStateAsync(message.Chat.Id);
                 FileManager.DeleteFile($"{FileManager.FileDirectory}/{message.Document.FileName}");
             }
+        }
+
+        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        {
+            Names = [LocalizationManager.GetString("UploadFile", Culture), "input_upload_file"];
+
+            return base.TryExecuteAsync(client, message);
         }
     }
 }
