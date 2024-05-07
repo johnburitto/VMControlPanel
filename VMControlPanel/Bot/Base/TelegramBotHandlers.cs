@@ -1,6 +1,5 @@
 ﻿using Bot.Commands;
 using Bot.Commands.Base;
-using Bot.HttpInfrastructure;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -24,7 +23,8 @@ namespace Bot.Base
                 new GetFileFromVirtualMachineCommand(),
                 new UploadFileToVirtualMachineCommand(),
                 new GetMetricsCommand(),
-                new ChangeLanguageCommand()
+                new ChangeLanguageCommand(),
+                new GetOpenAIResponseMessage()
             ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
