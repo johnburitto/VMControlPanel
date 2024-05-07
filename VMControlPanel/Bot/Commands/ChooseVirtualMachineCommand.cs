@@ -30,11 +30,11 @@ namespace Bot.Commands
             Log.Information($"[{userId}] choosed to work {virtualMachine?.Name}({virtualMachine?.Id})");
         }
 
-        public override async Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override async Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Names = await RequestClient.Instance.GetUserVirtualMachinesNamesAsync(message!.Chat.Id);
 
-            await base.TryExecuteAsync(client, message);
+            return await base.TryExecuteAsync(client, message);
         }
     }
 }

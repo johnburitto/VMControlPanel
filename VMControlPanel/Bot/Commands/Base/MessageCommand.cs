@@ -16,7 +16,7 @@ namespace Bot.Commands.Base
     public class MessageCommand : Command
     {
 
-        public override async Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override async Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             var culture = await RequestClient.Instance.GetCachedAsync($"{message!.Chat.Id}_culture");
 
@@ -38,20 +38,24 @@ namespace Bot.Commands.Base
                 await StateMachine.SaveStateAsync(message.Chat.Id, state);
                 await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("YouHaveToLogin"), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
 
-                return;
+                return false;
             }
 
             if (IsCanBeExecuted(data ?? ""))
             {
                 await ExecuteAsync(client, message);
+
+                return true;
             }
+
+            return false;
         }
 
-        public override Task TryExecuteAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
+        public override Task<bool> TryExecuteAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
         {
             Console.WriteLine("This is message command");
 
-            return Task.CompletedTask;
+            return Task.FromResult(false);
         }
     }
 }

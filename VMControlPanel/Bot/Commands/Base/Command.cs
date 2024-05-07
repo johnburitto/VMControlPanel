@@ -19,12 +19,12 @@ namespace Bot.Commands.Base
             throw new NotImplementedException();
         }
         
-        public virtual Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public virtual Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Task TryExecuteAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
+        public virtual Task<bool> TryExecuteAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
         {
             throw new NotImplementedException();
         }

@@ -60,7 +60,10 @@ namespace Bot.Base
         {
             foreach (var command in _commands)
             {
-                await command.TryExecuteAsync(client, message);
+                if (await command.TryExecuteAsync(client, message))
+                {
+                    return;
+                }
             }
         }
 
@@ -68,7 +71,10 @@ namespace Bot.Base
         {
             foreach (var command in _commands)
             {
-                await command.TryExecuteAsync(client, callbackQuery);
+                if (await command.TryExecuteAsync(client, callbackQuery))
+                {
+                    return;
+                }
             }
         }
     }

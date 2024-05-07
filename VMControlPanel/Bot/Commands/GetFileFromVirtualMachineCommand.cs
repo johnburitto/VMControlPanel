@@ -65,7 +65,7 @@ namespace Bot.Commands
             }
         }
 
-        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Names = [LocalizationManager.GetString("DownloadFile", Culture), "input_download_file_name"];
 

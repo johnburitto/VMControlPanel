@@ -31,12 +31,11 @@ namespace Bot.Commands
             await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_vm");
             await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_current_user_id");
             await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_auth");
-            await RequestClient.Instance.DeleteCachedAsync($"{message.Chat.Id}_culture");
             await RequestClient.Instance.DisposeClientAndStream(dto);
             await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("LoggedOut", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
         }
 
-        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Names = [$"🚪 {LocalizationManager.GetString("Logout", Culture)}", "/exit"];
 
