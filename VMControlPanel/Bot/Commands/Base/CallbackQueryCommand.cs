@@ -1,5 +1,4 @@
-﻿using Bot.HttpInfrastructure;
-using Bot.StateMachineBase;
+﻿using Bot.StateMachineBase;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 

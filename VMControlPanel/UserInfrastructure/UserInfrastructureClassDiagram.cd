@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="UserInfrastructure.Service.Imls.AuthService" BaseTypeListCollapsed="true">
+    <Position X="8" Y="0.5" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQABAAAAAAAAAAAAAAAAIAwIEAAAIAAAAA=</HashCode>
+      <FileName>Service\Imls\AuthService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UserInfrastructure.Service.Imls.TokenGenerateService">
+    <Position X="5.75" Y="4.25" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Service\Imls\TokenGenerateService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_configuration" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UserInfrastructure.Data.UserDbContext">
+    <Position X="11.5" Y="4.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\UserDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.EntityFrameworkCore.DbContext" Collapsed="true">
+    <Position X="16.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UserInfrastructure.Configurations.UserConfiguration">
+    <Position X="2.25" Y="6.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configurations\UserConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UserInfrastructure.Configurations.TokenGenerateServiceConfiguration">
+    <Position X="6.5" Y="6.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configurations\TokenGenerateServiceConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="UserInfrastructure.Service.Interfaces.IAuthService">
+    <Position X="2.25" Y="0.5" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQAAAAAAAAAAAAAAAAAAIAwIEAAAAAAAAA=</HashCode>
+      <FileName>Service\Interfaces\IAuthService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="UserInfrastructure.Service.Interfaces.ITokenGenerateService">
+    <Position X="2.25" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Service\Interfaces\ITokenGenerateService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="UserInfrastructure.Service.Interfaces.AuthResponse">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAEAAAAAAAAgAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Service\Interfaces\IAuthService.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

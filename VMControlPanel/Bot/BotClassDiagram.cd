@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Bot.Base.TelegramBot&lt;THandlers&gt;">
+    <Position X="7.75" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAIAAAAAEKAAAAAAAACAAABAAA=</HashCode>
+      <FileName>Base\TelegramBot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.Base.TelegramBotHandlers" BaseTypeListCollapsed="true">
+    <Position X="12" Y="0.5" Width="7" />
+    <TypeIdentifier>
+      <HashCode>CAIAIAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Base\TelegramBotHandlers.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Bot.Utilities.ConfigurationManager">
+    <Position X="0.5" Y="3.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAIBAAAAgAEAAAAAAAA=</HashCode>
+      <FileName>Utilities\ConfigurationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.Utilities.Keyboards">
+    <Position X="3.5" Y="3.75" Width="3.5" />
+    <AssociationLine Name="CancelKeyboard" Type="Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardMarkup" FixedFromPoint="true">
+      <Path>
+        <Point X="6.188" Y="5.69" />
+        <Point X="6.188" Y="7" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.034" Y="0.131" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Null" Type="Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardMarkup" FixedFromPoint="true">
+      <Path>
+        <Point X="6.938" Y="5.69" />
+        <Point X="6.938" Y="7" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="StartKeyboard" Type="Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardMarkup" FixedFromPoint="true">
+      <Path>
+        <Point X="3.625" Y="5.69" />
+        <Point X="3.625" Y="7" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="VMActionKeyboard" Type="Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardMarkup" FixedFromPoint="true">
+      <Path>
+        <Point X="5" Y="5.69" />
+        <Point X="5" Y="7" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.005" Y="0.435" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAgAAAAAAoIAAAAAAAAAAQAAAAAAAAIAACAAAAA=</HashCode>
+      <FileName>Utilities\Keyboards.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Null" />
+      <Property Name="CancelKeyboard" />
+      <Property Name="StartKeyboard" />
+      <Property Name="VMActionKeyboard" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Bot.Utilities.NoAuthCommands">
+    <Position X="7.25" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAQAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\NoAuthCommands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardMarkup" Collapsed="true">
+    <Position X="3.25" Y="7" Width="4" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Bot.StateMachineBase.State">
+    <Position X="10" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAEAAAA=</HashCode>
+      <FileName>StateMachineBase\State.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.StateMachineBase.StateMachine">
+    <Position X="12.75" Y="3.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAgAAAAAAAAAAAAAAAAAAAAAAABAAAACAA=</HashCode>
+      <FileName>StateMachineBase\StateMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.Localization.LocalizationManager">
+    <Position X="7.5" Y="6" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAQAAgAAAAAAABAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Localization\LocalizationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.RequestClient">
+    <Position X="0.5" Y="8.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAEBgAABgAAAABAAAAAAQQAABAAAAAAQ=</HashCode>
+      <FileName>HttpInfrastructure\RequestClient.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ApiConfiguration" />
+      <Property Name="OpenAIClient" />
+      <Property Name="Instance" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Bot.Configurations.ApiConfiguration">
+    <Position X="6" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Configurations\ApiConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Azure.AI.OpenAI.OpenAIClient" Collapsed="true">
+    <Position X="6" Y="10.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.Extensions.CacheRequestClientExtensions">
+    <Position X="8.5" Y="8.25" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>HttpInfrastructure\Extensions\CacheRequestClientExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.Extensions.OpenAIRequestClientExtensions">
+    <Position X="16.5" Y="10.5" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAA=</HashCode>
+      <FileName>HttpInfrastructure\Extensions\OpenAIRequestClientExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.Extensions.SFTPRequestRequestClientExtensions">
+    <Position X="6.5" Y="12.5" Width="6" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAACCAAAAAAAAAAAAQAAIAAAAAAAAAA=</HashCode>
+      <FileName>HttpInfrastructure\Extensions\SFTPRequestRequestClientExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.Extensions.SSHRequestRequestClientExtensions">
+    <Position X="0.5" Y="12.5" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAEAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HttpInfrastructure\Extensions\SSHRequestRequestClientExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.Extensions.StateRequestClientExtensions">
+    <Position X="12.75" Y="12.5" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAgAAAAAAAAAgAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>HttpInfrastructure\Extensions\StateRequestClientExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.Extensions.UserRequestClientExtensions">
+    <Position X="14.5" Y="8.25" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAQAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>HttpInfrastructure\Extensions\UserRequestClientExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.HttpInfrastructure.Extensions.VirtualMachineRequestClientExtensions">
+    <Position X="8.5" Y="10.5" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAIAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>HttpInfrastructure\Extensions\VirtualMachineRequestClientExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.Extensions.ListExtensions">
+    <Position X="11.75" Y="6" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQgAAAAA=</HashCode>
+      <FileName>Extensions\ListExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Bot.Base.ITelegramBotHandlers">
+    <Position X="0.5" Y="0.5" Width="7" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\ITelegramBotHandlers.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
