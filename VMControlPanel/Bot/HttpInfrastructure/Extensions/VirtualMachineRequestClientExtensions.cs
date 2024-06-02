@@ -1,6 +1,7 @@
 ﻿using Core.Dtos;
 using Core.Entities;
 using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -58,6 +59,18 @@ namespace Bot.HttpInfrastructure.Extensions
             var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/VirtualMachine", content);
 
             return JsonConvert.DeserializeObject<VirtualMachine>(await response.Content.ReadAsStringAsync());
+        }
+        
+        public static async Task<bool> DeleteVirtualMachineAsync(this RequestClient client, long telegramId)
+        {
+            var virtualMachine = await client.GetCachedAsync<VirtualMachine>($"{telegramId}_vm");
+            var token = await client.GetCachedAsync($"{telegramId}_auth");
+
+            client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.Client!.DeleteAsync($"{client.ApiConfiguration!.ApiUrl}/VirtualMachine/{virtualMachine?.Id}");
+
+            return response.StatusCode == HttpStatusCode.NoContent ? true : false;
         }
     }
 }

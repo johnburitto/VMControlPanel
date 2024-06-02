@@ -26,6 +26,8 @@ namespace Bot.Base
                 new ChangeLanguageCommand(),
                 new GetOpenAIResponseMessage(),
                 new DeleteAccountCommand(),
+                new DeleteVirtualMachineCommand(),
+                new DeleteVirtualMachineCommand()
             ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)

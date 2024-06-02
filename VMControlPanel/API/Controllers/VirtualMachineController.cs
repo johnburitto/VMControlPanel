@@ -51,7 +51,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<VirtualMachine>>> GetUserVirtualMachines(string userId)
         {
-            return Ok(await _service.GetUserVirtualMachines(userId));
+            return Ok(await _service.GetUserVirtualMachinesAsync(userId));
         }
 
         [HttpPost]
