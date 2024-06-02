@@ -24,7 +24,8 @@ namespace Bot.Base
                 new UploadFileToVirtualMachineCommand(),
                 new GetMetricsCommand(),
                 new ChangeLanguageCommand(),
-                new GetOpenAIResponseMessage()
+                new GetOpenAIResponseMessage(),
+                new DeleteAccountCommand(),
             ];
 
         public async Task MessagesHandlerAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)

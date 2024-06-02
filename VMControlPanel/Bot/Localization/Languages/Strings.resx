@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountDeletedSuccessfully" xml:space="preserve">
+    <value>Account deleted successfully</value>
+  </data>
   <data name="AddingError" xml:space="preserve">
     <value>An error occurred while adding a machine</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="CreateDirectory" xml:space="preserve">
     <value>Create a directory</value>
   </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>Delete your account</value>
+  </data>
   <data name="DeleteDirectory" xml:space="preserve">
     <value>Delete a directory</value>
   </data>
@@ -152,6 +158,9 @@
   </data>
   <data name="HelloMessage" xml:space="preserve">
     <value>Hello! I'm here to help you interact with your virtual machines</value>
+  </data>
+  <data name="InputAccountPassword" xml:space="preserve">
+    <value>Input account password</value>
   </data>
   <data name="InputCommand" xml:space="preserve">
     <value>Enter the command</value>
@@ -215,6 +224,9 @@
   </data>
   <data name="Register" xml:space="preserve">
     <value>Create an account</value>
+  </data>
+  <data name="SelectAccountToDelete" xml:space="preserve">
+    <value>Select account to delete</value>
   </data>
   <data name="SuccessesAdd" xml:space="preserve">
     <value>Virtual machine added successfully</value>

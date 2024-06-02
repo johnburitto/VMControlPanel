@@ -61,6 +61,15 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account deleted successfully.
+        /// </summary>
+        internal static string AccountDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("AccountDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred while adding a machine.
         /// </summary>
         internal static string AddingError {
@@ -124,6 +133,15 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete your account.
+        /// </summary>
+        internal static string DeleteAccount {
+            get {
+                return ResourceManager.GetString("DeleteAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete a directory.
         /// </summary>
         internal static string DeleteDirectory {
@@ -165,6 +183,15 @@ namespace Bot.Localization.Languages {
         internal static string HelloMessage {
             get {
                 return ResourceManager.GetString("HelloMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input account password.
+        /// </summary>
+        internal static string InputAccountPassword {
+            get {
+                return ResourceManager.GetString("InputAccountPassword", resourceCulture);
             }
         }
         
@@ -354,6 +381,15 @@ namespace Bot.Localization.Languages {
         internal static string Register {
             get {
                 return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select account to delete.
+        /// </summary>
+        internal static string SelectAccountToDelete {
+            get {
+                return ResourceManager.GetString("SelectAccountToDelete", resourceCulture);
             }
         }
         

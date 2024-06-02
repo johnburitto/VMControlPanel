@@ -1,15 +1,12 @@
 ﻿using Bot.HttpInfrastructure;
 using Bot.HttpInfrastructure.Extensions;
-using Bot.Localization;
 using Bot.StateMachineBase;
 using Bot.Utilities;
-using Core.Dtos;
 using Core.Entities;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace Bot.Commands.Base
 {
@@ -27,17 +24,8 @@ namespace Bot.Commands.Base
             var state = await StateMachine.GetSateAsync(message.Chat.Id);
             var data = state == null ? message.Text : state.StateName;
 
-            if (token.IsNullOrEmpty() && !NoAuthCommands.Commands.Contains(message.Text!) && state == null)
+            if (await ChechAuth(client, message, token, state))
             {
-                state = new State
-                {
-                    StateName = "start_auth",
-                    StateObject = new LoginDto()
-                };
-
-                await StateMachine.SaveStateAsync(message.Chat.Id, state);
-                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("YouHaveToLogin"), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
-
                 return false;
             }
 

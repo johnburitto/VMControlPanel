@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountDeletedSuccessfully" xml:space="preserve">
+    <value>Акаунт видалено успішно</value>
+  </data>
   <data name="AddingError" xml:space="preserve">
     <value>Підчас додавання машини сталася помилка</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="CreateDirectory" xml:space="preserve">
     <value>Створити директорію</value>
   </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>Видалити акаунт</value>
+  </data>
   <data name="DeleteDirectory" xml:space="preserve">
     <value>Видалити директорію</value>
   </data>
@@ -149,6 +155,9 @@
   </data>
   <data name="HelloMessage" xml:space="preserve">
     <value>Привіт! Я допоможу тобі взаємодіяти із твоїми віртуальними машинами</value>
+  </data>
+  <data name="InputAccountPassword" xml:space="preserve">
+    <value>Введіть пароль до акаунта</value>
   </data>
   <data name="InputCommand" xml:space="preserve">
     <value>Введіть команду</value>
@@ -212,6 +221,9 @@
   </data>
   <data name="Register" xml:space="preserve">
     <value>Створити акаунт</value>
+  </data>
+  <data name="SelectAccountToDelete" xml:space="preserve">
+    <value>Оберіть акаунт, який хочете видалити</value>
   </data>
   <data name="SuccessesAdd" xml:space="preserve">
     <value>Віртуальна машина успішно додана</value>

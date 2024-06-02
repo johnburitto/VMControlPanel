@@ -13,6 +13,7 @@ namespace UserInfrastructure.Service.Interfaces
         Task<List<User>> GetUsersByTelegramIdAsync(long telegramId);
         Task<User?> GetUserByTelegramIdAndUserNameAsync(long telegramId, string? name);
         Task ChangeUserCultureAsync(string userId, Cultures culture);
+        Task<bool> DeleteAccountAsync(DeleteAccountDto dto);
     }
 
     public enum AuthResponse

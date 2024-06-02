@@ -10,7 +10,8 @@ namespace Bot.Utilities
 
         private static List<string> GetCommands()
         {
-            return ["/start", LocalizationManager.GetString("Register", Culture), LocalizationManager.GetString("Login", Culture), $"🚪 {LocalizationManager.GetString("Logout", Culture)}"];
+            return ["/start", LocalizationManager.GetString("Register", Culture), LocalizationManager.GetString("Login", Culture), 
+                    $"🚪 {LocalizationManager.GetString("Logout", Culture)}", LocalizationManager.GetString("DeleteAccount", Culture)];
         }
     }
 }

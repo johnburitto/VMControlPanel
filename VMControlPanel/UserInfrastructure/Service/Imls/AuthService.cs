@@ -97,5 +97,24 @@ namespace UserInfrastructure.Service.Imls
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> DeleteAccountAsync(DeleteAccountDto dto)
+        {
+            var login = await LoginAsync(new() { UserName = dto.AccountUserName, Password = dto.AccountPassword });
+            
+            if (login == AuthResponse.SuccessesLogin)
+            {
+                var user = await _context.Users.Where(_ => _.UserName == dto.AccountUserName && _.PasswordHash == CryptoService.ComputeSha256Hash(dto.AccountPassword)).FirstOrDefaultAsync();
+
+                _context.Users.Remove(user!);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

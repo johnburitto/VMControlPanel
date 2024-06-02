@@ -32,5 +32,14 @@ namespace Bot.HttpInfrastructure.Extensions
 
             return JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync());
         }
+        
+        public static async Task<bool> DeleteAccountAsync(this RequestClient client, DeleteAccountDto dto)
+        {
+            var dtoString = JsonConvert.SerializeObject(dto);
+            var content = new StringContent(dtoString, Encoding.UTF8, "application/json");
+            var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.UserApiUrl}/Auth/delete", content);
+
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

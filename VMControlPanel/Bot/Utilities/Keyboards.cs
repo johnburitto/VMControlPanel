@@ -14,7 +14,8 @@ namespace Bot.Utilities
         private static ReplyKeyboardMarkup CreateStartKeyboard()
         {
             return new ReplyKeyboardMarkup([
-                new KeyboardButton[] { LocalizationManager.GetString("Register", Culture), LocalizationManager.GetString("Login", Culture) }
+                new KeyboardButton[] { LocalizationManager.GetString("Register", Culture), LocalizationManager.GetString("Login", Culture) },
+                new KeyboardButton[] { LocalizationManager.GetString("DeleteAccount", Culture) }
             ])
             {
                 ResizeKeyboard = true

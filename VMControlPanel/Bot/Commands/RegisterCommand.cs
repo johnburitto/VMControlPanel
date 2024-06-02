@@ -72,9 +72,7 @@ namespace Bot.Commands
 
                 if (response == AuthResponse.SuccessesRegister)
                 {
-                    var virtualMachines = await RequestClient.Instance.GetUserVirtualMachinesAsync(message!.Chat.Id);
-
-                    await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesRegister", Culture), parseMode: ParseMode.Html, replyMarkup: virtualMachines.ToKeyboard(Culture));
+                    await client.SendTextMessageAsync(message!.Chat.Id, LocalizationManager.GetString("SuccessesRegister", Culture), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
                     await StateMachine.RemoveStateAsync(message!.Chat.Id);
                 }
                 else if (response == AuthResponse.AlreadyRegistered)
