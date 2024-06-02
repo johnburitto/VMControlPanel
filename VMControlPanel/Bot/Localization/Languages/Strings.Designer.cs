@@ -457,11 +457,38 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Virtual machine was successfully updated.
+        /// </summary>
+        internal static string SuccessesUpdate {
+            get {
+                return ResourceManager.GetString("SuccessesUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string ToCancel {
             get {
                 return ResourceManager.GetString("ToCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update virtual machine.
+        /// </summary>
+        internal static string UpdateVirtualmachine {
+            get {
+                return ResourceManager.GetString("UpdateVirtualmachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Some error has occured durring virtual machine updating.
+        /// </summary>
+        internal static string UpdattingError {
+            get {
+                return ResourceManager.GetString("UpdattingError", resourceCulture);
             }
         }
         

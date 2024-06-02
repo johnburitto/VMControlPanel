@@ -249,8 +249,17 @@
   <data name="SuccessesRegister" xml:space="preserve">
     <value>You have successfully registered</value>
   </data>
+  <data name="SuccessesUpdate" xml:space="preserve">
+    <value>Virtual machine was successfully updated</value>
+  </data>
   <data name="ToCancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="UpdateVirtualmachine" xml:space="preserve">
+    <value>Update virtual machine</value>
+  </data>
+  <data name="UpdattingError" xml:space="preserve">
+    <value>Some error has occured durring virtual machine updating</value>
   </data>
   <data name="UploadFile" xml:space="preserve">
     <value>Upload the file</value>

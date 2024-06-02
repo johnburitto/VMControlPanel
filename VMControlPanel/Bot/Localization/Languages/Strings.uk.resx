@@ -246,11 +246,20 @@
   <data name="SuccessesRegister" xml:space="preserve">
     <value>Ви успішно зареєструвалися</value>
   </data>
+  <data name="SuccessesUpdate" xml:space="preserve">
+    <value>Віртуальна машина успішно оновлена</value>
+  </data>
   <data name="ToCancel" xml:space="preserve">
     <value>Відмінити</value>
   </data>
   <data name="Uk" xml:space="preserve">
     <value>🇺🇦 Українська</value>
+  </data>
+  <data name="UpdateVirtualmachine" xml:space="preserve">
+    <value>Оновити віртуальну машину</value>
+  </data>
+  <data name="UpdattingError" xml:space="preserve">
+    <value>Підчас оновлення машини сталася помилка</value>
   </data>
   <data name="UploadFile" xml:space="preserve">
     <value>Вивантажити файл</value>
