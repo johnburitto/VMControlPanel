@@ -34,7 +34,7 @@
 - Entity Framework Core [![](https://badgen.net/badge/EntityFrameworkCore/efcore/512bd4?icon=github)](https://github.com/dotnet/efcore) [![](https://badgen.net/badge/nuget/v8.0.6/0274b5)](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore)
 - SSH.NET [![](https://badgen.net/badge/SSH.NET/sshnet/0b8e36?icon=github)](https://github.com/sshnet/SSH.NET) [![](https://badgen.net/badge/nuget/v2024.0.0/0274b5)](https://www.nuget.org/packages/SSH.NET)
 - Telegram.Bot [![](https://badgen.net/badge/Telegram.Bot/telegrambot/e0d8cc?icon=github)](https://github.com/TelegramBots/Telegram.Bot) [![](https://badgen.net/badge/nuget/19.0.0/0274b5)](https://www.nuget.org/packages/Telegram.Bot)
-- ASP.NET Core [![](https://badgen.net/badge/ASP.NETCore/aspnetcore/512bd4?icon=github)](https://github.com/TelegramBots/Telegram.Bot)
+- ASP.NET Core [![](https://badgen.net/badge/ASP.NETCore/aspnetcore/512bd4?icon=github)](https://github.com/dotnet/aspnetcore)
 - Docker
 
 ## Архітектура
