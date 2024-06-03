@@ -3,7 +3,7 @@ using Infrastructure.Services.Impls;
 using Infrastructure.Services.Interfaces;
 using Utilities;
 
-namespace VMControlPanelTest.Tests
+namespace VMControlPanelTest.NotGitTests
 {
     public class SFTPRequestServiceTests
     {
@@ -50,7 +50,7 @@ namespace VMControlPanelTest.Tests
 
             await DeleteDirectoryAsync_NormalFlow();
         }
-        
+
         [Fact]
         public async Task CreateDirectoryAsync_Error()
         {
@@ -168,7 +168,7 @@ namespace VMControlPanelTest.Tests
             Assert.NotEmpty(result.Message);
             Assert.Equal($"File {dto.Data} successfully downloaded", result.Message);
         }
-        
+
         [Fact]
         public async Task GetFileAsync_Error()
         {

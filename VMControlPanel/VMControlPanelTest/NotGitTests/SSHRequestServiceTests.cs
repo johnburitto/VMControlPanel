@@ -5,7 +5,7 @@ using Infrastructure.Services.Interfaces;
 using System.Net.Sockets;
 using Utilities;
 
-namespace VMControlPanelTest.Tests
+namespace VMControlPanelTest.NotGitTests
 {
     public class SSHRequestServiceTests
     {
