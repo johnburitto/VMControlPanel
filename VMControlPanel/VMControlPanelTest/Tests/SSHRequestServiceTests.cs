@@ -7,11 +7,11 @@ using Utilities;
 
 namespace VMControlPanelTest.Tests
 {
-    public class SSHRequestServiceTest
+    public class SSHRequestServiceTests
     {
         private readonly ISSHRequestService _underTest;
 
-        public SSHRequestServiceTest()
+        public SSHRequestServiceTests()
         {
             _underTest = new SSHRequestService();
         }

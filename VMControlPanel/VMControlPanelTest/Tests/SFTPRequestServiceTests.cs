@@ -1,17 +1,16 @@
 ﻿using Core.Dtos;
 using Infrastructure.Services.Impls;
 using Infrastructure.Services.Interfaces;
-using System.Net.Sockets;
 using Utilities;
 
 namespace VMControlPanelTest.Tests
 {
-    public class SFTPRequestServiceTest
+    public class SFTPRequestServiceTests
     {
         private readonly ISFTPRequestService _underTest;
         private readonly ISSHRequestService _sshService;
 
-        public SFTPRequestServiceTest()
+        public SFTPRequestServiceTests()
         {
             _underTest = new SFTPRequestService();
             _sshService = new SSHRequestService();

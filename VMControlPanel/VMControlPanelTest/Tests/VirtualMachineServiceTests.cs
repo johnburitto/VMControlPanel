@@ -12,13 +12,13 @@ using VMControlPanelTest.Profiles;
 
 namespace VMControlPanelTest.Tests
 {
-    public class VirtualMachineServiceTest
+    public class VirtualMachineServiceTests
     {
         private readonly Mock<AppDbContext> _contex = new();
         private readonly IMapper _mapper;
         private readonly IVirtualMachineService _underTest;
 
-        public VirtualMachineServiceTest()
+        public VirtualMachineServiceTests()
         {
             _mapper = new Mapper(new MapperConfiguration(configuration => configuration.AddProfile(new VirtualMachineProfile())));
             _underTest = new VirtualMachineService(_contex.Object, _mapper);

@@ -3,7 +3,7 @@ using Infrastructure.Services.Impls;
 
 namespace VMControlPanelTest.Tests
 {
-    public class GraphsServiceTest
+    public class GraphsServiceTests
     {
         [Fact]
         public void CreateGraph_NormalFlow()

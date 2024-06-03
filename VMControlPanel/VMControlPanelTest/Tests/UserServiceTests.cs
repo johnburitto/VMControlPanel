@@ -8,12 +8,12 @@ using UserInfrastructure.Service.Interfaces;
 
 namespace VMControlPanelTest.Tests
 {
-    public class UserServiceTest
+    public class UserServiceTests
     {
         private readonly Mock<UserDbContext> _context = new();
         private readonly AuthService _underTest;
 
-        public UserServiceTest()
+        public UserServiceTests()
         {
             _underTest = new AuthService(_context.Object);
         }

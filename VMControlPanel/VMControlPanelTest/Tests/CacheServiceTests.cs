@@ -5,12 +5,12 @@ using Microsoft.Extensions.Options;
 
 namespace VMControlPanelTest.Tests
 {
-    public class CacheServiceTest
+    public class CacheServiceTests
     {
         private readonly IDistributedCache _cache;
         private readonly CacheService _underTest;
 
-        public CacheServiceTest()
+        public CacheServiceTests()
         {
             var options = Options.Create(new MemoryDistributedCacheOptions());
             
