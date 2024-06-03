@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="VMControlPanelTest.Tests.CacheServiceTest">
+    <Position X="3" Y="1.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAIAQAAQQAAAAAAAAAQAAAAAAQAAAAABAAAA=</HashCode>
+      <FileName>Tests\CacheServiceTest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_cache" />
+      <Field Name="_underTest" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VMControlPanelTest.Tests.UserServiceTest">
+    <Position X="6.5" Y="1.75" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>ACiAAAAAAAAQBAAIAAAAAAAAAAQAgAAAAQAAAABECAA=</HashCode>
+      <FileName>Tests\UserServiceTest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+      <Field Name="_underTest" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Moq.Mock&lt;T&gt;" Collapsed="true">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UserInfrastructure.Service.Imls.AuthService" Collapsed="true">
+    <Position X="13.5" Y="3" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infrastructure.Services.Impls.CacheService" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Microsoft.Extensions.Caching.Distributed.IDistributedCache" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

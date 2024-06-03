@@ -18,7 +18,7 @@ namespace Bot.HttpInfrastructure.Extensions
 
             client.Client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            Log.Information($"User {dto.UserId} try execure '{dto.Command}'");
+            Log.Information($"[User {dto.UserId}] try execure '{dto.Command}'");
 
             var response = await client.Client!.PostAsync($"{client.ApiConfiguration!.ApiUrl}/SSHRequest", content);
 

@@ -113,7 +113,7 @@ namespace Bot.Commands
             }
         }
 
-        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Names = [ $"➕ {LocalizationManager.GetString("AddNewMachine", Culture)}", "input_vm_name", "input_vm_username", "input_vm_password", "input_vm_host", "input_vm_port" ];
 

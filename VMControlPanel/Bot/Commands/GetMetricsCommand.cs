@@ -117,7 +117,7 @@ namespace Bot.Commands
             }
         }
 
-        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Names = [LocalizationManager.GetString("Metrics", Culture), "/metrics"];
 

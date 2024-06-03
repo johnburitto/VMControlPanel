@@ -24,5 +24,12 @@ namespace Bot.Extensions
 
             return account == string.Empty ? $"{LocalizationManager.GetString("YouDontHaveAccounts", culture)}" : $"{LocalizationManager.GetString("YourAccounts", culture)}:\n{account}";
         }
+        
+        public static ReplyKeyboardMarkup ToNameKeyboard(this IEnumerable<User> users)
+        {
+            var buttons = users.Select(_ => new KeyboardButton[] { new KeyboardButton($"{_.UserName}") });
+
+            return new(buttons) { ResizeKeyboard = true };
+        }
     }
 }

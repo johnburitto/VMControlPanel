@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Core.Entities.User">
+    <Position X="2.25" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AACCAAAAACAAAAAIAAAAAAAAQQAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Entities.VirtualMachine">
+    <Position X="5.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAAAAAAAAAwACAAACAACAQAAAAAAAAA=</HashCode>
+      <FileName>Entities\VirtualMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.FileDto">
+    <Position X="0.5" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIAAAAAA=</HashCode>
+      <FileName>Dtos\FileDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.GraphDto">
+    <Position X="3" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAFAAAAAAAAAAAAEwAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Dtos\GraphDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.LoginDto">
+    <Position X="5.75" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAACAQAAAAAAAAA=</HashCode>
+      <FileName>Dtos\LoginDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.RegisterDto">
+    <Position X="11.5" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAQAIAAACAQAAAAAAAAA=</HashCode>
+      <FileName>Dtos\RegisterDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.SFTPRequestDto">
+    <Position X="8.25" Y="3.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAIABAAAABAAAAAAAA=</HashCode>
+      <FileName>Dtos\SFTPRequestDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.SSHRequestDto">
+    <Position X="3" Y="6.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAgAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dtos\SSHRequestDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.VirtualMachineDto">
+    <Position X="0.5" Y="6.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAwACAAICAACAQAAAAAAAAA=</HashCode>
+      <FileName>Dtos\VirtualMachineDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.Metrics.CpuMetricsDto">
+    <Position X="0.5" Y="9" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAEACAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAE=</HashCode>
+      <FileName>Dtos\Metrics\CpuMetricsDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.Metrics.CpuPercentageDto">
+    <Position X="6.25" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAABAAIAAAAAAAAAAQAAAAAAABACAAAAAABAAAAA=</HashCode>
+      <FileName>Dtos\Metrics\CpuPercentageDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.Metrics.DiscMetricsDto">
+    <Position X="8.5" Y="9" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAgAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dtos\Metrics\DiscMetricsDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.Metrics.MemoryMetricsDto">
+    <Position X="8.5" Y="6.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACQAAAAAAAgAQAAAAAAAAAAIAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Dtos\Metrics\MemoryMetricsDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.Metrics.MetricsDto">
+    <Position X="11" Y="6.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAEAAAAAAAAAAAAAAAACAAAAAAAgAAA=</HashCode>
+      <FileName>Dtos\Metrics\MetricsDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Dtos.Metrics.NetMetricsDto">
+    <Position X="4.25" Y="9" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AIAAIAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dtos\Metrics\NetMetricsDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Core.Entities.Cultures">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

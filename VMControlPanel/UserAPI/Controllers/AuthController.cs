@@ -73,5 +73,13 @@ namespace UserAPI.Controllers
         {
             return Ok(await _service.GetUserByTelegramIdAndUserNameAsync(telegramId, userName));
         }
+
+        [HttpPost("delete")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> DeleteAccountAsync(DeleteAccountDto dto)
+        {
+            return Ok(await _service.DeleteAccountAsync(dto));
+        }
     }
 }

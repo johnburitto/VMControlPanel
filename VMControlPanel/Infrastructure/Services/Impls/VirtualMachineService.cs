@@ -51,7 +51,7 @@ namespace Infrastructure.Services.Impls
             return _context.VirtualMachines.Where(_ => _.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<List<VirtualMachine>> GetUserVirtualMachines(string? userId)
+        public Task<List<VirtualMachine>> GetUserVirtualMachinesAsync(string? userId)
         {
             return _context.VirtualMachines.Where(_ => _.UserId ==  userId).ToListAsync();
         }

@@ -61,6 +61,15 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account deleted successfully.
+        /// </summary>
+        internal static string AccountDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("AccountDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred while adding a machine.
         /// </summary>
         internal static string AddingError {
@@ -84,6 +93,15 @@ namespace Bot.Localization.Languages {
         internal static string AlreadyRegistered {
             get {
                 return ResourceManager.GetString("AlreadyRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you shure?.
+        /// </summary>
+        internal static string AreYouShure {
+            get {
+                return ResourceManager.GetString("AreYouShure", resourceCulture);
             }
         }
         
@@ -124,11 +142,29 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete your account.
+        /// </summary>
+        internal static string DeleteAccount {
+            get {
+                return ResourceManager.GetString("DeleteAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete a directory.
         /// </summary>
         internal static string DeleteDirectory {
             get {
                 return ResourceManager.GetString("DeleteDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete virtual machine.
+        /// </summary>
+        internal static string DeleteVirtualMachine {
+            get {
+                return ResourceManager.GetString("DeleteVirtualMachine", resourceCulture);
             }
         }
         
@@ -165,6 +201,15 @@ namespace Bot.Localization.Languages {
         internal static string HelloMessage {
             get {
                 return ResourceManager.GetString("HelloMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input account password.
+        /// </summary>
+        internal static string InputAccountPassword {
+            get {
+                return ResourceManager.GetString("InputAccountPassword", resourceCulture);
             }
         }
         
@@ -340,6 +385,15 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Raw data.
         /// </summary>
         internal static string RawData {
@@ -354,6 +408,15 @@ namespace Bot.Localization.Languages {
         internal static string Register {
             get {
                 return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select account to delete.
+        /// </summary>
+        internal static string SelectAccountToDelete {
+            get {
+                return ResourceManager.GetString("SelectAccountToDelete", resourceCulture);
             }
         }
         
@@ -394,11 +457,38 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Virtual machine was successfully updated.
+        /// </summary>
+        internal static string SuccessesUpdate {
+            get {
+                return ResourceManager.GetString("SuccessesUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string ToCancel {
             get {
                 return ResourceManager.GetString("ToCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update virtual machine.
+        /// </summary>
+        internal static string UpdateVirtualmachine {
+            get {
+                return ResourceManager.GetString("UpdateVirtualmachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Some error has occured durring virtual machine updating.
+        /// </summary>
+        internal static string UpdattingError {
+            get {
+                return ResourceManager.GetString("UpdattingError", resourceCulture);
             }
         }
         
@@ -412,11 +502,29 @@ namespace Bot.Localization.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Virtual machine deleted successfully.
+        /// </summary>
+        internal static string VirtualMachineDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("VirtualMachineDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have selected a virtual machine for interaction.
         /// </summary>
         internal static string VMChosen {
             get {
                 return ResourceManager.GetString("VMChosen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
         

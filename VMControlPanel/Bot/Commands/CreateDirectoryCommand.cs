@@ -50,7 +50,7 @@ namespace Bot.Commands
             }
         }
 
-        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Names = [LocalizationManager.GetString("CreateDirectory", Culture), "input_create_directory_name"];
 

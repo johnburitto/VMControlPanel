@@ -78,7 +78,7 @@ namespace Bot.Commands
             }
         }
 
-        public override Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public override Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             Names = ["/auth", LocalizationManager.GetString("Login", Culture), "start_auth", "input_username", "input_password"];
 

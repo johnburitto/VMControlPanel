@@ -1,6 +1,5 @@
 ﻿using Core.Dtos;
 using ScottPlot;
-using ScottPlot.TickGenerators;
 
 namespace Infrastructure.Services.Impls
 {
@@ -103,7 +102,7 @@ namespace Infrastructure.Services.Impls
 
             for (var i = 0; i < Math.Min(dto.Labels!.Count, dto.Values!.Count); i++)
             {
-                plot.Add.Bars([i + 1], [dto.Values[i]]).Label = $"{dto.Labels[i]} - {dto.Values[i]}";
+                plot.Add.Bars([i + 1], [dto.Values[i]]).LegendText = $"{dto.Labels[i]} - {dto.Values[i]}";
             }
 
             plot.Axes.Margins(bottom: 0);

@@ -1,6 +1,12 @@
-﻿using Core.Entities;
+﻿using Bot.Localization;
+using Bot.StateMachineBase;
+using Bot.Utilities;
+using Core.Dtos;
+using Core.Entities;
+using Microsoft.IdentityModel.Tokens;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Bot.Commands.Base
 {
@@ -19,12 +25,12 @@ namespace Bot.Commands.Base
             throw new NotImplementedException();
         }
         
-        public virtual Task TryExecuteAsync(ITelegramBotClient client, Message? message)
+        public virtual Task<bool> TryExecuteAsync(ITelegramBotClient client, Message? message)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Task TryExecuteAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
+        public virtual Task<bool> TryExecuteAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
         {
             throw new NotImplementedException();
         }
@@ -37,6 +43,24 @@ namespace Bot.Commands.Base
                 {
                     return true;
                 }
+            }
+            return false;
+        }
+
+        protected async Task<bool> ChechAuth(ITelegramBotClient client, Message message, string token, State? state)
+        {
+            if (token.IsNullOrEmpty() && !NoAuthCommands.Commands.Contains(message.Text!) && state == null)
+            {
+                state = new State
+                {
+                    StateName = "start_auth",
+                    StateObject = new LoginDto()
+                };
+
+                await StateMachine.SaveStateAsync(message.Chat.Id, state);
+                await client.SendTextMessageAsync(message.Chat.Id, LocalizationManager.GetString("YouHaveToLogin"), parseMode: ParseMode.Html, replyMarkup: Keyboards.StartKeyboard);
+
+                return true;
             }
 
             return false;

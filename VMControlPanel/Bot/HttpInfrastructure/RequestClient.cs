@@ -1,17 +1,19 @@
-﻿using Bot.Configurations;
+﻿using Azure.AI.OpenAI;
+using Bot.Configurations;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace Bot.HttpInfrastructure
 {
     public class RequestClient
     {
         private HttpClient? _client;
+        private OpenAIClient? _openAIClient;
         private static RequestClient? _instance;
         private static readonly object _lock = new();
 
         public static RequestClient Instance => GetInstance();
-        public HttpClient? Client => GetClientInstance();
+        public HttpClient Client => GetClientInstance();
+        public OpenAIClient OpenAIClient => GetOpenAIClient();
         public ApiConfiguration? ApiConfiguration { get; set; }
 
         private static RequestClient GetInstance()
@@ -27,7 +29,7 @@ namespace Bot.HttpInfrastructure
             return _instance;
         }
 
-        private HttpClient? GetClientInstance()
+        private HttpClient GetClientInstance()
         {
             if (_client == null)
             {
@@ -38,6 +40,19 @@ namespace Bot.HttpInfrastructure
             }
 
             return _client;
+        }
+
+        private OpenAIClient GetOpenAIClient()
+        {
+            if (_openAIClient == null)
+            {
+                lock (_lock)
+                {
+                    _openAIClient = new OpenAIClient(Instance.ApiConfiguration!.OpenAIKey);
+                }
+            }
+
+            return _openAIClient;
         }
 
         public static void Configure(IOptions<ApiConfiguration>? configuration)

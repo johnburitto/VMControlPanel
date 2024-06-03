@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="API.Profiles.VirtualMachineProfile">
+    <Position X="1.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Profiles\VirtualMachineProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="API.Controllers.CacheController">
+    <Position X="1.5" Y="2.25" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAEAAAQAAAAAA=</HashCode>
+      <FileName>Controllers\CacheController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_service" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="API.Controllers.SFTPRequestController">
+    <Position X="8" Y="4.75" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAQCAAAAAIAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\SFTPRequestController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_service" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="API.Controllers.SSHRequestController">
+    <Position X="1.5" Y="6" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAUAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\SSHRequestController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_service" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="API.Controllers.VirtualMachineController">
+    <Position X="8" Y="2" Width="7" />
+    <TypeIdentifier>
+      <HashCode>AAEAAIAAAAAAAAAQAAAAAAAAAAAIAAgAAAAAAIAAIIA=</HashCode>
+      <FileName>Controllers\VirtualMachineController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_service" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Mvc.ControllerBase" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Infrastructure.Services.Interfaces.IVirtualMachineService" Collapsed="true">
+    <Position X="13.5" Y="5" Width="4" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Infrastructure.Services.Interfaces.ISFTPRequestService" Collapsed="true">
+    <Position X="11" Y="7.25" Width="1.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Infrastructure.Services.Interfaces.ICacheService" Collapsed="true">
+    <Position X="3.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Infrastructure.Services.Interfaces.ISSHRequestService" Collapsed="true">
+    <Position X="7.5" Y="7" Width="1.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Infrastructure.Configurations.VirtualMachineConfiguration">
+    <Position X="0.5" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configurations\VirtualMachineConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infrastructure.Data.AppDbContext">
+    <Position X="3" Y="10" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\AppDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.EntityFrameworkCore.DbContext" Collapsed="true">
+    <Position X="0.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infrastructure.Services.Impls.CacheService" BaseTypeListCollapsed="true">
+    <Position X="8" Y="5.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAQAAEEAA=</HashCode>
+      <FileName>Services\Impls\CacheService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_redis" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infrastructure.Services.Impls.FileManager">
+    <Position X="9" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAEAAAAAAAAAAAAAAAAAEAAAAAAQA=</HashCode>
+      <FileName>Services\Impls\FileManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infrastructure.Services.Impls.GraphsService">
+    <Position X="5" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAQAAAAAEAAAAAAAAADAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Services\Impls\GraphsService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infrastructure.Services.Impls.SFTPRequestService" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="5.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAIAAACAAAAAIAQAAAAIAAAAAAAABAAAA=</HashCode>
+      <FileName>Services\Impls\SFTPRequestService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infrastructure.Services.Impls.SSHRequestService" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="5.75" Width="6.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAABQQAAAIAAEggAAIAAAAAAAAIIQIAAAAAJAAsA=</HashCode>
+      <FileName>Services\Impls\SSHRequestService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infrastructure.Services.Impls.VirtualMachineService" BaseTypeListCollapsed="true">
+    <Position X="9" Y="10.25" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAEAAIAAAAAABAAAAAABAAAAAAAIAAgAAAAAAIAAIIA=</HashCode>
+      <FileName>Services\Impls\VirtualMachineService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+      <Field Name="_mapper" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Infrastructure.Services.Interfaces.ICacheService">
+    <Position X="8" Y="3.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAQAAEAAA=</HashCode>
+      <FileName>Services\Interfaces\ICacheService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infrastructure.Services.Interfaces.ICrudService&lt;T, TCreate, TUpdate&gt;">
+    <Position X="2.25" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAIAAIIA=</HashCode>
+      <FileName>Services\Interfaces\ICrudService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infrastructure.Services.Interfaces.ISFTPRequestService">
+    <Position X="12.75" Y="3.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAACAAAAAIAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Interfaces\ISFTPRequestService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infrastructure.Services.Interfaces.ISSHRequestService">
+    <Position X="17" Y="3.25" Width="6.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAEAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Interfaces\ISSHRequestService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infrastructure.Services.Interfaces.IVirtualMachineService">
+    <Position X="0.5" Y="6.5" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Interfaces\IVirtualMachineService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.Extensions.Caching.Distributed.IDistributedCache" Collapsed="true">
+    <Position X="8.5" Y="8" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="AutoMapper.IMapper" Collapsed="true">
+    <Position X="16.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="Infrastructure.Services.Impls.GraphType">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAIABAAAAAAAA=</HashCode>
+      <FileName>Services\Impls\GraphsService.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

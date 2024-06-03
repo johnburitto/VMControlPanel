@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountDeletedSuccessfully" xml:space="preserve">
+    <value>Account deleted successfully</value>
+  </data>
   <data name="AddingError" xml:space="preserve">
     <value>An error occurred while adding a machine</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="AlreadyRegistered" xml:space="preserve">
     <value>The user with this name is already registered</value>
+  </data>
+  <data name="AreYouShure" xml:space="preserve">
+    <value>Are you shure?</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>You have canceled the action</value>
@@ -138,8 +144,14 @@
   <data name="CreateDirectory" xml:space="preserve">
     <value>Create a directory</value>
   </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>Delete your account</value>
+  </data>
   <data name="DeleteDirectory" xml:space="preserve">
     <value>Delete a directory</value>
+  </data>
+  <data name="DeleteVirtualMachine" xml:space="preserve">
+    <value>Delete virtual machine</value>
   </data>
   <data name="DownloadFile" xml:space="preserve">
     <value>Download the file</value>
@@ -152,6 +164,9 @@
   </data>
   <data name="HelloMessage" xml:space="preserve">
     <value>Hello! I'm here to help you interact with your virtual machines</value>
+  </data>
+  <data name="InputAccountPassword" xml:space="preserve">
+    <value>Input account password</value>
   </data>
   <data name="InputCommand" xml:space="preserve">
     <value>Enter the command</value>
@@ -210,11 +225,17 @@
   <data name="Metrics" xml:space="preserve">
     <value>Metrics</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="RawData" xml:space="preserve">
     <value>Raw data</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Create an account</value>
+  </data>
+  <data name="SelectAccountToDelete" xml:space="preserve">
+    <value>Select account to delete</value>
   </data>
   <data name="SuccessesAdd" xml:space="preserve">
     <value>Virtual machine added successfully</value>
@@ -228,14 +249,29 @@
   <data name="SuccessesRegister" xml:space="preserve">
     <value>You have successfully registered</value>
   </data>
+  <data name="SuccessesUpdate" xml:space="preserve">
+    <value>Virtual machine was successfully updated</value>
+  </data>
   <data name="ToCancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="UpdateVirtualmachine" xml:space="preserve">
+    <value>Update virtual machine</value>
+  </data>
+  <data name="UpdattingError" xml:space="preserve">
+    <value>Some error has occured durring virtual machine updating</value>
   </data>
   <data name="UploadFile" xml:space="preserve">
     <value>Upload the file</value>
   </data>
+  <data name="VirtualMachineDeletedSuccessfully" xml:space="preserve">
+    <value>Virtual machine deleted successfully</value>
+  </data>
   <data name="VMChosen" xml:space="preserve">
     <value>You have selected a virtual machine for interaction</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
   <data name="YouDontHaveAccounts" xml:space="preserve">
     <value>You do not have any registered accounts</value>
