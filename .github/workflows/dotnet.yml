@@ -27,5 +27,5 @@ jobs:
       run: dotnet build --no-restore
       working-directory: VMControlPanel
     - name: Test
-      run: dotnet test --no-build --filter "VMControlPanelTest!~VMControlPanelTest.NotGitTests"
+      run: dotnet test --no-build --filter "FullyQualifiedName!~VMControlPanelTest.NotGitTests"
       working-directory: VMControlPanel

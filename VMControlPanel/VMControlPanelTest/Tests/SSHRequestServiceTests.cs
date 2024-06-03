@@ -44,7 +44,7 @@ namespace VMControlPanelTest.NotGitTests
             Assert.NotEmpty(result);
             Assert.Contains("/home/johnburitto", result);
         }
-        
+
         [Fact]
         public async Task ExecuteCommandAsync_BadCommand()
         {
@@ -100,7 +100,7 @@ namespace VMControlPanelTest.NotGitTests
             // Then
             Assert.Equal("No connection could be made because the target machine actively refused it.", result.Message);
         }
-        
+
         [Fact]
         public async Task ExecuteCommandAsync_NoUserId()
         {
