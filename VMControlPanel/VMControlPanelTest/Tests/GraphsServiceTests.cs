@@ -6,7 +6,17 @@ namespace VMControlPanelTest.Tests
     public class GraphsServiceTests
     {
         [Fact]
-        public void CreateGraph_NormalFlow()
+        public void GrapgService_Test()
+        {
+            CreateGraph_NormalFlow();
+            CreateGraph_NoUserId();
+            CreateGraph_NoName();
+            CreateGraph_NoNameNoUserId();
+            DeleteGraphFromLocal_NormalFlow();
+        }
+
+
+        private void CreateGraph_NormalFlow()
         {
             // Give
             var dto = new GraphDto
@@ -29,9 +39,8 @@ namespace VMControlPanelTest.Tests
             Assert.Contains(dto.Name, result);
             Assert.True(File.Exists(result));
         }
-        
-        [Fact]
-        public void CreateGraph_NoUserId()
+
+        private void CreateGraph_NoUserId()
         {
             // Give
             var dto = new GraphDto
@@ -53,9 +62,8 @@ namespace VMControlPanelTest.Tests
             Assert.Contains(dto.Name, result);
             Assert.True(File.Exists(result));
         }
-        
-        [Fact]
-        public void CreateGraph_NoName()
+
+        private void CreateGraph_NoName()
         {
             // Give
             var dto = new GraphDto
@@ -77,9 +85,8 @@ namespace VMControlPanelTest.Tests
             Assert.DoesNotContain("Graph", result);
             Assert.True(File.Exists(result));
         }
-        
-        [Fact]
-        public void CreateGraph_NoNameNoUserId()
+
+        private void CreateGraph_NoNameNoUserId()
         {
             // Give
             var dto = new GraphDto
@@ -101,8 +108,7 @@ namespace VMControlPanelTest.Tests
             Assert.True(File.Exists(result));
         }
 
-        [Fact]
-        public void DeleteGraphFromLocal_NormalFlow()
+        private void DeleteGraphFromLocal_NormalFlow()
         {
             // Give
             var normalGraph = $"{FileManager.FileDirectory}/1/Graph.png";
