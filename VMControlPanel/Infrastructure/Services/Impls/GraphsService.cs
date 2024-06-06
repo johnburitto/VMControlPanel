@@ -66,6 +66,7 @@ namespace Infrastructure.Services.Impls
                 });
             }
 
+            plot.Title(dto.Title ?? "");
             plot.Add.Pie(pies).DonutFraction = 0.5;
             plot.ShowLegend();
             plot.HideGrid();
@@ -89,6 +90,7 @@ namespace Infrastructure.Services.Impls
                 });
             }
 
+            plot.Title(dto.Title ?? "");
             plot.Add.Pie(pies);
             plot.ShowLegend();
             plot.HideGrid();
@@ -105,6 +107,7 @@ namespace Infrastructure.Services.Impls
                 plot.Add.Bars([i + 1], [dto.Values[i]]).LegendText = $"{dto.Labels[i]} - {dto.Values[i]}";
             }
 
+            plot.Title(dto.Title ?? "");
             plot.Axes.Margins(bottom: 0);
             plot.ShowLegend(Alignment.UpperLeft);
             plot.HideGrid();
