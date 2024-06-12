@@ -87,7 +87,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<IVirtualMachineService, VirtualMachineService>();
 builder.Services.AddSingleton<ISSHRequestService, SSHRequestService>();
-builder.Services.AddScoped<ISFTPRequestService, SFTPRequestService>();
+builder.Services.AddSingleton<ISFTPRequestService, SFTPRequestService>();
 
 var app = builder.Build();
 
