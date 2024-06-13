@@ -13,7 +13,7 @@ namespace VMControlPanelTest.NotGitTests
         public SFTPRequestServiceTests()
         {
             _underTest = new SFTPRequestService();
-            _sshService = new SSHRequestService();
+            _sshService = new SSHRequestService(_underTest);
         }
 
         [Fact]
