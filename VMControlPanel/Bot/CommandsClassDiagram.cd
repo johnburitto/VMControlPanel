@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="Bot.Commands.Base.Command">
-    <Position X="3" Y="0.5" Width="5.5" />
+    <Position X="8.25" Y="4.75" Width="5.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAAAAABAAAAAAAAAAAQABAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AAAAgAAAAAAAABAAAAAAACAAAQABAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\Base\Command.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.Base.CallbackQueryCommand">
-    <Position X="3" Y="4" Width="5.5" />
+    <Position X="8.25" Y="8.25" Width="5.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Commands\Base\CallbackQueryCommand.cs</FileName>
@@ -22,101 +22,122 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.AddVirtualMachineCommand">
-    <Position X="10.75" Y="3" Width="5" />
+    <Position X="16" Y="3.5" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\AddVirtualMachineCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.AuthCommand">
-    <Position X="10.75" Y="4.75" Width="5" />
+    <Position X="23.75" Y="3.5" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\AuthCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.ChangeLanguageCommand">
-    <Position X="10.75" Y="6.75" Width="5" />
+    <Position X="16" Y="5.5" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\ChangeLanguageCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.ChooseVirtualMachineCommand">
-    <Position X="17.25" Y="11.25" Width="5" />
+    <Position X="19.75" Y="18" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\ChooseVirtualMachineCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.CreateDirectoryCommand">
-    <Position X="16.25" Y="3" Width="5" />
+    <Position X="16" Y="7.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\CreateDirectoryCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.DeleteDirectoryCommand">
-    <Position X="23" Y="2.75" Width="5" />
+    <Position X="23.75" Y="9.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\DeleteDirectoryCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.ExecuteSSHCommandsCommand">
-    <Position X="16.25" Y="4.75" Width="5" />
+    <Position X="23.75" Y="7.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\ExecuteSSHCommandsCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.ExitCommand">
-    <Position X="23" Y="4.75" Width="5" />
+    <Position X="16" Y="11.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\ExitCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.GetFileFromVirtualMachineCommand">
-    <Position X="13.5" Y="9" Width="5" />
+    <Position X="23.75" Y="5.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\GetFileFromVirtualMachineCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.GetMetricsCommand">
-    <Position X="16.25" Y="6.75" Width="5" />
+    <Position X="16" Y="9.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\GetMetricsCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.GetOpenAIResponseMessage">
-    <Position X="11.25" Y="11.25" Width="4.25" />
+    <Position X="12" Y="18" Width="4.25" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\GetOpenAIResponseMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.RegisterCommand">
-    <Position X="23" Y="6.75" Width="5" />
+    <Position X="23.75" Y="11.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\RegisterCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.StartCommand">
-    <Position X="23.75" Y="11.25" Width="4.25" />
+    <Position X="28" Y="18" Width="4.25" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\StartCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Bot.Commands.UploadFileToVirtualMachineCommand">
-    <Position X="23" Y="9.25" Width="5" />
+    <Position X="16" Y="13.75" Width="5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Commands\UploadFileToVirtualMachineCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.Commands.DeleteAccountCommand">
+    <Position X="23.75" Y="13.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Commands\DeleteAccountCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.Commands.DeleteVirtualMachineCommand">
+    <Position X="16" Y="15.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Commands\DeleteVirtualMachineCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bot.Commands.UpdateVirtualMachineCommand">
+    <Position X="23.75" Y="15.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Commands\UpdateVirtualMachineCommand.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

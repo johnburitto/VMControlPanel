@@ -10,10 +10,12 @@ namespace VMControlPanelTest.NotGitTests
     public class SSHRequestServiceTests
     {
         private readonly ISSHRequestService _underTest;
+        private readonly ISFTPRequestService _sftpRequestService;
 
         public SSHRequestServiceTests()
         {
-            _underTest = new SSHRequestService();
+            _sftpRequestService = new SFTPRequestService();
+            _underTest = new SSHRequestService(_sftpRequestService);
         }
 
         [Fact]

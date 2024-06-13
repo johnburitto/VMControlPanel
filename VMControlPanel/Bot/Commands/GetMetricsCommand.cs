@@ -42,6 +42,7 @@ namespace Bot.Commands
             var cpuPercentage = new GraphDto
             {
                 Name = "cpuPercentage",
+                Title = "CPU usage percentage",
                 Labels = metrics!.CpuDto!.CpuPercentage!.GetType().GetProperties().Select(_ => _.Name).ToList(),
                 Values = metrics!.CpuDto!.CpuPercentage!.GetType().GetProperties().Select(_ => float.Parse(_.GetValue(metrics!.CpuDto!.CpuPercentage)!.ToString() ?? "0.0")).ToList(),
                 UserId = userId
@@ -49,6 +50,7 @@ namespace Bot.Commands
             var discBusy = new GraphDto
             {
                 Name = "discBusy",
+                Title = "Discs busy",
                 Labels = metrics.DiscDto!.DiskBusy!.Select(_ => _.Key).ToList(),
                 Values = metrics.DiscDto!.DiskBusy!.Select(_ => _.Value).ToList(),
                 UserId = userId
@@ -56,6 +58,7 @@ namespace Bot.Commands
             var memory = new GraphDto
             {
                 Name = "memory",
+                Title = "Memory usage",
                 Labels = metrics!.MemDto!.GetType().GetProperties().Select(_ => _.Name).ToList(),
                 Values = metrics!.MemDto!.GetType().GetProperties().Select(_ => float.Parse(_.GetValue(metrics!.MemDto)!.ToString() ?? "0.0")).ToList(),
                 UserId = userId
@@ -70,6 +73,7 @@ namespace Bot.Commands
                 var graphDto = new GraphDto
                 {
                     Name = $"DiskReadsWrites_{_.Key}",
+                    Title = $"{_.Key} reads/writes",
                     Labels = [ "reads", "writes" ],
                     Values = _.Value.Select(_ => float.Parse(_.ToString())).ToList(),
                     UserId = userId
@@ -83,6 +87,7 @@ namespace Bot.Commands
                 var graphDto = new GraphDto
                 {
                     Name = $"DiskReadsWritesPersec_{_.Key}",
+                    Title = $"{_.Key} reads/writes per sec",
                     Labels = ["reads", "writes"],
                     Values = _.Value.Select(_ => float.Parse(_.ToString())).ToList(),
                     UserId = userId
@@ -96,7 +101,8 @@ namespace Bot.Commands
                 var graphDto = new GraphDto
                 {
                     Name = $"RxTxBits_{_.Key}",
-                    Labels = ["reads", "writes"],
+                    Title = $"{_.Key} bits sent/received",
+                    Labels = ["sent", "received"],
                     Values = _.Value.Select(_ => float.Parse(_.ToString())).ToList(),
                     UserId = userId
                 };

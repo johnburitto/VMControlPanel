@@ -56,6 +56,7 @@ namespace Bot.Commands
             else if (userState.StateName == "input_account_password")
             {
                 userState.StateObject!.AccountPassword = message.Text;
+                userState.StateObject!.TelegramId = message.Chat.Id;
 
                 var deleteSuccess = await RequestClient.Instance.DeleteAccountAsync((userState.StateObject as JObject)!.ToObject<DeleteAccountDto>()!);
 

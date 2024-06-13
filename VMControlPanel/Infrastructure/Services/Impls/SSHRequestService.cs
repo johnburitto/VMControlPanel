@@ -12,12 +12,19 @@ namespace Infrastructure.Services.Impls
         private Dictionary<string, ShellStream> _streams = new Dictionary<string, ShellStream>();
         private Dictionary<TerminalModes, uint> _modes = new Dictionary<TerminalModes, uint> { { TerminalModes.ECHO, 53 } };
 
+        private readonly ISFTPRequestService _sftpRequestService;
+
         private string _passwordRegex = @"password for [\w\d]+[$#>:]";
         private string _yesOrNoRegex = @"\[Y/n\]";
         private string _endOfCommandRegex = @":~\$";
         private string _someInputRegex = @"[$>]";
 
         public CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+
+        public SSHRequestService(ISFTPRequestService sftpRequestService)
+        {
+            _sftpRequestService = sftpRequestService;
+        }
 
         public Task<string> ExecuteCommandAsync(VirtualMachine virtualMachine, string command, string userId)
         {
@@ -126,6 +133,8 @@ namespace Infrastructure.Services.Impls
 
         public async Task<string> GetMetricsAsync(VirtualMachine virtualMachine, string userId)
         {
+            await CheckMetricsClientOnMachine(virtualMachine, userId);
+
             var client = GetClient(virtualMachine, userId);
 
             if (!client.IsConnected)
@@ -136,6 +145,27 @@ namespace Infrastructure.Services.Impls
             var response = client.RunCommand("./metrics.sh");
 
             return response.Result;
+        }
+
+        private async Task CheckMetricsClientOnMachine(VirtualMachine virtualMachine, string userId)
+        {
+            var log = await ExecuteCommandAsync(virtualMachine, "ls", userId);
+
+            if (!log.Contains("metrics.sh"))
+            {
+                var result = await _sftpRequestService.UploadFileAsync(new()
+                {
+                    FilePath = $"{FileManager.FileDirectory}/metrics-script.zip",
+                    VirtualMachine = virtualMachine,
+                    UserId = userId
+                });
+
+                await ExecuteCommandAsync(virtualMachine, "sudo apt install unzip", userId);
+                await ExecuteCommandAsync(virtualMachine, virtualMachine.Password!, userId);
+                await ExecuteCommandAsync(virtualMachine, "unzip metrics-script.zip", userId);
+                await ExecuteCommandAsync(virtualMachine, "rm metrics-script.zip", userId);
+                await ExecuteCommandAsync(virtualMachine, "chmod +x metrics.sh", userId);
+            }
         }
 
         public void DisposeClientAndStream(VirtualMachine virtualMachine, string userId)

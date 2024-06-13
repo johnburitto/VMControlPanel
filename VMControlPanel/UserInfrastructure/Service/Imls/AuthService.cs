@@ -104,7 +104,9 @@ namespace UserInfrastructure.Service.Imls
             
             if (login == AuthResponse.SuccessesLogin)
             {
-                var user = await _context.Users.Where(_ => _.UserName == dto.AccountUserName && _.PasswordHash == CryptoService.ComputeSha256Hash(dto.AccountPassword)).FirstOrDefaultAsync();
+                var user = await _context.Users.Where(_ => _.UserName == dto.AccountUserName 
+                                                        && _.PasswordHash == CryptoService.ComputeSha256Hash(dto.AccountPassword)
+                                                        && _.TelegramId == dto.TelegramId).FirstOrDefaultAsync();
 
                 _context.Users.Remove(user!);
                 await _context.SaveChangesAsync();
